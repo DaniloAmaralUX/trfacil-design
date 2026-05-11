@@ -10,6 +10,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/ui/table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/shared/ui/tooltip'
 
 type RecentTR = {
   id: string
@@ -67,8 +73,17 @@ export function TRRecentTable({ items }: TRRecentTableProps) {
               <TableCell className='font-medium tabular-nums'>
                 {item.id}
               </TableCell>
-              <TableCell className='max-w-[320px] min-w-0 truncate font-medium'>
-                {item.title}
+              <TableCell className='max-w-[320px] min-w-0 font-medium'>
+                <TooltipProvider delayDuration={300}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span className='block truncate'>{item.title}</span>
+                    </TooltipTrigger>
+                    <TooltipContent side='top' className='max-w-md'>
+                      {item.title}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </TableCell>
               <TableCell>{item.unit}</TableCell>
               <TableCell>{item.owner}</TableCell>
