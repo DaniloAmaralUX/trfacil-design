@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/shared/lib/utils'
 import { Separator } from '@/shared/ui/separator'
 import { SidebarTrigger } from '@/shared/ui/sidebar'
+import { RouteBreadcrumb } from './route-breadcrumb'
 
 type HeaderProps = React.HTMLAttributes<HTMLElement> & {
   fixed?: boolean
@@ -43,7 +44,8 @@ export function Header({ className, fixed, children, ...props }: HeaderProps) {
       >
         <SidebarTrigger variant='outline' className='max-md:scale-125' />
         <Separator orientation='vertical' className='h-6' />
-        {children}
+        <RouteBreadcrumb />
+        <div className='ms-auto flex items-center gap-2'>{children}</div>
       </div>
     </header>
   )
