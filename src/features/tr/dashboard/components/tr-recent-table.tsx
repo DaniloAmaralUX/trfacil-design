@@ -1,7 +1,15 @@
 import { Link } from '@tanstack/react-router'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, FileText, Plus } from 'lucide-react'
 import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/shared/ui/empty'
 import {
   Table,
   TableBody,
@@ -44,9 +52,25 @@ const statusClasses: Record<string, string> = {
 export function TRRecentTable({ items }: TRRecentTableProps) {
   if (!items.length) {
     return (
-      <div className='rounded-[20px] border border-dashed border-black/5 bg-muted/15 px-6 py-10 text-center text-sm text-muted-foreground dark:border-white/8'>
-        Ainda não há TRs recentes para continuar ou revisar.
-      </div>
+      <Empty className='rounded-[20px] border border-dashed'>
+        <EmptyHeader>
+          <EmptyMedia variant='icon'>
+            <FileText className='size-6' />
+          </EmptyMedia>
+          <EmptyTitle>Nenhum TR recente</EmptyTitle>
+          <EmptyDescription>
+            Quando você criar ou revisar um TR ele aparece aqui.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <Button asChild className='rounded-xl'>
+            <Link to='/novo-tr'>
+              <Plus className='size-4' />
+              Criar novo TR
+            </Link>
+          </Button>
+        </EmptyContent>
+      </Empty>
     )
   }
 

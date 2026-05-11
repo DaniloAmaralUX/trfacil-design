@@ -7,6 +7,14 @@ import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/shared/ui/empty'
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -118,17 +126,22 @@ export function TRReviewPage() {
           ))}
 
           {reviewItems.length === 0 && (
-            <Card className='rounded-[24px] border-dashed lg:col-span-2'>
-              <CardContent className='flex flex-col items-center gap-3 py-12 text-center'>
-                <ClipboardCheck className='size-10 text-muted-foreground' />
-                <div className='space-y-1'>
-                  <h2 className='text-lg font-semibold'>Nenhum TR pendente</h2>
-                  <p className='text-sm text-muted-foreground'>
-                    Quando houver documentos em revisão, eles aparecerão aqui.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <Empty className='rounded-[24px] border border-dashed lg:col-span-2'>
+              <EmptyHeader>
+                <EmptyMedia variant='icon'>
+                  <ClipboardCheck className='size-6' />
+                </EmptyMedia>
+                <EmptyTitle>Nenhum TR pendente</EmptyTitle>
+                <EmptyDescription>
+                  Quando houver documentos em revisão, eles aparecerão aqui.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                <Button asChild variant='outline' className='rounded-xl'>
+                  <Link to='/trs'>Ver todos os TRs</Link>
+                </Button>
+              </EmptyContent>
+            </Empty>
           )}
         </section>
       </Main>

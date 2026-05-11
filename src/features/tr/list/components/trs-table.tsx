@@ -177,7 +177,10 @@ export function TRsTable({ data }: TRsTableProps) {
           <DataTablePagination table={table} className='mt-auto' />
         </>
       ) : (
-        <TRsEmptyState filtered={isFiltered} />
+        <TRsEmptyState
+          filtered={isFiltered}
+          onClearFilters={() => table.resetColumnFilters()}
+        />
       )}
     </div>
   )
