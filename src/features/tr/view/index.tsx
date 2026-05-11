@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { Header } from '@/shared/layout/header'
 import { HeaderActions } from '@/shared/layout/header-actions'
 import { Main } from '@/shared/layout/main'
+import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert'
 import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
@@ -30,6 +31,30 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
       </Header>
 
       <Main className='space-y-6 pb-8'>
+        {mode === 'view' ? (
+          <Alert role='status'>
+            <ScanSearch aria-hidden='true' className='size-4' />
+            <AlertTitle>Modo de leitura</AlertTitle>
+            <AlertDescription>
+              Este TR está sendo exibido para consulta. Para alterar o
+              conteúdo, abra o documento em edição usando o botão{' '}
+              <strong>Editar</strong> à direita.
+            </AlertDescription>
+          </Alert>
+        ) : (
+          <Alert
+            role='status'
+            className='border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-100 [&>svg]:text-amber-700 dark:[&>svg]:text-amber-300'
+          >
+            <FilePenLine aria-hidden='true' className='size-4' />
+            <AlertTitle>Modo de edição</AlertTitle>
+            <AlertDescription>
+              Alterações ficam salvas como rascunho até serem enviadas para
+              revisão.
+            </AlertDescription>
+          </Alert>
+        )}
+
         <section className='flex flex-wrap items-start justify-between gap-4'>
           <div className='space-y-2'>
             <Button asChild variant='ghost' className='-ml-3 rounded-xl'>
@@ -52,17 +77,6 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
             <p className='max-w-3xl text-pretty text-muted-foreground'>
               {document.title}
             </p>
-            {mode === 'edit' ? (
-              <div className='inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold tracking-[0.14em] text-amber-800 uppercase dark:border-amber-900 dark:bg-amber-950/20 dark:text-amber-200'>
-                <FilePenLine className='size-3.5' />
-                Modo de edição
-              </div>
-            ) : (
-              <div className='inline-flex items-center gap-2 rounded-full border border-black/5 bg-muted/30 px-3 py-1 text-xs font-semibold tracking-[0.14em] text-primary uppercase dark:border-white/10'>
-                <ScanSearch className='size-3.5' />
-                Modo de leitura
-              </div>
-            )}
           </div>
 
           <div className='flex flex-wrap gap-2'>
