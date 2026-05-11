@@ -6,6 +6,12 @@ import { Main } from '@/shared/layout/main'
 import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/shared/ui/tooltip'
 import { trStatusBadgeClass, trStatusLabels } from '@/features/tr/data/data'
 import { trs } from '@/features/tr/data/trs'
 
@@ -91,12 +97,22 @@ export function TRReviewPage() {
                 <p className='leading-6 text-pretty text-muted-foreground'>
                   {item.summary}
                 </p>
-                <Button asChild className='w-full rounded-xl'>
-                  <Link to='/tr/$trId' params={{ trId: item.id }}>
-                    <Eye className='size-4' />
-                    Abrir para revisar
-                  </Link>
-                </Button>
+                <TooltipProvider delayDuration={300}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button asChild className='w-full rounded-xl'>
+                        <Link to='/tr/$trId' params={{ trId: item.id }}>
+                          <Eye className='size-4' />
+                          Revisar TR
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side='top' className='max-w-xs text-center'>
+                      Abre o documento e o painel de comentários para registrar
+                      a sua revisão.
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </CardContent>
             </Card>
           ))}
