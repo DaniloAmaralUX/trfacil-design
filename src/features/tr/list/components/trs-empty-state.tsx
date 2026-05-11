@@ -20,7 +20,7 @@ export function TRsEmptyState({
   onClearFilters,
 }: TRsEmptyStateProps) {
   return (
-    <Empty className='rounded-[24px] border border-dashed'>
+    <Empty className='rounded-2xl border border-dashed'>
       <EmptyHeader>
         <EmptyMedia variant='icon'>
           <FileSearch className='size-6' />

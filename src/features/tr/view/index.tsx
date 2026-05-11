@@ -99,7 +99,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
         </section>
 
         <div className='grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]'>
-          <Card className='rounded-[24px] border-black/5 surface-card dark:border-white/10'>
+          <Card className='rounded-2xl border-black/5 dark:border-white/10'>
             <CardHeader>
               <CardTitle>Metadados</CardTitle>
             </CardHeader>
@@ -133,7 +133,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
         {isReviewState && (
           <div className='grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]'>
             <TRReviewComments comments={document.comments} />
-            <Card className='rounded-[24px] border-black/5 surface-card dark:border-white/10'>
+            <Card className='rounded-2xl border-black/5 dark:border-white/10'>
               <CardHeader>
                 <CardTitle>Ações de revisão</CardTitle>
               </CardHeader>

@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 export function GeneralError() {
   return (
     <div className='flex min-h-svh items-center justify-center bg-background px-4 py-12'>
-      <Card className='w-full max-w-lg rounded-[28px]'>
+      <Card className='w-full max-w-lg rounded-3xl'>
         <CardHeader className='space-y-4 text-center'>
           <div className='mx-auto flex size-14 items-center justify-center rounded-full bg-destructive/10 text-destructive'>
             <AlertTriangle className='size-6' />

@@ -16,21 +16,25 @@ export const trKpis = [
     label: 'Total de TRs',
     value: 48,
     description: 'Documentos ativos entre rascunho, revisão e aprovação.',
+    trend: { value: 12, direction: 'up' as const, period: 'vs. mês passado' },
   },
   {
     label: 'Rascunhos',
     value: 14,
     description: 'TRs iniciados e ainda em elaboração pelas áreas.',
+    trend: { value: 5, direction: 'up' as const, period: 'vs. mês passado' },
   },
   {
     label: 'Em revisão',
     value: 9,
     description: 'Documentos aguardando validação formal ou técnica.',
+    trend: { value: 3, direction: 'down' as const, period: 'vs. mês passado' },
   },
   {
     label: 'Aprovados',
     value: 21,
     description: 'TRs prontos para seguir o fluxo de contratação.',
+    trend: { value: 18, direction: 'up' as const, period: 'vs. mês passado' },
   },
 ] as const
 

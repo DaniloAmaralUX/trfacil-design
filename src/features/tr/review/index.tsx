@@ -72,7 +72,7 @@ export function TRReviewPage() {
           {reviewItems.map((item) => (
             <Card
               key={item.id}
-              className='rounded-[24px] border-black/5 surface-card dark:border-white/10'
+              className='rounded-2xl border-black/5 dark:border-white/10'
             >
               <CardHeader className='space-y-3'>
                 <div className='flex items-center justify-between gap-3'>
@@ -126,7 +126,7 @@ export function TRReviewPage() {
           ))}
 
           {reviewItems.length === 0 && (
-            <Empty className='rounded-[24px] border border-dashed lg:col-span-2'>
+            <Empty className='rounded-2xl border border-dashed lg:col-span-2'>
               <EmptyHeader>
                 <EmptyMedia variant='icon'>
                   <ClipboardCheck className='size-6' />
@@ -162,7 +162,7 @@ function Info({ label, value }: { label: string; value: string }) {
 
 function StatusCard({ label, value }: { label: string; value: string }) {
   return (
-    <Card className='rounded-[24px] border-black/5 dark:border-white/10'>
+    <Card className='rounded-2xl border-black/5 dark:border-white/10'>
       <CardContent className='space-y-1 px-5 py-4'>
         <div className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
           {label}

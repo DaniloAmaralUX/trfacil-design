@@ -52,7 +52,7 @@ const statusClasses: Record<string, string> = {
 export function TRRecentTable({ items }: TRRecentTableProps) {
   if (!items.length) {
     return (
-      <Empty className='rounded-[20px] border border-dashed'>
+      <Empty className='rounded-2xl border border-dashed'>
         <EmptyHeader>
           <EmptyMedia variant='icon'>
             <FileText className='size-6' />
@@ -75,7 +75,7 @@ export function TRRecentTable({ items }: TRRecentTableProps) {
   }
 
   return (
-    <div className='overflow-hidden rounded-[20px] border border-black/5 bg-muted/15 dark:border-white/8'>
+    <div className='overflow-hidden rounded-2xl border border-black/5 bg-muted/15 dark:border-white/8'>
       <Table>
         <TableHeader>
           <TableRow className='bg-muted/40'>

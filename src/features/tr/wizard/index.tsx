@@ -338,7 +338,7 @@ export function TRWizardPage() {
         />
 
         <div className='grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]'>
-          <Card className='rounded-[28px] border-black/5 surface-card dark:border-white/10'>
+          <Card className='rounded-3xl border-black/5 dark:border-white/10'>
             <CardHeader>
               <div className='flex flex-wrap items-start justify-between gap-3'>
                 <div className='space-y-2'>
@@ -425,7 +425,7 @@ export function TRWizardPage() {
           </Card>
 
           <div className='space-y-6'>
-            <Card className='rounded-[28px] border-black/5 dark:border-white/10'>
+            <Card className='rounded-3xl border-black/5 dark:border-white/10'>
               <CardHeader>
                 <CardTitle>Resumo operacional</CardTitle>
                 <CardDescription>
@@ -473,7 +473,7 @@ export function TRWizardPage() {
               </CardContent>
             </Card>
 
-            <Card className='rounded-[28px] border-black/5 dark:border-white/10'>
+            <Card className='rounded-3xl border-black/5 dark:border-white/10'>
               <CardHeader>
                 <CardTitle>Checklist de prontidão</CardTitle>
                 <CardDescription>
@@ -515,7 +515,7 @@ export function TRWizardPage() {
         </div>
 
         <div className='sticky bottom-4 z-30'>
-          <Card className='rounded-[24px] border-black/5 bg-background/95 shadow-lg backdrop-blur dark:border-white/10'>
+          <Card className='rounded-2xl border-black/5 bg-background/95 shadow-lg backdrop-blur dark:border-white/10'>
             <CardContent className='flex flex-wrap items-center justify-between gap-3 px-5 py-4'>
               <div className='flex flex-col gap-1'>
                 <div className='flex items-center gap-2 text-xs text-muted-foreground'>
@@ -603,7 +603,7 @@ export function TRWizardPage() {
           if (!open) setPendingTemplateChange(null)
         }}
       >
-        <AlertDialogContent className='rounded-[24px]'>
+        <AlertDialogContent className='rounded-2xl'>
           <AlertDialogHeader>
             <AlertDialogTitle>Trocar instituição ou modelo?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -666,7 +666,7 @@ function SetupStep({
       </Alert>
 
       <div className='grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]'>
-        <Card className='rounded-[24px] border-black/5 shadow-none dark:border-white/10'>
+        <Card className='rounded-2xl border-black/5 shadow-none dark:border-white/10'>
           <CardHeader>
             <CardTitle className='text-base'>Estrutura do documento</CardTitle>
             <CardDescription>
@@ -731,7 +731,7 @@ function SetupStep({
           </CardContent>
         </Card>
 
-        <Card className='rounded-[24px] border-black/5 shadow-none dark:border-white/10'>
+        <Card className='rounded-2xl border-black/5 shadow-none dark:border-white/10'>
           <CardHeader>
             <CardTitle className='text-base'>Identificação básica</CardTitle>
             <CardDescription>
@@ -885,7 +885,7 @@ function LotsSection({
       {lots.map((lot, index) => (
         <Card
           key={lot.id}
-          className='rounded-[24px] border-black/5 dark:border-white/10'
+          className='rounded-2xl border-black/5 dark:border-white/10'
         >
           <CardHeader>
             <div className='flex flex-wrap items-center justify-between gap-3'>
@@ -1159,7 +1159,7 @@ function DeliveriesSection({
       {deliveries.map((delivery, index) => (
         <Card
           key={delivery.id}
-          className='rounded-[24px] border-black/5 dark:border-white/10'
+          className='rounded-2xl border-black/5 dark:border-white/10'
         >
           <CardHeader>
             <div className='flex flex-wrap items-center justify-between gap-3'>
