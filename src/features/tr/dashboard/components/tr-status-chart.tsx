@@ -18,8 +18,17 @@ type TRStatusChartProps = {
 }
 
 export function TRStatusChart({ data }: TRStatusChartProps) {
+  const total = data.reduce((sum, item) => sum + item.value, 0)
+  const summary = data
+    .map((item) => `${item.label}: ${item.value}`)
+    .join(', ')
+
   return (
-    <div className='rounded-[20px] bg-muted/20 p-3'>
+    <figure
+      role='img'
+      aria-label={`Distribuição de TRs por status. Total: ${total}. ${summary}.`}
+      className='rounded-[20px] bg-muted/20 p-3'
+    >
       <ResponsiveContainer width='100%' height={320}>
         <PieChart>
           <Pie
@@ -39,6 +48,25 @@ export function TRStatusChart({ data }: TRStatusChartProps) {
           <Legend verticalAlign='bottom' wrapperStyle={{ fontSize: 12 }} />
         </PieChart>
       </ResponsiveContainer>
-    </div>
+      <figcaption className='sr-only'>
+        <table>
+          <caption>Distribuição de TRs por status</caption>
+          <thead>
+            <tr>
+              <th scope='col'>Status</th>
+              <th scope='col'>Quantidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item) => (
+              <tr key={item.label}>
+                <td>{item.label}</td>
+                <td>{item.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </figcaption>
+    </figure>
   )
 }

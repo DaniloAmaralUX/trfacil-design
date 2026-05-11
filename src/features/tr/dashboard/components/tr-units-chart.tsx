@@ -17,8 +17,17 @@ type TRUnitsChartProps = {
 }
 
 export function TRUnitsChart({ data }: TRUnitsChartProps) {
+  const total = data.reduce((sum, item) => sum + item.records, 0)
+  const summary = data
+    .map((item) => `${item.unit}: ${item.records}`)
+    .join(', ')
+
   return (
-    <div className='rounded-[20px] bg-muted/20 p-3'>
+    <figure
+      role='img'
+      aria-label={`Distribuição de TRs por unidade. Total: ${total}. ${summary}.`}
+      className='rounded-[20px] bg-muted/20 p-3'
+    >
       <ResponsiveContainer width='100%' height={320}>
         <BarChart
           data={data}
@@ -49,6 +58,25 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
           />
         </BarChart>
       </ResponsiveContainer>
-    </div>
+      <figcaption className='sr-only'>
+        <table>
+          <caption>Distribuição de TRs por unidade</caption>
+          <thead>
+            <tr>
+              <th scope='col'>Unidade</th>
+              <th scope='col'>Quantidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item) => (
+              <tr key={item.unit}>
+                <td>{item.unit}</td>
+                <td>{item.records}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </figcaption>
+    </figure>
   )
 }
