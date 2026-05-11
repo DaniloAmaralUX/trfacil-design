@@ -30,6 +30,14 @@ export function DataTableColumnHeader<TData, TValue>({
     return <div className={cn(className)}>{title}</div>
   }
 
+  const sorted = column.getIsSorted()
+  const ariaSort =
+    sorted === 'asc'
+      ? 'ascending'
+      : sorted === 'desc'
+        ? 'descending'
+        : 'none'
+
   return (
     <div className={cn('flex items-center space-x-2', className)}>
       <DropdownMenu>
@@ -37,33 +45,38 @@ export function DataTableColumnHeader<TData, TValue>({
           <Button
             variant='ghost'
             size='sm'
-            className='h-8 data-[state=open]:bg-accent'
+            aria-sort={ariaSort}
+            aria-label={`Ordenar por ${title}${sorted ? ` (${sorted === 'asc' ? 'crescente' : 'decrescente'})` : ''}`}
+            className={cn(
+              'h-8 data-[state=open]:bg-accent',
+              sorted && 'font-semibold text-foreground'
+            )}
           >
             <span>{title}</span>
-            {column.getIsSorted() === 'desc' ? (
-              <ArrowDownIcon className='ms-2 h-4 w-4' />
-            ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUpIcon className='ms-2 h-4 w-4' />
+            {sorted === 'desc' ? (
+              <ArrowDownIcon className='ms-2 h-4 w-4 text-foreground' />
+            ) : sorted === 'asc' ? (
+              <ArrowUpIcon className='ms-2 h-4 w-4 text-foreground' />
             ) : (
-              <CaretSortIcon className='ms-2 h-4 w-4' />
+              <CaretSortIcon className='ms-2 h-4 w-4 text-muted-foreground/50' />
             )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='start'>
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
             <ArrowUpIcon className='size-3.5 text-muted-foreground/70' />
-            Asc
+            Crescente
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
             <ArrowDownIcon className='size-3.5 text-muted-foreground/70' />
-            Desc
+            Decrescente
           </DropdownMenuItem>
           {column.getCanHide() && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
                 <EyeNoneIcon className='size-3.5 text-muted-foreground/70' />
-                Hide
+                Ocultar coluna
               </DropdownMenuItem>
             </>
           )}
