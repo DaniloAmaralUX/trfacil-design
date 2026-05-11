@@ -1,5 +1,6 @@
 import { Badge } from '@/shared/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
+import { Skeleton } from '@/shared/ui/skeleton'
 import {
   Table,
   TableBody,
@@ -132,6 +133,27 @@ export function TRDocumentView({
             consolidada.
           </div>
         )}
+      </CardContent>
+    </Card>
+  )
+}
+
+export function TRDocumentViewSkeleton({ sections = 4 }: { sections?: number }) {
+  return (
+    <Card aria-busy='true' aria-label='Carregando documento' className='rounded-2xl'>
+      <CardHeader className='space-y-3'>
+        <Skeleton className='h-7 w-72' />
+        <Skeleton className='h-4 w-40 rounded-full' />
+      </CardHeader>
+      <CardContent className='space-y-6'>
+        {Array.from({ length: sections }).map((_, idx) => (
+          <div key={idx} className='space-y-2'>
+            <Skeleton className='h-5 w-48' />
+            <Skeleton className='h-3 w-full' />
+            <Skeleton className='h-3 w-11/12' />
+            <Skeleton className='h-3 w-4/5' />
+          </div>
+        ))}
       </CardContent>
     </Card>
   )

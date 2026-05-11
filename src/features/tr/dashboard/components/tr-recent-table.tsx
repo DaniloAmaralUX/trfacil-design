@@ -10,6 +10,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/shared/ui/empty'
+import { Skeleton } from '@/shared/ui/skeleton'
 import {
   Table,
   TableBody,
@@ -132,6 +133,57 @@ export function TRRecentTable({ items }: TRRecentTableProps) {
                     <ArrowRight className='size-4' />
                   </Link>
                 </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  )
+}
+
+export function TRRecentTableSkeleton({ rows = 5 }: { rows?: number }) {
+  return (
+    <div
+      aria-busy='true'
+      aria-label='Carregando TRs recentes'
+      className='overflow-hidden rounded-2xl border border-black/5 bg-muted/15 dark:border-white/8'
+    >
+      <Table>
+        <TableHeader>
+          <TableRow className='bg-muted/40'>
+            <TableHead>ID</TableHead>
+            <TableHead>Título</TableHead>
+            <TableHead>Unidade</TableHead>
+            <TableHead>Responsável</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Atualização</TableHead>
+            <TableHead className='text-right'>Ação</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {Array.from({ length: rows }).map((_, idx) => (
+            <TableRow key={idx}>
+              <TableCell>
+                <Skeleton className='h-4 w-20' />
+              </TableCell>
+              <TableCell>
+                <Skeleton className='h-4 w-56' />
+              </TableCell>
+              <TableCell>
+                <Skeleton className='h-4 w-16' />
+              </TableCell>
+              <TableCell>
+                <Skeleton className='h-4 w-28' />
+              </TableCell>
+              <TableCell>
+                <Skeleton className='h-5 w-20 rounded-full' />
+              </TableCell>
+              <TableCell>
+                <Skeleton className='h-4 w-20' />
+              </TableCell>
+              <TableCell className='text-right'>
+                <Skeleton className='ms-auto h-7 w-16' />
               </TableCell>
             </TableRow>
           ))}

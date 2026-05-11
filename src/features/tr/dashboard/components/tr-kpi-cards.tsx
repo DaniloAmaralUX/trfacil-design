@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/ui/card'
+import { Skeleton } from '@/shared/ui/skeleton'
 
 type KPIItem = {
   label: string
@@ -61,6 +62,31 @@ export function TRKpiCards({ items }: TRKpiCardsProps) {
                 {item.trend.period}
               </div>
             ) : null}
+          </CardContent>
+        </Card>
+      ))}
+    </section>
+  )
+}
+
+export function TRKpiCardsSkeleton({ count = 4 }: { count?: number }) {
+  return (
+    <section
+      aria-busy='true'
+      aria-label='Carregando indicadores'
+      className='grid gap-4 md:grid-cols-2 xl:grid-cols-4'
+    >
+      {Array.from({ length: count }).map((_, idx) => (
+        <Card key={idx} className='rounded-2xl'>
+          <CardHeader className='pb-2'>
+            <Skeleton className='h-3.5 w-24' />
+            <Skeleton className='h-8 w-16' />
+            <Skeleton className='mt-1 h-5 w-14 rounded-md' />
+          </CardHeader>
+          <CardContent className='space-y-2'>
+            <Skeleton className='h-3 w-full' />
+            <Skeleton className='h-3 w-3/4' />
+            <Skeleton className='mt-2 h-2.5 w-20' />
           </CardContent>
         </Card>
       ))}
