@@ -258,80 +258,52 @@ export function TRWizardPage() {
       </Header>
 
       <Main className='space-y-6 pb-8'>
-        <section className='rounded-[32px] border border-black/5 bg-[radial-gradient(circle_at_top_left,rgba(15,23,42,0.06),transparent_38%),linear-gradient(180deg,rgba(248,250,252,0.95),rgba(241,245,249,0.78))] p-6 shadow-sm dark:border-white/10 dark:bg-[radial-gradient(circle_at_top_left,rgba(148,163,184,0.14),transparent_36%),linear-gradient(180deg,rgba(2,6,23,0.92),rgba(15,23,42,0.72))]'>
-          <div className='flex flex-wrap items-start justify-between gap-5'>
-            <div className='max-w-3xl space-y-3'>
-              <div className='inline-flex items-center gap-2 rounded-full border border-black/5 bg-background/85 px-3 py-1 text-xs font-semibold tracking-[0.16em] text-primary uppercase dark:border-white/10'>
-                <ClipboardList aria-hidden='true' className='size-3.5' />
-                Sala de preparo documental
-              </div>
-              <div className='space-y-2'>
-                <h1 className='text-3xl font-semibold tracking-tight text-balance'>
-                  Criação de TR com modelos oficiais
-                </h1>
-                <p className='max-w-2xl text-pretty text-muted-foreground'>
-                  O fluxo agora acompanha a lógica dos documentos reais de
-                  FIEPE, IEL e SESI, com etapas estruturadas, matriz de lotes,
-                  revisão final e checklist por obrigatoriedade.
-                </p>
+        <section className='flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-2xl border border-black/5 bg-background/60 px-4 py-3 dark:border-white/10'>
+          <div className='flex min-w-0 items-center gap-3'>
+            <div className='flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary'>
+              <ClipboardList aria-hidden='true' className='size-4' />
+            </div>
+            <div className='min-w-0'>
+              <h1 className='truncate text-base font-semibold tracking-tight'>
+                Criação de TR com modelos oficiais
+              </h1>
+              <div className='flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground'>
+                <span>{context.institution}</span>
+                <span aria-hidden='true'>·</span>
+                <span>{template.label}</span>
+                <span aria-hidden='true'>·</span>
+                <span>
+                  Etapa {currentStep + 1} de {wizardSteps.length}
+                </span>
               </div>
             </div>
+          </div>
 
-            <Card className='w-full max-w-sm rounded-[24px] border-black/5 bg-background/90 shadow-none dark:border-white/10'>
-              <CardHeader className='pb-3'>
-                <CardTitle className='text-base'>
-                  Prontidão do documento
-                </CardTitle>
-                <CardDescription>
-                  O progresso é recalculado pelo modelo oficial selecionado.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className='space-y-4'>
-                <div className='space-y-2'>
-                  <div className='flex items-center justify-between text-sm'>
-                    <span className='text-muted-foreground'>
-                      Obrigatórios completos
-                    </span>
-                    <span className='font-semibold tabular-nums'>
-                      {reviewState.completedRequired}/
-                      {reviewState.totalRequired}
-                    </span>
-                  </div>
-                  <div className='h-2 overflow-hidden rounded-full bg-muted'>
-                    <div
-                      className='h-full rounded-full bg-primary transition-[width]'
-                      style={{ width: `${completionPercent}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className='grid gap-3 rounded-2xl bg-muted/30 p-4 text-sm'>
-                  <SummaryLine
-                    label='Instituição'
-                    value={context.institution}
-                  />
-                  <SummaryLine label='Modelo' value={template.label} />
-                  <SummaryLine
-                    label='Etapa atual'
-                    value={currentSection.title}
-                  />
-                  <SummaryLine
-                    label='Status'
-                    value={
-                      reviewState.isReady
-                        ? 'Pronto para envio'
-                        : 'Pendências em aberto'
-                    }
-                  />
-                </div>
-
-                {submission.savedAt ? (
-                  <p className='text-xs text-muted-foreground'>
-                    Último rascunho salvo em {submission.savedAt}.
-                  </p>
-                ) : null}
-              </CardContent>
-            </Card>
+          <div className='flex flex-1 items-center justify-end gap-3 sm:flex-initial'>
+            <div className='hidden min-w-[180px] flex-1 sm:block sm:max-w-[220px]'>
+              <div className='flex items-center justify-between text-xs'>
+                <span className='text-muted-foreground'>Obrigatórios</span>
+                <span className='font-semibold tabular-nums'>
+                  {reviewState.completedRequired}/{reviewState.totalRequired}
+                </span>
+              </div>
+              <div className='mt-1 h-1.5 overflow-hidden rounded-full bg-muted'>
+                <div
+                  className='h-full rounded-full bg-primary transition-[width]'
+                  style={{ width: `${completionPercent}%` }}
+                />
+              </div>
+            </div>
+            <Badge
+              variant={reviewState.isReady ? 'default' : 'outline'}
+              className={
+                reviewState.isReady
+                  ? ''
+                  : 'border-amber-300 text-amber-700 dark:border-amber-800 dark:text-amber-200'
+              }
+            >
+              {reviewState.isReady ? 'Pronto para envio' : 'Pendências em aberto'}
+            </Badge>
           </div>
         </section>
 
@@ -1508,5 +1480,16 @@ function focusField(fieldId: string) {
   const element = document.querySelector<HTMLElement>(
     `[data-field-id="${fieldId}"]`
   )
-  element?.focus()
+  if (!element) return
+
+  const prefersReducedMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches
+
+  element.scrollIntoView({
+    behavior: prefersReducedMotion ? 'auto' : 'smooth',
+    block: 'center',
+  })
+
+  element.focus({ preventScroll: true })
 }
