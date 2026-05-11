@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { ClipboardCheck, Eye } from 'lucide-react'
 import { Header } from '@/shared/layout/header'
@@ -14,6 +15,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/shared/ui/empty'
+import { ToggleGroup, ToggleGroupItem } from '@/shared/ui/toggle-group'
 import {
   Tooltip,
   TooltipContent,
@@ -23,10 +25,24 @@ import {
 import { trStatusBadgeClass, trStatusLabels } from '@/features/tr/data/data'
 import { trs } from '@/features/tr/data/trs'
 
+type StatusFilter = 'all' | 'in_review' | 'changes_requested'
+
 export function TRReviewPage() {
-  const reviewItems = trs.filter(
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
+
+  const pendingItems = trs.filter(
     (item) => item.status === 'in_review' || item.status === 'changes_requested'
   )
+  const inReviewCount = pendingItems.filter(
+    (item) => item.status === 'in_review'
+  ).length
+  const changesRequestedCount = pendingItems.filter(
+    (item) => item.status === 'changes_requested'
+  ).length
+  const reviewItems =
+    statusFilter === 'all'
+      ? pendingItems
+      : pendingItems.filter((item) => item.status === statusFilter)
 
   return (
     <>
@@ -49,23 +65,48 @@ export function TRReviewPage() {
         </section>
 
         <section className='grid gap-3 md:grid-cols-3'>
-          <StatusCard
-            label='Pendentes agora'
-            value={String(reviewItems.length)}
-          />
-          <StatusCard
-            label='Em revisão'
-            value={String(
-              reviewItems.filter((item) => item.status === 'in_review').length
-            )}
-          />
+          <StatusCard label='Pendentes agora' value={String(pendingItems.length)} />
+          <StatusCard label='Em revisão' value={String(inReviewCount)} />
           <StatusCard
             label='Com ajustes solicitados'
-            value={String(
-              reviewItems.filter((item) => item.status === 'changes_requested')
-                .length
-            )}
+            value={String(changesRequestedCount)}
           />
+        </section>
+
+        <section className='flex flex-wrap items-center justify-between gap-3'>
+          <ToggleGroup
+            type='single'
+            value={statusFilter}
+            onValueChange={(value) => {
+              if (value) setStatusFilter(value as StatusFilter)
+            }}
+            variant='outline'
+            size='sm'
+            className='rounded-xl'
+            aria-label='Filtrar por status'
+          >
+            <ToggleGroupItem value='all' className='gap-2'>
+              Todos
+              <Badge variant='secondary' className='ms-1 rounded-md font-normal'>
+                {pendingItems.length}
+              </Badge>
+            </ToggleGroupItem>
+            <ToggleGroupItem value='in_review' className='gap-2'>
+              Em revisão
+              <Badge variant='secondary' className='ms-1 rounded-md font-normal'>
+                {inReviewCount}
+              </Badge>
+            </ToggleGroupItem>
+            <ToggleGroupItem value='changes_requested' className='gap-2'>
+              Ajustes solicitados
+              <Badge variant='secondary' className='ms-1 rounded-md font-normal'>
+                {changesRequestedCount}
+              </Badge>
+            </ToggleGroupItem>
+          </ToggleGroup>
+          <span className='text-xs text-muted-foreground'>
+            Exibindo {reviewItems.length} de {pendingItems.length}
+          </span>
         </section>
 
         <section className='grid gap-4 lg:grid-cols-2'>
