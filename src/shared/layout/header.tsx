@@ -7,6 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/shared/ui/tooltip'
+import { CommandPaletteTrigger } from './command-palette'
 import { RouteBreadcrumb } from './route-breadcrumb'
 
 type HeaderProps = React.HTMLAttributes<HTMLElement> & {
@@ -60,7 +61,12 @@ export function Header({ className, fixed, children, ...props }: HeaderProps) {
         </Tooltip>
         <Separator orientation='vertical' className='h-6' />
         <RouteBreadcrumb />
-        <div className='ms-auto flex items-center gap-2'>{children}</div>
+        <div className='ms-auto flex flex-1 items-center justify-end gap-2'>
+          <div className='hidden w-full max-w-xs md:block'>
+            <CommandPaletteTrigger />
+          </div>
+          {children}
+        </div>
       </div>
     </header>
   )
