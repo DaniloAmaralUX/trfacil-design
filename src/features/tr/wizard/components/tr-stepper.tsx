@@ -35,7 +35,7 @@ export function TRStepper({
               onClick={() => onStepClick?.(index)}
               aria-current={isActive ? 'step' : undefined}
               className={cn(
-                'group h-auto w-full justify-start rounded-2xl border px-4 py-3 text-left',
+                'group h-auto w-full justify-start whitespace-normal rounded-2xl border px-4 py-3 text-left',
                 'hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring',
                 isActive &&
                   'border-primary/30 bg-primary/5 shadow-sm hover:bg-primary/10',
