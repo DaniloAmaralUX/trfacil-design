@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/shared/lib/utils'
 import { Separator } from '@/shared/ui/separator'
 import { SidebarTrigger } from '@/shared/ui/sidebar'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/shared/ui/tooltip'
 import { RouteBreadcrumb } from './route-breadcrumb'
 
 type HeaderProps = React.HTMLAttributes<HTMLElement> & {
@@ -42,7 +47,17 @@ export function Header({ className, fixed, children, ...props }: HeaderProps) {
             'after:absolute after:inset-0 after:-z-10 after:bg-background/20 after:backdrop-blur-lg'
         )}
       >
-        <SidebarTrigger variant='outline' className='max-md:scale-125' />
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <SidebarTrigger variant='outline' className='max-md:scale-125' />
+          </TooltipTrigger>
+          <TooltipContent side='bottom' className='flex items-center gap-2'>
+            <span>Alternar menu lateral</span>
+            <kbd className='inline-flex h-5 items-center rounded border bg-muted px-1.5 text-[10px] font-medium text-muted-foreground'>
+              Ctrl B
+            </kbd>
+          </TooltipContent>
+        </Tooltip>
         <Separator orientation='vertical' className='h-6' />
         <RouteBreadcrumb />
         <div className='ms-auto flex items-center gap-2'>{children}</div>
