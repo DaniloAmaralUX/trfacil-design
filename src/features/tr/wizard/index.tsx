@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   AlertCircle,
   ArrowRight,
+  Check,
   CheckCircle2,
   ChevronLeft,
   ClipboardList,
   FileText,
+  Loader2,
   Plus,
   Save,
   ShieldCheck,
@@ -179,8 +181,29 @@ export function TRWizardPage() {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [isDirty])
 
+  const [autoSaveStatus, setAutoSaveStatus] = useState<
+    'idle' | 'saving' | 'saved'
+  >('idle')
+  const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    if (!isDirty) return
+    if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
+
+    setAutoSaveStatus('saving')
+    autoSaveTimer.current = setTimeout(() => {
+      saveDraft()
+      setAutoSaveStatus('saved')
+    }, 800)
+
+    return () => {
+      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
+    }
+  }, [isDirty, saveDraft])
+
   const handleSaveDraft = () => {
     saveDraft()
+    setAutoSaveStatus('saved')
     toast.success('Rascunho salvo com sucesso.')
   }
 
@@ -494,12 +517,37 @@ export function TRWizardPage() {
         <div className='sticky bottom-4 z-30'>
           <Card className='rounded-[24px] border-black/5 bg-background/95 shadow-lg backdrop-blur dark:border-white/10'>
             <CardContent className='flex flex-wrap items-center justify-between gap-3 px-5 py-4'>
-              <div className='text-sm text-muted-foreground'>
-                {submission.status === 'completed'
-                  ? 'Documento enviado para revisão com base no modelo oficial selecionado.'
-                  : reviewState.isReady
-                    ? 'Tudo pronto para finalizar e encaminhar para revisão.'
-                    : 'Preencha os blocos obrigatórios. O checklist será atualizado automaticamente.'}
+              <div className='flex flex-col gap-1'>
+                <div className='flex items-center gap-2 text-xs text-muted-foreground'>
+                  {autoSaveStatus === 'saving' ? (
+                    <>
+                      <Loader2
+                        aria-hidden='true'
+                        className='size-3.5 animate-spin'
+                      />
+                      <span>Salvando rascunho…</span>
+                    </>
+                  ) : autoSaveStatus === 'saved' && submission.savedAt ? (
+                    <>
+                      <Check
+                        aria-hidden='true'
+                        className='size-3.5 text-emerald-600 dark:text-emerald-400'
+                      />
+                      <span>Salvo às {submission.savedAt}</span>
+                    </>
+                  ) : (
+                    <span className='opacity-70'>
+                      Alterações são salvas automaticamente
+                    </span>
+                  )}
+                </div>
+                <div className='text-sm text-muted-foreground'>
+                  {submission.status === 'completed'
+                    ? 'Documento enviado para revisão com base no modelo oficial selecionado.'
+                    : reviewState.isReady
+                      ? 'Tudo pronto para finalizar e encaminhar para revisão.'
+                      : 'Preencha os blocos obrigatórios. O checklist será atualizado automaticamente.'}
+                </div>
               </div>
               <div className='flex flex-wrap gap-2'>
                 <Button
