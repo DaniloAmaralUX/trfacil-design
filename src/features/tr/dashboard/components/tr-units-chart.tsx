@@ -23,7 +23,7 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
     .join(', ')
 
   return (
-    <figure
+    <div
       role='img'
       aria-label={`Distribuição de TRs por unidade. Total: ${total}. ${summary}.`}
       className='rounded-[20px] bg-muted/20 p-3'
@@ -58,7 +58,7 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
           />
         </BarChart>
       </ResponsiveContainer>
-      <figcaption className='sr-only'>
+      <div className='sr-only'>
         <table>
           <caption>Distribuição de TRs por unidade</caption>
           <thead>
@@ -76,7 +76,7 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
             ))}
           </tbody>
         </table>
-      </figcaption>
-    </figure>
+      </div>
+    </div>
   )
 }

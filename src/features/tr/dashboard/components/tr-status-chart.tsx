@@ -24,7 +24,7 @@ export function TRStatusChart({ data }: TRStatusChartProps) {
     .join(', ')
 
   return (
-    <figure
+    <div
       role='img'
       aria-label={`Distribuição de TRs por status. Total: ${total}. ${summary}.`}
       className='rounded-[20px] bg-muted/20 p-3'
@@ -48,7 +48,7 @@ export function TRStatusChart({ data }: TRStatusChartProps) {
           <Legend verticalAlign='bottom' wrapperStyle={{ fontSize: 12 }} />
         </PieChart>
       </ResponsiveContainer>
-      <figcaption className='sr-only'>
+      <div className='sr-only'>
         <table>
           <caption>Distribuição de TRs por status</caption>
           <thead>
@@ -66,7 +66,7 @@ export function TRStatusChart({ data }: TRStatusChartProps) {
             ))}
           </tbody>
         </table>
-      </figcaption>
-    </figure>
+      </div>
+    </div>
   )
 }
