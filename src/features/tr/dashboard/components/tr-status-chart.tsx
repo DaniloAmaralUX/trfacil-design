@@ -1,11 +1,12 @@
+import { Cell, Pie, PieChart } from 'recharts'
 import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts'
+  type ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/shared/ui/chart'
 
 type StatusChartItem = {
   label: string
@@ -17,37 +18,78 @@ type TRStatusChartProps = {
   data: StatusChartItem[]
 }
 
+function slug(label: string) {
+  return label
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
 export function TRStatusChart({ data }: TRStatusChartProps) {
   const total = data.reduce((sum, item) => sum + item.value, 0)
   const summary = data
     .map((item) => `${item.label}: ${item.value}`)
     .join(', ')
 
+  const keyed = data.map((item) => ({ ...item, key: slug(item.label) }))
+
+  const chartConfig: ChartConfig = keyed.reduce<ChartConfig>((acc, item) => {
+    acc[item.key] = { label: item.label, color: item.color }
+    return acc
+  }, {})
+
   return (
     <div
       role='img'
       aria-label={`Distribuição de TRs por status. Total: ${total}. ${summary}.`}
-      className='rounded-[20px] bg-muted/20 p-3'
     >
-      <ResponsiveContainer width='100%' height={320}>
+      <ChartContainer config={chartConfig} className='h-[320px] w-full'>
         <PieChart>
+          <ChartTooltip
+            content={
+              <ChartTooltipContent
+                hideLabel
+                formatter={(value, _name, item) => {
+                  const cfg = chartConfig[item.payload?.key as string]
+                  return (
+                    <>
+                      <span
+                        className='inline-block size-2.5 shrink-0 rounded-[2px]'
+                        style={{ backgroundColor: cfg?.color as string }}
+                      />
+                      <span className='text-muted-foreground'>
+                        {cfg?.label}
+                      </span>
+                      <span className='ms-auto font-medium tabular-nums text-foreground'>
+                        {value} TRs
+                      </span>
+                    </>
+                  )
+                }}
+              />
+            }
+          />
           <Pie
-            data={data}
+            data={keyed}
             dataKey='value'
-            nameKey='label'
+            nameKey='key'
             innerRadius={76}
             outerRadius={110}
             paddingAngle={3}
             stroke='transparent'
           >
-            {data.map((entry) => (
-              <Cell key={entry.label} fill={entry.color} />
+            {keyed.map((entry) => (
+              <Cell key={entry.key} fill={entry.color} />
             ))}
           </Pie>
-          <Tooltip formatter={(value) => `${value ?? 0} TRs`} />
-          <Legend verticalAlign='bottom' wrapperStyle={{ fontSize: 12 }} />
+          <ChartLegend
+            verticalAlign='bottom'
+            content={<ChartLegendContent nameKey='key' />}
+          />
         </PieChart>
-      </ResponsiveContainer>
+      </ChartContainer>
       <div className='sr-only'>
         <table>
           <caption>Distribuição de TRs por status</caption>

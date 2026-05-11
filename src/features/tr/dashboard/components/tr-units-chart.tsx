@@ -26,7 +26,6 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
     <div
       role='img'
       aria-label={`Distribuição de TRs por unidade. Total: ${total}. ${summary}.`}
-      className='rounded-[20px] bg-muted/20 p-3'
     >
       <ResponsiveContainer width='100%' height={320}>
         <BarChart
@@ -36,7 +35,7 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
         >
           <XAxis
             type='number'
-            stroke='#888888'
+            stroke='var(--muted-foreground)'
             fontSize={12}
             axisLine={false}
             tickLine={false}
@@ -44,17 +43,26 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
           <YAxis
             type='category'
             dataKey='unit'
-            stroke='#888888'
+            stroke='var(--muted-foreground)'
             fontSize={12}
             width={88}
             axisLine={false}
             tickLine={false}
           />
-          <Tooltip formatter={(value) => `${value ?? 0} TRs`} />
+          <Tooltip
+            cursor={{ fill: 'var(--muted)' }}
+            contentStyle={{
+              backgroundColor: 'var(--popover)',
+              border: '1px solid var(--border)',
+              borderRadius: '0.5rem',
+              fontSize: '0.75rem',
+            }}
+            formatter={(value) => [`${value ?? 0} TRs`, 'Total']}
+          />
           <Bar
             dataKey='records'
             radius={[0, 8, 8, 0]}
-            className='fill-primary'
+            fill='var(--primary)'
           />
         </BarChart>
       </ResponsiveContainer>
