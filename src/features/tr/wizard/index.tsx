@@ -1220,7 +1220,9 @@ function LotsSection({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {lot.items.map((item) => (
+                  {lot.items.map((item, itemIndex) => {
+                    const rowRef = `lote ${index + 1}, item ${itemIndex + 1}`
+                    return (
                     <TableRow key={item.id}>
                       <TableCell className='align-top whitespace-normal'>
                         <Input
@@ -1229,6 +1231,7 @@ function LotsSection({
                           data-field-id={`lot-${lot.id}-item-${item.id}-location`}
                           autoComplete='street-address'
                           placeholder='Unidade ou endereço…'
+                          aria-label={`Unidade ou endereço — ${rowRef}`}
                           value={item.location}
                           onChange={(event) =>
                             onUpdateLotItem(lot.id, item.id, {
@@ -1249,6 +1252,7 @@ function LotsSection({
                           data-field-id={`lot-${lot.id}-item-${item.id}-itemCode`}
                           autoComplete='off'
                           placeholder='Ex.: 1'
+                          aria-label={`Código do item — ${rowRef}`}
                           value={item.itemCode}
                           onChange={(event) =>
                             onUpdateLotItem(lot.id, item.id, {
@@ -1269,6 +1273,7 @@ function LotsSection({
                           data-field-id={`lot-${lot.id}-item-${item.id}-summary`}
                           autoComplete='off'
                           placeholder='Descreva o item…'
+                          aria-label={`Especificação resumida — ${rowRef}`}
                           value={item.summary}
                           onChange={(event) =>
                             onUpdateLotItem(lot.id, item.id, {
@@ -1290,6 +1295,7 @@ function LotsSection({
                           data-field-id={`lot-${lot.id}-item-${item.id}-unitMeasure`}
                           autoComplete='off'
                           placeholder='Ex.: unidade'
+                          aria-label={`Unidade de medida — ${rowRef}`}
                           value={item.unitMeasure}
                           onChange={(event) =>
                             onUpdateLotItem(lot.id, item.id, {
@@ -1315,6 +1321,7 @@ function LotsSection({
                           autoComplete='off'
                           inputMode='numeric'
                           placeholder='0'
+                          aria-label={`Quantidade total — ${rowRef}`}
                           value={item.quantity}
                           onChange={(event) =>
                             onUpdateLotItem(lot.id, item.id, {
@@ -1335,6 +1342,7 @@ function LotsSection({
                           data-field-id={`lot-${lot.id}-item-${item.id}-delivery`}
                           autoComplete='off'
                           placeholder='Prazo ou condição…'
+                          aria-label={`Entrega — ${rowRef}`}
                           value={item.delivery}
                           onChange={(event) =>
                             onUpdateLotItem(lot.id, item.id, {
@@ -1353,13 +1361,15 @@ function LotsSection({
                           type='button'
                           variant='ghost'
                           onClick={() => onRemoveLotItem(lot.id, item.id)}
+                          aria-label={`Remover ${rowRef}`}
                         >
-                          <Trash2 data-icon='inline-start' />
+                          <Trash2 aria-hidden='true' data-icon='inline-start' />
                           Remover
                         </Button>
                       </TableCell>
                     </TableRow>
-                  ))}
+                    )
+                  })}
                 </TableBody>
               </Table>
             </div>
@@ -1581,8 +1591,9 @@ function DeliveriesSection({
                 type='button'
                 variant='outline'
                 onClick={() => onRemoveDelivery(delivery.id)}
+                aria-label={`Remover instituição/unidade ${index + 1}`}
               >
-                <Trash2 data-icon='inline-start' />
+                <Trash2 aria-hidden='true' data-icon='inline-start' />
                 Remover
               </Button>
             </div>
@@ -1613,6 +1624,7 @@ function DeliveriesSection({
               label='CNPJ'
               htmlFor={`delivery-${delivery.id}-cnpj`}
               error={errors[`delivery-${delivery.id}-cnpj`]}
+              description='Formato 00.000.000/0000-00'
             >
               <Input
                 id={`delivery-${delivery.id}-cnpj`}
@@ -1620,6 +1632,7 @@ function DeliveriesSection({
                 data-field-id={`delivery-${delivery.id}-cnpj`}
                 autoComplete='off'
                 inputMode='numeric'
+                maxLength={18}
                 placeholder='00.000.000/0000-00'
                 value={delivery.cnpj}
                 onChange={(event) =>
@@ -1628,6 +1641,7 @@ function DeliveriesSection({
                   })
                 }
                 className='rounded-xl'
+                aria-describedby={`delivery-${delivery.id}-cnpj-desc${errors[`delivery-${delivery.id}-cnpj`] ? ` delivery-${delivery.id}-cnpj-error` : ''}`}
               />
             </FieldBlock>
 
