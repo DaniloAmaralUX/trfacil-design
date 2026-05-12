@@ -234,6 +234,18 @@ export function TRWizardPage() {
   }, [currentStep, context.institution, context.templateType])
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (window.localStorage.getItem('tr-wizard-onboarded')) return
+
+    toast('Bem-vindo ao TR Fácil', {
+      description:
+        'Comece pela Configuração: escolha a instituição, o modelo oficial e dê um título à TR. O wizard guia o resto.',
+      duration: 8000,
+    })
+    window.localStorage.setItem('tr-wizard-onboarded', 'true')
+  }, [])
+
+  useEffect(() => {
     if (!isDirty) return
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -1527,7 +1539,10 @@ function FieldRenderer({
           type={field.input}
           data-field-id={field.id}
           autoComplete={field.autocomplete ?? 'off'}
-          spellCheck={field.spellCheck ?? true}
+          spellCheck={
+            field.spellCheck ?? (field.input === 'email' ? false : true)
+          }
+          enterKeyHint='next'
           placeholder={field.placeholder}
           value={value}
           onChange={(event) => onChange(event.target.value)}
