@@ -100,8 +100,8 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
           </div>
         </section>
 
-        <div className='grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)_240px] xl:items-start'>
-          <Card className='rounded-2xl border-black/5 xl:sticky xl:top-20 dark:border-white/10'>
+        <div className='grid grid-cols-12 gap-6 xl:items-start'>
+          <Card className='col-span-12 rounded-2xl border-0 shadow-border xl:col-span-3 xl:sticky xl:top-20'>
             <CardHeader>
               <CardTitle>Metadados</CardTitle>
             </CardHeader>
@@ -123,25 +123,31 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
             </CardContent>
           </Card>
 
-          <TRDocumentView
-            title={document.title}
-            sections={document.sections}
-            status={{
-              label:
-                mode === 'edit'
-                  ? 'Documento aberto para ajustes'
-                  : 'Documento consolidado para consulta',
-              tone: mode === 'edit' ? 'warning' : 'neutral',
-            }}
-          />
+          <div className='col-span-12 xl:col-span-7'>
+            <TRDocumentView
+              title={document.title}
+              sections={document.sections}
+              status={{
+                label:
+                  mode === 'edit'
+                    ? 'Documento aberto para ajustes'
+                    : 'Documento consolidado para consulta',
+                tone: mode === 'edit' ? 'warning' : 'neutral',
+              }}
+            />
+          </div>
 
-          <TRDocumentToc sections={document.sections} />
+          <div className='col-span-12 xl:col-span-2'>
+            <TRDocumentToc sections={document.sections} />
+          </div>
         </div>
 
         {isReviewState && (
-          <div className='grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]'>
-            <TRReviewComments comments={document.comments} />
-            <Card className='rounded-2xl border-0 shadow-border'>
+          <div className='grid grid-cols-12 gap-6'>
+            <div className='col-span-12 xl:col-span-8'>
+              <TRReviewComments comments={document.comments} />
+            </div>
+            <Card className='col-span-12 rounded-2xl border-0 shadow-border xl:col-span-4'>
               <CardHeader>
                 <CardTitle>Ações de revisão</CardTitle>
               </CardHeader>
