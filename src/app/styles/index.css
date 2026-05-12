@@ -125,6 +125,35 @@
   scrollbar-width: none; /* Firefox */
 }
 
+@utility shadow-border {
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 1px 2px -1px rgba(0, 0, 0, 0.06),
+    0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  transition-property: box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+
+  @variant dark {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+}
+
+@utility shadow-border-hover {
+  &:hover {
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.08),
+      0 1px 2px -1px rgba(0, 0, 0, 0.08),
+      0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  }
+
+  @variant dark {
+    &:hover {
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.13);
+    }
+  }
+}
+
 @utility stagger-fade-in {
   & > * {
     opacity: 0;

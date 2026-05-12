@@ -113,7 +113,7 @@ export function TRReviewPage() {
           {reviewItems.map((item) => (
             <Card
               key={item.id}
-              className='rounded-2xl border-black/5 dark:border-white/10'
+              className='rounded-2xl border-0 shadow-border'
             >
               <CardHeader className='space-y-3'>
                 <div className='flex items-center justify-between gap-3'>
@@ -203,7 +203,7 @@ function Info({ label, value }: { label: string; value: string }) {
 
 function StatusCard({ label, value }: { label: string; value: string }) {
   return (
-    <Card className='rounded-2xl border-black/5 dark:border-white/10'>
+    <Card className='rounded-2xl border-0 shadow-border'>
       <CardContent className='space-y-1 px-5 py-4'>
         <div className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
           {label}

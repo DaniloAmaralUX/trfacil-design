@@ -12,7 +12,7 @@ type TRReviewCommentsProps = {
 
 export function TRReviewComments({ comments }: TRReviewCommentsProps) {
   return (
-    <Card className='rounded-2xl border-black/5 dark:border-white/10'>
+    <Card className='rounded-2xl border-0 shadow-border'>
       <CardHeader>
         <CardTitle>Comentários de revisão</CardTitle>
       </CardHeader>

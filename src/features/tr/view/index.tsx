@@ -141,7 +141,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
         {isReviewState && (
           <div className='grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]'>
             <TRReviewComments comments={document.comments} />
-            <Card className='rounded-2xl border-black/5 dark:border-white/10'>
+            <Card className='rounded-2xl border-0 shadow-border'>
               <CardHeader>
                 <CardTitle>Ações de revisão</CardTitle>
               </CardHeader>

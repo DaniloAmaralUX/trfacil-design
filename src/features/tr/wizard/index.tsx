@@ -448,7 +448,7 @@ export function TRWizardPage() {
               pendingByStep={pendingByStep}
             />
           </div>
-          <Card className='rounded-3xl border-black/5 dark:border-white/10'>
+          <Card className='rounded-3xl border-0 shadow-border'>
             <CardHeader>
               <div className='flex flex-wrap items-start justify-between gap-3'>
                 <div className='space-y-2'>
@@ -534,7 +534,7 @@ export function TRWizardPage() {
             {currentStep > 0 && currentSection.kind === 'fields' ? (
               <TRAIAssistant />
             ) : null}
-            <Card className='rounded-3xl border-black/5 dark:border-white/10'>
+            <Card className='rounded-3xl border-0 shadow-border'>
               <CardHeader>
                 <CardTitle>Resumo operacional</CardTitle>
                 <CardDescription>
@@ -600,7 +600,7 @@ export function TRWizardPage() {
               </CardContent>
             </Card>
 
-            <Card className='rounded-3xl border-black/5 dark:border-white/10'>
+            <Card className='rounded-3xl border-0 shadow-border'>
               <CardHeader>
                 <CardTitle>Checklist de prontidão</CardTitle>
                 <CardDescription>
@@ -1029,7 +1029,7 @@ function LotsSection({
       {lots.map((lot, index) => (
         <Card
           key={lot.id}
-          className='rounded-2xl border-black/5 dark:border-white/10'
+          className='rounded-2xl border-0 shadow-border'
         >
           <CardHeader>
             <div className='flex flex-wrap items-center justify-between gap-3'>
@@ -1453,7 +1453,7 @@ function DeliveriesSection({
       {deliveries.map((delivery, index) => (
         <Card
           key={delivery.id}
-          className='rounded-2xl border-black/5 dark:border-white/10'
+          className='rounded-2xl border-0 shadow-border'
         >
           <CardHeader>
             <div className='flex flex-wrap items-center justify-between gap-3'>

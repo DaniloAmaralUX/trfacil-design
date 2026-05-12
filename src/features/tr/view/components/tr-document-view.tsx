@@ -44,7 +44,7 @@ export function TRDocumentView({
   })
 
   return (
-    <Card className='rounded-3xl border-black/5 dark:border-white/10'>
+    <Card className='rounded-3xl border-0 shadow-border'>
       <CardHeader className='border-b border-border/60 pb-5'>
         <div className='flex flex-wrap items-start justify-between gap-3'>
           <CardTitle className='text-2xl font-semibold'>{title}</CardTitle>
