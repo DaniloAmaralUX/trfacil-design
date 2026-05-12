@@ -143,9 +143,14 @@ export function TRAIAssistant() {
                 : 'Assistente da redação'}
             </CardTitle>
             <CardDescription className='text-xs'>
-              {target && field
-                ? `Padrão ${familyLabel}. As sugestões são determinísticas e ficam restritas a este campo.`
-                : 'Foque um campo de texto na etapa atual para liberar as ações da IA.'}
+              {target && field ? (
+                <>
+                  Padrão <span translate='no'>{familyLabel}</span>. As sugestões
+                  são determinísticas e ficam restritas a este campo.
+                </>
+              ) : (
+                'Foque um campo de texto na etapa atual para liberar as ações da IA.'
+              )}
             </CardDescription>
           </div>
         </CardHeader>

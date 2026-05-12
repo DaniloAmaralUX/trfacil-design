@@ -28,7 +28,7 @@ export function AppTitle() {
               className='flex flex-1 items-center gap-3 text-start'
             >
               <Logo className='size-8 text-primary' />
-              <span className='grid text-sm leading-tight'>
+              <span className='grid text-sm leading-tight' translate='no'>
                 <span className='truncate font-bold'>{appIdentity.name}</span>
                 <span className='truncate text-xs text-muted-foreground'>
                   {appIdentity.subtitle}

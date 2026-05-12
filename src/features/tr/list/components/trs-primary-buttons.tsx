@@ -15,7 +15,7 @@ export function TRsPrimaryButtons() {
       <Button
         variant='outline'
         className='rounded-xl'
-        onClick={() => toast.success('Exportando listagem...')}
+        onClick={() => toast.success('Exportando listagem…')}
       >
         <Download className='size-4' />
         Exportar lista

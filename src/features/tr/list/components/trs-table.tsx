@@ -108,7 +108,7 @@ export function TRsTable({ data }: TRsTableProps) {
     <div className={cn('flex flex-1 flex-col gap-4')}>
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Filtrar por título, ID ou responsável...'
+        searchPlaceholder='Filtrar por título, ID ou responsável…'
         filters={[
           {
             columnId: 'status',
