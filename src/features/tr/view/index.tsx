@@ -65,7 +65,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
               </Link>
             </Button>
             <div className='flex flex-wrap items-center gap-3'>
-              <h1 className='text-3xl font-semibold tracking-tight text-balance'>
+              <h1 className='font-mono text-3xl font-semibold tracking-tight text-balance'>
                 {document.id}
               </h1>
               <Badge

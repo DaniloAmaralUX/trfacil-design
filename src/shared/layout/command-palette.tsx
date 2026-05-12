@@ -108,7 +108,7 @@ export function CommandPaletteTrigger() {
                 <div className='flex min-w-0 flex-col'>
                   <span className='truncate text-sm'>{tr.title}</span>
                   <span className='truncate text-xs text-muted-foreground'>
-                    {tr.id} · {tr.unit}
+                    <span className='font-mono'>{tr.id}</span> · {tr.unit}
                   </span>
                 </div>
               </CommandItem>

@@ -41,7 +41,7 @@ export const trsColumns: ColumnDef<TRItem>[] = [
       <Link
         to='/tr/$trId'
         params={{ trId: row.original.id }}
-        className='font-medium text-primary underline-offset-4 hover:underline'
+        className='font-mono text-sm font-medium text-primary underline-offset-4 hover:underline'
       >
         {row.getValue('id')}
       </Link>

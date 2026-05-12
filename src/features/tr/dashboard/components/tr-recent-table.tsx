@@ -89,7 +89,7 @@ export function TRRecentTable({ items }: TRRecentTableProps) {
               key={item.id}
               className='transition-colors hover:bg-muted/35'
             >
-              <TableCell className='font-medium tabular-nums'>
+              <TableCell className='font-mono text-sm font-medium'>
                 {item.id}
               </TableCell>
               <TableCell className='max-w-[320px] min-w-0 font-medium'>

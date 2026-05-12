@@ -117,7 +117,7 @@ export function TRReviewPage() {
             >
               <CardHeader className='space-y-3'>
                 <div className='flex items-center justify-between gap-3'>
-                  <CardTitle className='text-lg font-semibold'>
+                  <CardTitle className='font-mono text-lg font-semibold'>
                     {item.id}
                   </CardTitle>
                   <Badge
