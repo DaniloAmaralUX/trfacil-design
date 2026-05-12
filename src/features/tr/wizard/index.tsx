@@ -80,6 +80,7 @@ import {
   getTemplateOptions,
 } from '@/features/tr/data/templates'
 import { TRDocumentView } from '@/features/tr/view/components/tr-document-view'
+import { TRAIAssistant } from './components/tr-ai-assistant'
 import { TRStepper } from './components/tr-stepper'
 import { useTRWizard } from './store/use-tr-wizard'
 
@@ -121,6 +122,7 @@ export function TRWizardPage() {
     saveDraft,
     startSubmission,
     completeSubmission,
+    setAssistantTarget,
   } = useTRWizard()
 
   const template = getTemplateDefinition(
@@ -278,6 +280,20 @@ export function TRWizardPage() {
     startSubmission()
     completeSubmission()
     toast.success('TR enviada para revisão.')
+  }
+
+  useEffect(() => {
+    // Limpa target da IA ao trocar de etapa
+    setAssistantTarget(null)
+  }, [currentStep, setAssistantTarget])
+
+  const handleFieldFocus = (field: TRFieldDefinition) => {
+    if (currentStep === 0) return
+    if (currentSection.kind !== 'fields') return
+    setAssistantTarget({
+      fieldId: field.id,
+      sectionId: currentSection.id,
+    })
   }
 
   const handleFieldBlur = (field: TRFieldDefinition, value: string) => {
@@ -467,6 +483,7 @@ export function TRWizardPage() {
                   errors={errors}
                   onChange={setFieldValue}
                   onFieldBlur={handleFieldBlur}
+                  onFieldFocus={handleFieldFocus}
                 />
               ) : currentSection.kind === 'lots' ? (
                 <LotsSection
@@ -502,6 +519,9 @@ export function TRWizardPage() {
           </Card>
 
           <div className='space-y-6'>
+            {currentStep > 0 && currentSection.kind === 'fields' ? (
+              <TRAIAssistant />
+            ) : null}
             <Card className='rounded-3xl border-black/5 dark:border-white/10'>
               <CardHeader>
                 <CardTitle>Resumo operacional</CardTitle>
@@ -903,6 +923,7 @@ function FieldSection({
   errors,
   onChange,
   onFieldBlur,
+  onFieldFocus,
 }: {
   title: string
   fields: TRFieldDefinition[]
@@ -910,6 +931,7 @@ function FieldSection({
   errors: StepErrors
   onChange: (fieldId: string, value: string) => void
   onFieldBlur?: (field: TRFieldDefinition, value: string) => void
+  onFieldFocus?: (field: TRFieldDefinition) => void
 }) {
   return (
     <div className='space-y-5'>
@@ -928,6 +950,7 @@ function FieldSection({
             className={field.input === 'textarea' ? 'md:col-span-2' : undefined}
             onChange={(value) => onChange(field.id, value)}
             onBlur={(value) => onFieldBlur?.(field, value)}
+            onFocus={onFieldFocus}
           />
         ))}
       </div>
@@ -1404,6 +1427,7 @@ function FieldRenderer({
   className,
   onChange,
   onBlur,
+  onFocus,
 }: {
   field: TRFieldDefinition
   value: string
@@ -1411,6 +1435,7 @@ function FieldRenderer({
   className?: string
   onChange: (value: string) => void
   onBlur?: (value: string) => void
+  onFocus?: (field: TRFieldDefinition) => void
 }) {
   const describedBy = [
     field.description ? `${field.id}-desc` : null,
@@ -1447,6 +1472,7 @@ function FieldRenderer({
             name={field.id}
             data-field-id={field.id}
             className='rounded-xl'
+            onFocus={() => onFocus?.(field)}
             {...ariaProps}
           >
             <SelectValue
@@ -1472,6 +1498,7 @@ function FieldRenderer({
           value={value}
           onChange={(event) => onChange(event.target.value)}
           onBlur={(event) => onBlur?.(event.target.value)}
+          onFocus={() => onFocus?.(field)}
           className='min-h-32 rounded-2xl'
           {...ariaProps}
         />
@@ -1487,6 +1514,7 @@ function FieldRenderer({
           value={value}
           onChange={(event) => onChange(event.target.value)}
           onBlur={(event) => onBlur?.(event.target.value)}
+          onFocus={() => onFocus?.(field)}
           className='rounded-xl'
           {...ariaProps}
         />

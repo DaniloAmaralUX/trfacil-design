@@ -16,12 +16,20 @@ import {
   hasMeaningfulData,
 } from '@/features/tr/data/templates'
 import {
+  type TRAssistantAction,
+  type TRAssistantState,
+  type TRAssistantTarget,
+  createInitialAssistantState,
+  generateAssistantSuggestion,
+} from '@/features/tr/data/tr-assistant'
+import {
   createInitialTRWizardData,
   type TRWizardContext,
   type TRWizardData,
 } from '../types'
 
 type TRWizardState = TRWizardData & {
+  assistant: TRAssistantState
   nextStep: () => void
   prevStep: () => void
   goToStep: (step: number) => void
@@ -33,6 +41,10 @@ type TRWizardState = TRWizardData & {
     templateType?: TRTemplateType
   ) => void
   setFieldValue: (fieldId: string, value: string) => void
+  setAssistantTarget: (target: TRAssistantTarget | null) => void
+  requestAssistantSuggestion: (action: TRAssistantAction) => void
+  applyAssistantSuggestion: (options?: { allowOverwrite?: boolean }) => boolean
+  discardAssistantSuggestion: () => void
   addLot: () => void
   removeLot: (lotId: string) => void
   updateLot: (
@@ -86,6 +98,7 @@ function clampStep(step: number, context: TRWizardContext) {
 
 export const useTRWizard = create<TRWizardState>()((set, get) => ({
   ...createInitialTRWizardData(),
+  assistant: createInitialAssistantState(),
   nextStep: () =>
     set((state) => ({
       currentStep: clampStep(state.currentStep + 1, state.context),
@@ -131,6 +144,142 @@ export const useTRWizard = create<TRWizardState>()((set, get) => ({
         isDirty: true,
       }
     }),
+  setAssistantTarget: (target) =>
+    set((state) => {
+      const sameTarget =
+        state.assistant.target?.fieldId === target?.fieldId &&
+        state.assistant.target?.sectionId === target?.sectionId
+      if (sameTarget) return {}
+      return {
+        assistant: {
+          target,
+          status: 'idle',
+          suggestion: null,
+          error: null,
+        },
+      }
+    }),
+  requestAssistantSuggestion: (action) => {
+    const state = get()
+    const target = state.assistant.target
+    if (!target) {
+      set({
+        assistant: {
+          ...state.assistant,
+          status: 'error',
+          error: 'Selecione o campo onde a IA deve atuar.',
+        },
+      })
+      return
+    }
+    const template = getTemplateDefinition(
+      state.context.institution,
+      state.context.templateType
+    )
+    const sectionForTarget = template.sections.find(
+      (section) => section.id === target.sectionId
+    )
+    const currentSection =
+      sectionForTarget ?? template.sections[state.currentStep - 1]
+    if (!currentSection || currentSection.kind !== 'fields') {
+      set({
+        assistant: {
+          ...state.assistant,
+          status: 'error',
+          error: 'A assistência está disponível apenas em etapas de texto.',
+        },
+      })
+      return
+    }
+
+    set({
+      assistant: {
+        target,
+        status: 'generating',
+        suggestion: null,
+        error: null,
+      },
+    })
+
+    setTimeout(() => {
+      const next = get()
+      if (
+        next.assistant.target?.fieldId !== target.fieldId ||
+        next.assistant.target?.sectionId !== target.sectionId
+      ) {
+        // target trocou enquanto gerava — descarta resultado
+        return
+      }
+      const suggestion = generateAssistantSuggestion({
+        context: next.context,
+        template,
+        currentSection,
+        fieldId: target.fieldId,
+        documentData: next.documentData,
+        action,
+      })
+      if (!suggestion) {
+        set({
+          assistant: {
+            ...next.assistant,
+            status: 'error',
+            error:
+              'Este campo não recebe assistência de IA (é cadastral, data ou seleção).',
+          },
+        })
+        return
+      }
+      set({
+        assistant: {
+          target,
+          status: 'ready',
+          suggestion,
+          error: null,
+        },
+      })
+    }, 600)
+  },
+  applyAssistantSuggestion: ({ allowOverwrite = false } = {}) => {
+    const state = get()
+    const { suggestion } = state.assistant
+    if (!suggestion) return false
+    const currentValue = String(state.documentData[suggestion.fieldId] ?? '')
+    if (currentValue.trim().length > 0 && !allowOverwrite) {
+      set({
+        assistant: {
+          ...state.assistant,
+          status: 'ready',
+          error:
+            'Este campo já tem conteúdo. Confirme se quer substituir o texto atual.',
+        },
+      })
+      return false
+    }
+    const documentData = {
+      ...state.documentData,
+      [suggestion.fieldId]: suggestion.content,
+    }
+    set({
+      ...syncState(state.context, documentData),
+      isDirty: true,
+      assistant: {
+        ...state.assistant,
+        status: 'idle',
+        suggestion: null,
+        error: null,
+      },
+    })
+    return true
+  },
+  discardAssistantSuggestion: () =>
+    set((state) => ({
+      assistant: {
+        ...state.assistant,
+        status: 'idle',
+        suggestion: null,
+        error: null,
+      },
+    })),
   addLot: () =>
     set((state) => {
       const lots = (
@@ -293,7 +442,11 @@ export const useTRWizard = create<TRWizardState>()((set, get) => ({
       },
       isDirty: false,
     })),
-  reset: () => set(createInitialTRWizardData()),
+  reset: () =>
+    set({
+      ...createInitialTRWizardData(),
+      assistant: createInitialAssistantState(),
+    }),
   hasCustomData: () => {
     const state = get()
     return (
