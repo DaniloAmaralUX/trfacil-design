@@ -44,7 +44,7 @@ export function TRStepper({
       <Collapsible
         open={mobileOpen}
         onOpenChange={setMobileOpen}
-        className='rounded-2xl border bg-card lg:hidden'
+        className='rounded-2xl border-0 bg-card shadow-border lg:hidden'
       >
         <div className='space-y-3 px-4 py-3'>
           <div className='flex items-center justify-between gap-3'>

@@ -12,15 +12,14 @@ export function TRListPage() {
         <HeaderActions />
       </Header>
 
-      <Main className='flex flex-1 flex-col gap-4 sm:gap-6'>
-        <div className='flex flex-wrap items-end justify-between gap-2'>
-          <div>
-            <h1 className='text-2xl font-bold tracking-tight text-balance'>
+      <Main className='stagger-fade-in flex flex-1 flex-col gap-6'>
+        <div className='flex flex-wrap items-end justify-between gap-4'>
+          <div className='space-y-1'>
+            <h1 className='text-2xl font-semibold tracking-tight text-balance'>
               TRs
             </h1>
-            <p className='text-muted-foreground'>
-              Gerencie documentos em rascunho, revisão e aprovação com filtros
-              rápidos.
+            <p className='max-w-2xl text-sm text-muted-foreground'>
+              Gerencie documentos em rascunho e aprovação com filtros rápidos.
             </p>
           </div>
           <TRsPrimaryButtons />

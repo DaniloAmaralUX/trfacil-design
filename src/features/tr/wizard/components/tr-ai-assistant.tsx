@@ -217,7 +217,7 @@ export function TRAIAssistant() {
           ) : null}
 
           {!isGenerating && suggestion ? (
-            <div className='space-y-3 rounded-xl border bg-background p-3'>
+            <div className='space-y-3 rounded-xl border-0 bg-background p-3 shadow-border'>
               <div className='flex items-start justify-between gap-2'>
                 <div className='space-y-1'>
                   <div className='text-xs font-semibold tracking-[0.14em] text-primary uppercase'>

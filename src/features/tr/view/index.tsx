@@ -1,7 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { ArrowLeft, CheckCircle2, FilePenLine } from 'lucide-react'
 import { toast } from 'sonner'
-import { cn } from '@/shared/lib/utils'
 import { Header } from '@/shared/layout/header'
 import { HeaderActions } from '@/shared/layout/header-actions'
 import { Main } from '@/shared/layout/main'
@@ -10,6 +9,7 @@ import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent } from '@/shared/ui/card'
 import { Separator } from '@/shared/ui/separator'
+import { SectionLabel } from '@/shared/components/section-label'
 import { TRDocumentToc } from './components/tr-document-toc'
 import { trStatusBadgeClass, trStatusLabels } from '@/features/tr/data/data'
 import { getTRDocument } from '@/features/tr/data/tr-document'
@@ -18,29 +18,6 @@ import { TRDocumentView } from './components/tr-document-view'
 type TRViewPageProps = {
   trId?: string
   mode?: 'edit' | 'view'
-}
-
-/**
- * Editorial section label — uppercase tracking muted.
- * Mesmo padrão usado no dashboard hero KPI e wizard footer.
- */
-function SectionLabel({
-  children,
-  className,
-}: {
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <div
-      className={cn(
-        'text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground',
-        className
-      )}
-    >
-      {children}
-    </div>
-  )
 }
 
 export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {

@@ -153,7 +153,7 @@ export function TRDocumentToc({ sections }: TRDocumentTocProps) {
         aria-label='Sumário do documento'
         className='hidden xl:sticky xl:top-20 xl:block xl:self-start'
       >
-        <div className='space-y-2 rounded-2xl border bg-card p-3'>
+        <div className='space-y-2 rounded-2xl border-0 bg-card p-3 shadow-border'>
           <div className='px-2 text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
             Sumário
           </div>

@@ -10,23 +10,12 @@ import {
   CardDescription,
   CardHeader,
 } from '@/shared/ui/card'
+import { SectionLabel } from '@/shared/components/section-label'
 import { recentTrs, trKpis, trStatusData, trUnitData } from '../data/app'
 import { TRKpiCards } from './components/tr-kpi-cards'
 import { TRRecentList } from './components/tr-recent-list'
 import { TRStatusChart } from './components/tr-status-chart'
 import { TRUnitsChart } from './components/tr-units-chart'
-
-/**
- * Editorial section label — uppercase tracking-wide muted.
- * Padrão usado em "Sumário" (TOC) e "Etapas" (stepper) para cohesion.
- */
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className='text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
-      {children}
-    </div>
-  )
-}
 
 export function TRDashboard() {
   return (
@@ -45,13 +34,13 @@ export function TRDashboard() {
             </p>
           </div>
           <div className='flex flex-wrap gap-2'>
-            <Button asChild>
+            <Button asChild className='rounded-xl'>
               <Link to='/novo-tr'>
                 <FilePlus2 aria-hidden='true' className='size-4' />
                 Novo TR
               </Link>
             </Button>
-            <Button asChild variant='outline'>
+            <Button asChild variant='outline' className='rounded-xl'>
               <Link to='/trs'>
                 <FolderOpen aria-hidden='true' className='size-4' />
                 Ver TRs
