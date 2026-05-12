@@ -556,10 +556,10 @@ export function TRWizardPage() {
               <ClipboardList aria-hidden='true' className='size-4' />
             </div>
             <div className='min-w-0'>
-              <h1 className='truncate text-base font-semibold tracking-tight'>
+              <h1 className='text-balance text-base font-semibold tracking-tight'>
                 Criação de TR com modelos oficiais
               </h1>
-              <p className='truncate text-xs text-muted-foreground'>
+              <p className='line-clamp-2 text-pretty text-xs text-muted-foreground'>
                 {currentSection.description}
               </p>
             </div>

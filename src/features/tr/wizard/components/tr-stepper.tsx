@@ -50,7 +50,8 @@ export function TRStepper({
           <div className='flex items-center justify-between gap-3'>
             <div className='min-w-0 space-y-0.5'>
               <div className='text-xs text-muted-foreground'>
-                Etapa {currentStep + 1} de {totalSteps}
+                Etapa <span className='tabular-nums'>{currentStep + 1}</span> de{' '}
+                <span className='tabular-nums'>{totalSteps}</span>
               </div>
               <div className='truncate text-sm font-medium'>{currentTitle}</div>
             </div>
@@ -362,6 +363,7 @@ function StepRailItem({
       size='sm'
       onClick={() => onStepClick?.(index)}
       aria-current={isActive ? 'step' : undefined}
+      title={step.title}
       className={cn(
         'group h-auto w-full justify-start gap-3 whitespace-normal rounded-xl border-l-2 border-transparent px-3 py-2 text-left transition-[background-color,border-color,color] duration-200 ease-[var(--ease-emil-out)]',
         'hover-only:hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring',
