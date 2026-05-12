@@ -1,4 +1,4 @@
-import { Cell, Pie, PieChart } from 'recharts'
+import { Cell, Label, Pie, PieChart } from 'recharts'
 import {
   type ChartConfig,
   ChartContainer,
@@ -83,6 +83,41 @@ export function TRStatusChart({ data }: TRStatusChartProps) {
             {keyed.map((entry) => (
               <Cell key={entry.key} fill={entry.color} />
             ))}
+            <Label
+              content={({ viewBox }) => {
+                if (
+                  !viewBox ||
+                  !('cx' in viewBox) ||
+                  !('cy' in viewBox)
+                ) {
+                  return null
+                }
+                const cx = viewBox.cx ?? 0
+                const cy = viewBox.cy ?? 0
+                return (
+                  <g>
+                    <text
+                      x={cx}
+                      y={cy - 6}
+                      textAnchor='middle'
+                      dominantBaseline='central'
+                      className='fill-foreground text-3xl font-semibold tabular-nums'
+                    >
+                      {total}
+                    </text>
+                    <text
+                      x={cx}
+                      y={cy + 18}
+                      textAnchor='middle'
+                      dominantBaseline='central'
+                      className='fill-muted-foreground text-[10px] font-semibold uppercase tracking-[0.14em]'
+                    >
+                      TRs ativos
+                    </text>
+                  </g>
+                )
+              }}
+            />
           </Pie>
           <ChartLegend
             verticalAlign='bottom'

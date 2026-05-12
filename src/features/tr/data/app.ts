@@ -30,6 +30,12 @@ export const trKpis = [
     description: 'TRs prontos para seguir o fluxo de contratação.',
     trend: { value: 18, direction: 'up' as const, period: 'vs. mês passado' },
   },
+  {
+    label: 'Taxa de aprovação',
+    value: '62%',
+    description: 'Documentos aprovados sobre o total de ativos.',
+    trend: { value: 4, direction: 'up' as const, period: 'vs. mês passado' },
+  },
 ] as const
 
 import { trStatusTokens } from './data'

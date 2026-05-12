@@ -9,13 +9,24 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from '@/shared/ui/card'
 import { recentTrs, trKpis, trStatusData, trUnitData } from '../data/app'
 import { TRKpiCards } from './components/tr-kpi-cards'
-import { TRRecentTable } from './components/tr-recent-table'
+import { TRRecentList } from './components/tr-recent-list'
 import { TRStatusChart } from './components/tr-status-chart'
 import { TRUnitsChart } from './components/tr-units-chart'
+
+/**
+ * Editorial section label — uppercase tracking-wide muted.
+ * Padrão usado em "Sumário" (TOC) e "Etapas" (stepper) para cohesion.
+ */
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className='text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
+      {children}
+    </div>
+  )
+}
 
 export function TRDashboard() {
   return (
@@ -27,11 +38,9 @@ export function TRDashboard() {
       <Main className='stagger-fade-in space-y-6 pb-8'>
         <section className='flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between'>
           <div className='space-y-1'>
-            <h1 className='text-2xl font-semibold tracking-tight'>
-              Dashboard
-            </h1>
+            <h1 className='text-2xl font-semibold tracking-tight'>Dashboard</h1>
             <p className='max-w-2xl text-sm text-muted-foreground'>
-              Acompanhe o status dos documentos e conduza o fluxo de revisão
+              Acompanhe o status dos documentos e conduza o fluxo de elaboração
               com mais padronização e menos retrabalho.
             </p>
           </div>
@@ -53,13 +62,12 @@ export function TRDashboard() {
 
         <TRKpiCards items={trKpis.map((item) => ({ ...item }))} />
 
-        <section className='grid gap-4 xl:grid-cols-5'>
-          <Card className='rounded-2xl xl:col-span-2'>
-            <CardHeader>
-              <CardTitle>Status dos TRs</CardTitle>
+        <section className='grid gap-4 xl:grid-cols-6'>
+          <Card className='rounded-2xl border-0 shadow-border xl:col-span-2'>
+            <CardHeader className='space-y-2'>
+              <SectionLabel>Status dos TRs</SectionLabel>
               <CardDescription className='text-pretty'>
-                Distribuição dos documentos entre elaboração, revisão e
-                aprovação.
+                Distribuição entre elaboração e aprovação.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -67,9 +75,9 @@ export function TRDashboard() {
             </CardContent>
           </Card>
 
-          <Card className='rounded-2xl xl:col-span-3'>
-            <CardHeader>
-              <CardTitle>TRs por unidade</CardTitle>
+          <Card className='rounded-2xl border-0 shadow-border xl:col-span-2'>
+            <CardHeader className='space-y-2'>
+              <SectionLabel>TRs por unidade</SectionLabel>
               <CardDescription className='text-pretty'>
                 Volume de documentos em andamento por casa do Sistema FIEPE.
               </CardDescription>
@@ -78,20 +86,19 @@ export function TRDashboard() {
               <TRUnitsChart data={trUnitData.map((item) => ({ ...item }))} />
             </CardContent>
           </Card>
-        </section>
 
-        <Card className='rounded-2xl'>
-          <CardHeader>
-            <CardTitle>TRs recentes</CardTitle>
-            <CardDescription className='text-pretty'>
-              Documentos atualizados recentemente para continuar a elaboração
-              ou revisar.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <TRRecentTable items={recentTrs.map((item) => ({ ...item }))} />
-          </CardContent>
-        </Card>
+          <Card className='rounded-2xl border-0 shadow-border xl:col-span-2'>
+            <CardHeader className='space-y-2'>
+              <SectionLabel>TRs recentes</SectionLabel>
+              <CardDescription className='text-pretty'>
+                Últimos documentos atualizados pelas áreas.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className='px-3'>
+              <TRRecentList items={recentTrs.map((item) => ({ ...item }))} />
+            </CardContent>
+          </Card>
+        </section>
       </Main>
     </>
   )

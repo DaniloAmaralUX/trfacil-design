@@ -1,4 +1,4 @@
-import { Bar, BarChart, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, LabelList, XAxis, YAxis } from 'recharts'
 import {
   type ChartConfig,
   ChartContainer,
@@ -37,7 +37,7 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
         <BarChart
           data={data}
           layout='vertical'
-          margin={{ top: 8, right: 12, left: 12, bottom: 8 }}
+          margin={{ top: 8, right: 32, left: 12, bottom: 8 }}
         >
           <XAxis
             type='number'
@@ -64,7 +64,19 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
               />
             }
           />
-          <Bar dataKey='records' radius={[0, 8, 8, 0]} fill='var(--primary)' />
+          <Bar
+            dataKey='records'
+            radius={[0, 8, 8, 0]}
+            fill='var(--primary)'
+            fillOpacity={0.85}
+          >
+            <LabelList
+              dataKey='records'
+              position='right'
+              offset={8}
+              className='fill-foreground text-xs font-medium tabular-nums'
+            />
+          </Bar>
         </BarChart>
       </ChartContainer>
       <div className='sr-only'>
