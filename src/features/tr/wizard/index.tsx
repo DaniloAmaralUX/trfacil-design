@@ -605,7 +605,11 @@ export function TRWizardPage() {
             <CardHeader>
               <div className='flex flex-wrap items-start justify-between gap-3'>
                 <div className='space-y-2'>
-                  <CardTitle>{currentSection.title}</CardTitle>
+                  <CardTitle as={2}>{currentSection.title}</CardTitle>
+                  <div aria-live='polite' className='sr-only'>
+                    Etapa {currentStep + 1} de {wizardSteps.length}:{' '}
+                    {currentSection.title}
+                  </div>
                   <CardDescription>
                     {currentSection.description}
                   </CardDescription>
@@ -1925,8 +1929,7 @@ function FieldBlock({
       {error ? (
         <p
           id={htmlFor ? `${htmlFor}-error` : undefined}
-          role='alert'
-          aria-live='polite'
+          role='status'
           className='text-sm text-destructive'
         >
           {error}

@@ -47,7 +47,9 @@ export function TRDocumentView({
     <Card className='rounded-3xl border-0 shadow-border'>
       <CardHeader className='border-b border-border/60 pb-5'>
         <div className='flex flex-wrap items-start justify-between gap-3'>
-          <CardTitle className='text-2xl font-semibold'>{title}</CardTitle>
+          <CardTitle as={2} className='text-2xl font-semibold'>
+            {title}
+          </CardTitle>
           {status ? (
             <Badge
               variant='outline'
@@ -97,7 +99,7 @@ export function TRDocumentView({
               {section.kind === 'table' ? (
                 section.rows.length ? (
                   <div className='rounded-2xl border border-border/70'>
-                    <Table>
+                    <Table aria-label={section.title}>
                       <TableHeader>
                         <TableRow>
                           {section.columns.map((column) => (

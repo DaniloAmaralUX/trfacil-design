@@ -71,7 +71,7 @@ export function TRRecentTable({ items }: TRRecentTableProps) {
 
   return (
     <div className='overflow-hidden rounded-2xl border border-black/5 bg-muted/15 dark:border-white/8'>
-      <Table>
+      <Table aria-label='TRs recentes'>
         <TableHeader>
           <TableRow className='bg-muted/40'>
             <TableHead>ID</TableHead>
