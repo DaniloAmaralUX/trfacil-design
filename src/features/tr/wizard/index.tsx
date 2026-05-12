@@ -1089,7 +1089,7 @@ function LotsSection({
               </FieldBlock>
             </div>
 
-            <div className='overflow-x-auto rounded-2xl border border-border/70'>
+            <div className='hidden overflow-x-auto rounded-2xl border border-border/70 lg:block'>
               <Table className='min-w-[1100px]'>
                 <TableHeader>
                   <TableRow>
@@ -1252,6 +1252,151 @@ function LotsSection({
                 </TableBody>
               </Table>
             </div>
+
+            <ol className='space-y-3 lg:hidden' aria-label={`Itens do lote ${index + 1}`}>
+              {lot.items.map((item, itemIndex) => (
+                <li key={item.id}>
+                  <Card className='rounded-xl border-border/70'>
+                    <CardHeader className='flex-row items-center justify-between space-y-0 pb-3'>
+                      <CardTitle className='text-sm font-semibold'>
+                        Item {itemIndex + 1}
+                      </CardTitle>
+                      <Button
+                        type='button'
+                        variant='ghost'
+                        size='sm'
+                        onClick={() => onRemoveLotItem(lot.id, item.id)}
+                        aria-label={`Remover item ${itemIndex + 1} do lote ${index + 1}`}
+                      >
+                        <Trash2 data-icon='inline-start' />
+                        Remover
+                      </Button>
+                    </CardHeader>
+                    <CardContent className='space-y-4'>
+                      <FieldBlock
+                        label='Unidade/Endereço'
+                        htmlFor={`lot-${lot.id}-item-${item.id}-location-m`}
+                        error={errors[`lot-${lot.id}-item-${item.id}-location`]}
+                      >
+                        <Input
+                          id={`lot-${lot.id}-item-${item.id}-location-m`}
+                          name={`lot-${lot.id}-item-${item.id}-location-m`}
+                          autoComplete='street-address'
+                          placeholder='Unidade ou endereço…'
+                          value={item.location}
+                          onChange={(event) =>
+                            onUpdateLotItem(lot.id, item.id, {
+                              location: event.target.value,
+                            })
+                          }
+                          className='rounded-xl'
+                        />
+                      </FieldBlock>
+                      <FieldBlock
+                        label='Item'
+                        htmlFor={`lot-${lot.id}-item-${item.id}-itemCode-m`}
+                        error={errors[`lot-${lot.id}-item-${item.id}-itemCode`]}
+                      >
+                        <Input
+                          id={`lot-${lot.id}-item-${item.id}-itemCode-m`}
+                          name={`lot-${lot.id}-item-${item.id}-itemCode-m`}
+                          autoComplete='off'
+                          placeholder='Ex.: 1'
+                          value={item.itemCode}
+                          onChange={(event) =>
+                            onUpdateLotItem(lot.id, item.id, {
+                              itemCode: event.target.value,
+                            })
+                          }
+                          className='rounded-xl'
+                        />
+                      </FieldBlock>
+                      <FieldBlock
+                        label='Especificação resumida'
+                        htmlFor={`lot-${lot.id}-item-${item.id}-summary-m`}
+                        error={errors[`lot-${lot.id}-item-${item.id}-summary`]}
+                      >
+                        <Textarea
+                          id={`lot-${lot.id}-item-${item.id}-summary-m`}
+                          name={`lot-${lot.id}-item-${item.id}-summary-m`}
+                          autoComplete='off'
+                          placeholder='Descreva o item…'
+                          value={item.summary}
+                          onChange={(event) =>
+                            onUpdateLotItem(lot.id, item.id, {
+                              summary: event.target.value,
+                            })
+                          }
+                          className='min-h-24 rounded-2xl'
+                        />
+                      </FieldBlock>
+                      <div className='grid gap-4 sm:grid-cols-2'>
+                        <FieldBlock
+                          label='Unidade de medida'
+                          htmlFor={`lot-${lot.id}-item-${item.id}-unitMeasure-m`}
+                          error={
+                            errors[`lot-${lot.id}-item-${item.id}-unitMeasure`]
+                          }
+                        >
+                          <Input
+                            id={`lot-${lot.id}-item-${item.id}-unitMeasure-m`}
+                            name={`lot-${lot.id}-item-${item.id}-unitMeasure-m`}
+                            autoComplete='off'
+                            placeholder='Ex.: unidade'
+                            value={item.unitMeasure}
+                            onChange={(event) =>
+                              onUpdateLotItem(lot.id, item.id, {
+                                unitMeasure: event.target.value,
+                              })
+                            }
+                            className='rounded-xl'
+                          />
+                        </FieldBlock>
+                        <FieldBlock
+                          label='Qtd. total'
+                          htmlFor={`lot-${lot.id}-item-${item.id}-quantity-m`}
+                          error={errors[`lot-${lot.id}-item-${item.id}-quantity`]}
+                        >
+                          <Input
+                            id={`lot-${lot.id}-item-${item.id}-quantity-m`}
+                            name={`lot-${lot.id}-item-${item.id}-quantity-m`}
+                            autoComplete='off'
+                            inputMode='numeric'
+                            placeholder='0'
+                            value={item.quantity}
+                            onChange={(event) =>
+                              onUpdateLotItem(lot.id, item.id, {
+                                quantity: event.target.value,
+                              })
+                            }
+                            className='rounded-xl'
+                          />
+                        </FieldBlock>
+                      </div>
+                      <FieldBlock
+                        label='Entrega'
+                        htmlFor={`lot-${lot.id}-item-${item.id}-delivery-m`}
+                        error={errors[`lot-${lot.id}-item-${item.id}-delivery`]}
+                      >
+                        <Input
+                          id={`lot-${lot.id}-item-${item.id}-delivery-m`}
+                          name={`lot-${lot.id}-item-${item.id}-delivery-m`}
+                          autoComplete='off'
+                          placeholder='Prazo ou condição…'
+                          value={item.delivery}
+                          onChange={(event) =>
+                            onUpdateLotItem(lot.id, item.id, {
+                              delivery: event.target.value,
+                            })
+                          }
+                          className='rounded-xl'
+                        />
+                      </FieldBlock>
+                    </CardContent>
+                  </Card>
+                </li>
+              ))}
+            </ol>
 
             <Button
               type='button'
