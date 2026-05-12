@@ -430,10 +430,10 @@ export function generateAssistantSuggestion(
   const recipes = family === 'sesi' ? sesiRecipes : fiepeIelRecipes
   const recipe = recipes[fieldId]
 
+  const actionRecipe = recipe?.[action]
+  const suggestFallback = action !== 'suggest' ? recipe?.suggest : undefined
   const base =
-    (recipe && recipe[action]) ??
-    (recipe && action !== 'suggest' && recipe.suggest) ??
-    fallbackContent(field, action, family)
+    actionRecipe ?? suggestFallback ?? fallbackContent(field, action, family)
 
   return {
     fieldId,

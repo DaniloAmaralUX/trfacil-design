@@ -277,13 +277,16 @@ export function TRWizardPage() {
     if (!isDirty) return
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
 
-    setAutoSaveStatus('saving')
+    // Não chamamos setState síncrono aqui (react-hooks/set-state-in-effect):
+    // delegamos a transição 'saving' -> 'saved' para callbacks do setTimeout.
+    const savingTimer = setTimeout(() => setAutoSaveStatus('saving'), 0)
     autoSaveTimer.current = setTimeout(() => {
       saveDraft()
       setAutoSaveStatus('saved')
     }, 800)
 
     return () => {
+      clearTimeout(savingTimer)
       if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
     }
   }, [isDirty, saveDraft])

@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
-import type { TooltipValueType } from "recharts"
 
 import { cn } from "@/shared/lib/utils"
 
@@ -10,6 +9,8 @@ import { cn } from "@/shared/lib/utils"
 const THEMES = { light: "", dark: ".dark" } as const
 
 const INITIAL_DIMENSION = { width: 320, height: 200 } as const
+// recharts 2.x does not export TooltipValueType; locally typed as the union it covers.
+type TooltipValueType = string | number | Array<string | number>
 type TooltipNameType = number | string
 
 export type ChartConfig = Record<
