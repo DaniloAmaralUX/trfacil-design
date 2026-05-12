@@ -172,7 +172,7 @@ function HorizontalStepper({
       <Progress value={percent} aria-label='Progresso do wizard' className='mb-3 h-1' />
       <ol
         ref={listRef}
-        className='flex min-w-0 items-stretch gap-1 overflow-x-auto pb-1'
+        className='flex min-w-0 items-stretch gap-2 overflow-x-auto pb-1'
       >
         {steps.map((step, index) => {
           const isActive = index === currentStep
@@ -180,7 +180,7 @@ function HorizontalStepper({
             <li
               key={step.id}
               ref={isActive ? activeRef : undefined}
-              className='flex min-w-0 items-center'
+              className='flex min-w-0 items-center gap-2'
             >
               <HorizontalStepItem
                 step={step}
@@ -194,7 +194,7 @@ function HorizontalStepper({
                 <span
                   aria-hidden='true'
                   className={cn(
-                    'mx-1 h-px w-6 shrink-0 bg-border transition-colors',
+                    'h-px w-8 shrink-0 bg-border transition-colors',
                     index < currentStep && 'bg-emerald-400 dark:bg-emerald-700'
                   )}
                 />
@@ -329,8 +329,10 @@ function HorizontalStepItem({
       />
       <span
         className={cn(
-          'max-w-[14ch] truncate text-sm leading-tight',
-          isActive ? 'font-semibold' : 'font-medium',
+          'truncate text-sm leading-tight',
+          // Step ativo mostra o título completo; os demais truncam em ~18ch
+          // para manter o stepper compacto sem cortar palavras dos titulos curtos.
+          isActive ? 'max-w-none font-semibold' : 'max-w-[18ch] font-medium',
           isCompleted && !isActive && 'text-muted-foreground'
         )}
       >
