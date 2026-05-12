@@ -236,7 +236,7 @@ function StepIcon({
       <span
         aria-hidden='true'
         className={cn(
-          'absolute transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+          'absolute transition-[opacity,transform,filter] duration-200 ease-[var(--ease-emil-out)]',
           !isCompleted && !hasAttention && !isActive
             ? 'scale-100 opacity-100 blur-0'
             : 'scale-[0.25] opacity-0 blur-[4px]'
@@ -247,7 +247,7 @@ function StepIcon({
       <Check
         aria-hidden='true'
         className={cn(
-          'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+          'absolute size-3.5 transition-[opacity,transform,filter] duration-200 ease-[var(--ease-emil-out)]',
           isCompleted
             ? 'scale-100 opacity-100 blur-0'
             : 'scale-[0.25] opacity-0 blur-[4px]'
@@ -256,7 +256,7 @@ function StepIcon({
       <CircleDot
         aria-hidden='true'
         className={cn(
-          'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+          'absolute size-3.5 transition-[opacity,transform,filter] duration-200 ease-[var(--ease-emil-out)]',
           isActive
             ? 'scale-100 opacity-100 blur-0'
             : 'scale-[0.25] opacity-0 blur-[4px]'
@@ -265,7 +265,7 @@ function StepIcon({
       <CircleAlert
         aria-hidden='true'
         className={cn(
-          'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+          'absolute size-3.5 transition-[opacity,transform,filter] duration-200 ease-[var(--ease-emil-out)]',
           hasAttention
             ? 'scale-100 opacity-100 blur-0'
             : 'scale-[0.25] opacity-0 blur-[4px]'

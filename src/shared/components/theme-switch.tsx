@@ -26,10 +26,10 @@ export function ThemeSwitch() {
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' size='icon' className='scale-95 rounded-full'>
           <Sun
-            className='size-[1.2rem] scale-100 opacity-100 blur-0 transition-[transform,opacity,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)] dark:scale-[0.25] dark:opacity-0 dark:blur-[4px]'
+            className='size-[1.2rem] scale-100 opacity-100 blur-0 transition-[transform,opacity,filter] duration-200 ease-[var(--ease-emil-out)] dark:scale-[0.25] dark:opacity-0 dark:blur-[4px]'
           />
           <Moon
-            className='absolute size-[1.2rem] scale-[0.25] opacity-0 blur-[4px] transition-[transform,opacity,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)] dark:scale-100 dark:opacity-100 dark:blur-0'
+            className='absolute size-[1.2rem] scale-[0.25] opacity-0 blur-[4px] transition-[transform,opacity,filter] duration-200 ease-[var(--ease-emil-out)] dark:scale-100 dark:opacity-100 dark:blur-0'
           />
           <span className='sr-only'>Alternar tema</span>
         </Button>
