@@ -230,6 +230,8 @@ export function TRWizardPage() {
       100
   )
 
+  const currentPendingCount = pendingByStep[currentStep] ?? 0
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     params.set('step', String(currentStep + 1))
@@ -400,6 +402,22 @@ export function TRWizardPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className='space-y-4 text-sm'>
+          {currentSection.kind !== 'review' ? (
+            <div className='rounded-2xl border border-primary/30 bg-primary/5 px-4 py-3'>
+              <p className='text-xs font-semibold tracking-[0.14em] text-primary uppercase'>
+                Editando agora
+              </p>
+              <p className='mt-1 font-medium text-foreground'>
+                {currentSection.title}
+              </p>
+              {currentPendingCount > 0 ? (
+                <p className='mt-2 flex items-center gap-1.5 text-xs text-amber-700 dark:text-amber-300'>
+                  <AlertCircle aria-hidden='true' className='size-3.5' />
+                  {currentPendingCount} pendência(s) nesta etapa
+                </p>
+              ) : null}
+            </div>
+          ) : null}
           <TRMetaList
             items={[
               {
