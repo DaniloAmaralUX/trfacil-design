@@ -299,7 +299,33 @@ export function TRWizardPage() {
 
   const handleSubmit = () => {
     if (!reviewState.isReady) {
-      goToStep(wizardSteps.length - 1)
+      // Navega para o primeiro step com pendência e foca o primeiro campo
+      // inválido, alinhado com a guideline Vercel "focus first error on submit".
+      const firstStepWithPending = pendingByStep.findIndex((count) => count > 0)
+      const targetStep =
+        firstStepWithPending >= 0 ? firstStepWithPending : currentStep
+
+      goToStep(targetStep)
+
+      const targetSection = wizardSteps[targetStep]
+      if (targetSection) {
+        const nextErrors = validateCurrentStep(
+          targetSection,
+          context,
+          documentData,
+          template
+        )
+        setStepErrorState({
+          scope: `${targetSection.id}:${targetStep}`,
+          values: nextErrors,
+        })
+        const firstErrorField = Object.keys(nextErrors)[0]
+        if (firstErrorField) {
+          // setTimeout 0 garante que o DOM já reflete o step novo antes do focus.
+          setTimeout(() => focusField(firstErrorField), 0)
+        }
+      }
+
       toast.error('Preencha os campos obrigatórios antes de enviar.')
       return
     }

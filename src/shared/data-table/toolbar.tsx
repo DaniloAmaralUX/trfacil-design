@@ -34,7 +34,11 @@ export function DataTableToolbar<TData>({
       <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
         {searchKey ? (
           <Input
+            type='search'
             placeholder={searchPlaceholder}
+            aria-label={searchPlaceholder}
+            autoComplete='off'
+            spellCheck={false}
             value={
               (table.getColumn(searchKey)?.getFilterValue() as string) ?? ''
             }
@@ -45,7 +49,11 @@ export function DataTableToolbar<TData>({
           />
         ) : (
           <Input
+            type='search'
             placeholder={searchPlaceholder}
+            aria-label={searchPlaceholder}
+            autoComplete='off'
+            spellCheck={false}
             value={table.getState().globalFilter ?? ''}
             onChange={(event) => table.setGlobalFilter(event.target.value)}
             className='h-8 w-[150px] lg:w-[250px]'
