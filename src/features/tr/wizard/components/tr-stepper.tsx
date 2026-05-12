@@ -196,15 +196,44 @@ function StepRailItem({
             'border-border bg-background text-muted-foreground'
         )}
       >
-        {isCompleted ? (
-          <Check aria-hidden='true' className='size-3.5' />
-        ) : hasAttention ? (
-          <CircleAlert aria-hidden='true' className='size-3.5' />
-        ) : isActive ? (
-          <CircleDot aria-hidden='true' className='size-3.5' />
-        ) : (
-          index + 1
-        )}
+        <span
+          aria-hidden='true'
+          className={cn(
+            'absolute transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+            !isCompleted && !hasAttention && !isActive
+              ? 'scale-100 opacity-100 blur-0'
+              : 'scale-[0.25] opacity-0 blur-[4px]'
+          )}
+        >
+          {index + 1}
+        </span>
+        <Check
+          aria-hidden='true'
+          className={cn(
+            'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+            isCompleted
+              ? 'scale-100 opacity-100 blur-0'
+              : 'scale-[0.25] opacity-0 blur-[4px]'
+          )}
+        />
+        <CircleDot
+          aria-hidden='true'
+          className={cn(
+            'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+            isActive
+              ? 'scale-100 opacity-100 blur-0'
+              : 'scale-[0.25] opacity-0 blur-[4px]'
+          )}
+        />
+        <CircleAlert
+          aria-hidden='true'
+          className={cn(
+            'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+            hasAttention
+              ? 'scale-100 opacity-100 blur-0'
+              : 'scale-[0.25] opacity-0 blur-[4px]'
+          )}
+        />
       </div>
       <span
         className={cn(
