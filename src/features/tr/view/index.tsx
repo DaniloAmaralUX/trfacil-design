@@ -63,7 +63,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
         <HeaderActions />
       </Header>
 
-      <Main className='space-y-6 pb-8'>
+      <Main className='stagger-fade-in space-y-6 pb-8'>
         {mode === 'edit' && (
           <Alert
             role='status'
@@ -80,7 +80,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
         <Card className='rounded-2xl border-0 shadow-border'>
           <CardContent className='space-y-5 p-6'>
             <div className='flex flex-wrap items-center justify-between gap-3'>
-              <Button asChild variant='ghost' size='sm' className='-ml-3 rounded-xl'>
+              <Button asChild variant='ghost' className='-ml-3 rounded-xl'>
                 <Link to='/trs'>
                   <ArrowLeft aria-hidden='true' className='size-4' />
                   Voltar para TRs
@@ -107,7 +107,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
 
             <div className='space-y-2'>
               <div className='flex flex-wrap items-center gap-3'>
-                <h1 className='font-mono text-3xl font-semibold tracking-tight text-balance'>
+                <h1 className='font-mono tabular-nums text-3xl font-semibold tracking-tight text-balance'>
                   {document.id}
                 </h1>
                 <Badge
@@ -117,7 +117,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
                   {trStatusLabels[document.status] ?? document.status}
                 </Badge>
               </div>
-              <p className='max-w-3xl text-pretty text-muted-foreground'>
+              <p className='max-w-3xl text-balance text-muted-foreground'>
                 {document.title}
               </p>
             </div>

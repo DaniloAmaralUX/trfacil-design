@@ -51,7 +51,7 @@ export function TRDocumentView({
   })
 
   return (
-    <Card className='rounded-3xl border-0 shadow-border'>
+    <Card className='rounded-2xl border-0 shadow-border'>
       {!hideHeader && (
         <CardHeader className='border-b border-border/60 pb-5'>
           <div className='flex flex-wrap items-start justify-between gap-3'>
