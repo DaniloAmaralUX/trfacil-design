@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { ArrowLeft, FilePenLine, ScanSearch, Send } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, FilePenLine, ScanSearch } from 'lucide-react'
 import { toast } from 'sonner'
 import { Header } from '@/shared/layout/header'
 import { HeaderActions } from '@/shared/layout/header-actions'
@@ -12,8 +12,6 @@ import { TRMetaList } from '@/shared/components/tr-meta-list'
 import { TRDocumentToc } from './components/tr-document-toc'
 import { trStatusBadgeClass, trStatusLabels } from '@/features/tr/data/data'
 import { getTRDocument } from '@/features/tr/data/tr-document'
-import { TRReviewActions } from '@/features/tr/review/components/tr-review-actions'
-import { TRReviewComments } from '@/features/tr/review/components/tr-review-comments'
 import { TRDocumentView } from './components/tr-document-view'
 
 type TRViewPageProps = {
@@ -23,8 +21,7 @@ type TRViewPageProps = {
 
 export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
   const document = getTRDocument(trId)
-  const isReviewState =
-    document.status === 'in_review' || document.status === 'changes_requested'
+  const isApproved = document.status === 'approved'
 
   return (
     <>
@@ -51,8 +48,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
             <FilePenLine aria-hidden='true' className='size-4' />
             <AlertTitle>Modo de edição</AlertTitle>
             <AlertDescription>
-              Alterações ficam salvas como rascunho até serem enviadas para
-              revisão.
+              Alterações ficam salvas como rascunho até a aprovação final.
             </AlertDescription>
           </Alert>
         )}
@@ -88,15 +84,15 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
                 {mode === 'edit' ? 'Continuar edição' : 'Editar'}
               </Link>
             </Button>
-            <Button
-              className='rounded-xl'
-              onClick={() =>
-                toast.success(`${document.id} enviado para revisão`)
-              }
-            >
-              <Send aria-hidden='true' className='size-4' />
-              Enviar para revisão
-            </Button>
+            {!isApproved && (
+              <Button
+                className='rounded-xl'
+                onClick={() => toast.success(`${document.id} aprovado`)}
+              >
+                <CheckCircle2 aria-hidden='true' className='size-4' />
+                Aprovar TR
+              </Button>
+            )}
           </div>
         </section>
 
@@ -137,20 +133,6 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
 
           <TRDocumentToc sections={document.sections} />
         </div>
-
-        {isReviewState && (
-          <div className='space-y-6'>
-            <TRReviewComments comments={document.comments} />
-            <Card className='rounded-2xl border-0 shadow-border'>
-              <CardHeader>
-                <CardTitle>Ações de revisão</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <TRReviewActions />
-              </CardContent>
-            </Card>
-          </div>
-        )}
       </Main>
     </>
   )

@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import {
-  CheckSquare,
-  FilePlus,
-  Files,
-  LayoutDashboard,
-  Search,
-} from 'lucide-react'
+import { FilePlus, Files, LayoutDashboard, Search } from 'lucide-react'
 import { Button } from '@/shared/ui/button'
 import {
   CommandDialog,
@@ -31,7 +25,6 @@ const navItems: NavItem[] = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/dashboard' },
   { label: 'TRs', hint: 'lista', icon: Files, to: '/trs' },
   { label: 'Novo TR', icon: FilePlus, to: '/novo-tr' },
-  { label: 'Aprovações', icon: CheckSquare, to: '/aprovacoes' },
 ]
 
 export function CommandPaletteTrigger() {

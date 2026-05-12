@@ -327,13 +327,13 @@ export function TRWizardPage() {
         }
       }
 
-      toast.error('Preencha os campos obrigatórios antes de enviar.')
+      toast.error('Preencha os campos obrigatórios antes de aprovar.')
       return
     }
 
     startSubmission()
     completeSubmission()
-    toast.success('TR enviada para revisão.')
+    toast.success('TR aprovada.')
   }
 
   useEffect(() => {
@@ -767,9 +767,9 @@ export function TRWizardPage() {
                 </div>
                 <div className='text-sm text-muted-foreground'>
                   {submission.status === 'completed'
-                    ? 'Documento enviado para revisão com base no modelo oficial selecionado.'
+                    ? 'TR aprovado com base no modelo oficial selecionado.'
                     : reviewState.isReady
-                      ? 'Tudo pronto para finalizar e encaminhar para revisão.'
+                      ? 'Tudo pronto para aprovar e finalizar o TR.'
                       : 'Preencha os blocos obrigatórios. O checklist será atualizado automaticamente.'}
                 </div>
               </div>
@@ -812,8 +812,8 @@ export function TRWizardPage() {
                       <CheckCircle2 data-icon='inline-start' />
                     )}
                     {submission.status === 'submitting'
-                      ? 'Enviando…'
-                      : 'Enviar para revisão'}
+                      ? 'Aprovando…'
+                      : 'Aprovar TR'}
                   </Button>
                 ) : (
                   <Button

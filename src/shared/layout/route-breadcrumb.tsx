@@ -37,9 +37,6 @@ function buildCrumbs(pathname: string): Crumb[] {
       ]
     }
 
-    case 'aprovacoes':
-      return [{ label: 'Aprovações' }]
-
     default:
       return [{ label: head.charAt(0).toUpperCase() + head.slice(1) }]
   }

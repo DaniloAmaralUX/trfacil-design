@@ -1,9 +1,4 @@
-import {
-  ClipboardCheck,
-  FilePlus2,
-  FileText,
-  LayoutDashboard,
-} from 'lucide-react'
+import { FilePlus2, FileText, LayoutDashboard } from 'lucide-react'
 import { appIdentity, currentUser } from '@/features/tr/data/app'
 import { type SidebarData } from '../types'
 
@@ -32,11 +27,6 @@ export const sidebarData: SidebarData = {
           title: 'Novo TR',
           url: '/novo-tr',
           icon: FilePlus2,
-        },
-        {
-          title: 'Aprovações',
-          url: '/aprovacoes',
-          icon: ClipboardCheck,
         },
       ],
     },

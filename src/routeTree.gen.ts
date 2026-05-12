@@ -14,7 +14,6 @@ import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedTrsRouteImport } from './routes/_authenticated/trs'
 import { Route as AuthenticatedNovoTrRouteImport } from './routes/_authenticated/novo-tr'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedAprovacoesRouteImport } from './routes/_authenticated/aprovacoes'
 import { Route as AuthenticatedTrTrIdRouteImport } from './routes/_authenticated/tr.$trId'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -41,11 +40,6 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAprovacoesRoute = AuthenticatedAprovacoesRouteImport.update({
-  id: '/aprovacoes',
-  path: '/aprovacoes',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedTrTrIdRoute = AuthenticatedTrTrIdRouteImport.update({
   id: '/tr/$trId',
   path: '/tr/$trId',
@@ -54,14 +48,12 @@ const AuthenticatedTrTrIdRoute = AuthenticatedTrTrIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
-  '/aprovacoes': typeof AuthenticatedAprovacoesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/novo-tr': typeof AuthenticatedNovoTrRoute
   '/trs': typeof AuthenticatedTrsRoute
   '/tr/$trId': typeof AuthenticatedTrTrIdRoute
 }
 export interface FileRoutesByTo {
-  '/aprovacoes': typeof AuthenticatedAprovacoesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/novo-tr': typeof AuthenticatedNovoTrRoute
   '/trs': typeof AuthenticatedTrsRoute
@@ -71,7 +63,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/_authenticated/aprovacoes': typeof AuthenticatedAprovacoesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/novo-tr': typeof AuthenticatedNovoTrRoute
   '/_authenticated/trs': typeof AuthenticatedTrsRoute
@@ -80,19 +71,12 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/aprovacoes'
-    | '/dashboard'
-    | '/novo-tr'
-    | '/trs'
-    | '/tr/$trId'
+  fullPaths: '/' | '/dashboard' | '/novo-tr' | '/trs' | '/tr/$trId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/aprovacoes' | '/dashboard' | '/novo-tr' | '/trs' | '/' | '/tr/$trId'
+  to: '/dashboard' | '/novo-tr' | '/trs' | '/' | '/tr/$trId'
   id:
     | '__root__'
     | '/_authenticated'
-    | '/_authenticated/aprovacoes'
     | '/_authenticated/dashboard'
     | '/_authenticated/novo-tr'
     | '/_authenticated/trs'
@@ -141,13 +125,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/aprovacoes': {
-      id: '/_authenticated/aprovacoes'
-      path: '/aprovacoes'
-      fullPath: '/aprovacoes'
-      preLoaderRoute: typeof AuthenticatedAprovacoesRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/tr/$trId': {
       id: '/_authenticated/tr/$trId'
       path: '/tr/$trId'
@@ -159,7 +136,6 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAprovacoesRoute: typeof AuthenticatedAprovacoesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedNovoTrRoute: typeof AuthenticatedNovoTrRoute
   AuthenticatedTrsRoute: typeof AuthenticatedTrsRoute
@@ -168,7 +144,6 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAprovacoesRoute: AuthenticatedAprovacoesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedNovoTrRoute: AuthenticatedNovoTrRoute,
   AuthenticatedTrsRoute: AuthenticatedTrsRoute,

@@ -1,12 +1,6 @@
 import { z } from 'zod'
 
-export const trStatusValues = [
-  'draft',
-  'in_review',
-  'changes_requested',
-  'approved',
-  'rejected',
-] as const
+export const trStatusValues = ['draft', 'approved'] as const
 
 export const trUnitValues = ['SENAI', 'SESI', 'IEL', 'FIEPE', 'CIEPE'] as const
 
