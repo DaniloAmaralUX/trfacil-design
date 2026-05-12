@@ -6,8 +6,8 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.488 0.243 264.376);
-  --primary-foreground: oklch(0.97 0.014 254.604);
+  --primary: oklch(0.488 0.244 262.881);
+  --primary-foreground: oklch(0.97 0.014 262.881);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.97 0 0);
@@ -28,8 +28,8 @@
 
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.546 0.245 262.881);
-  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-primary: oklch(0.546 0.244 262.881);
+  --sidebar-primary-foreground: oklch(0.97 0.014 262.881);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
@@ -43,28 +43,35 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.424 0.199 265.638);
-  --primary-foreground: oklch(0.97 0.014 254.604);
+  /* Dark mode primary: L bumped to 0.6 para visibilidade sobre bg L=0.145.
+     Hue canonizado em 262.881 (Tailwind v4 blue-600). Audit oklch-skill P0. */
+  --primary: oklch(0.6 0.244 262.881);
+  --primary-foreground: oklch(0.97 0.014 262.881);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
+  /* OKLCH audit: L=0.708 estava abaixo do threshold 0.75 para bg L<0.25.
+     Bump para 0.78 garante WCAG AA + APCA confortável sobre bg muted. */
+  --muted-foreground: oklch(0.78 0 0);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.879 0.169 91.605);
-  --chart-2: oklch(0.769 0.188 70.08);
+  /* Chart palette: L revertido vs light mode (skill OKLCH P0 — dark mode
+     deriva por reverter mapping; light L=0.879 vira dark L=0.473 etc.).
+     H mantido para preservar identidade de cada série; C ajustado por gamut. */
+  --chart-1: oklch(0.473 0.137 91.605);
+  --chart-2: oklch(0.555 0.163 70.08);
   --chart-3: oklch(0.666 0.179 58.318);
-  --chart-4: oklch(0.555 0.163 48.998);
-  --chart-5: oklch(0.473 0.137 46.201);
+  --chart-4: oklch(0.769 0.188 48.998);
+  --chart-5: oklch(0.879 0.169 46.201);
 
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.623 0.214 259.815);
-  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-primary: oklch(0.623 0.244 262.881);
+  --sidebar-primary-foreground: oklch(0.97 0.014 262.881);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
