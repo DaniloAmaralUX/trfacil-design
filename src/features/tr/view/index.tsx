@@ -1,14 +1,15 @@
 import { Link } from '@tanstack/react-router'
-import { ArrowLeft, CheckCircle2, FilePenLine, ScanSearch } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, FilePenLine } from 'lucide-react'
 import { toast } from 'sonner'
+import { cn } from '@/shared/lib/utils'
 import { Header } from '@/shared/layout/header'
 import { HeaderActions } from '@/shared/layout/header-actions'
 import { Main } from '@/shared/layout/main'
-import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert'
+import { Alert, AlertDescription } from '@/shared/ui/alert'
 import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
-import { TRMetaList } from '@/shared/components/tr-meta-list'
+import { Card, CardContent } from '@/shared/ui/card'
+import { Separator } from '@/shared/ui/separator'
 import { TRDocumentToc } from './components/tr-document-toc'
 import { trStatusBadgeClass, trStatusLabels } from '@/features/tr/data/data'
 import { getTRDocument } from '@/features/tr/data/tr-document'
@@ -19,9 +20,42 @@ type TRViewPageProps = {
   mode?: 'edit' | 'view'
 }
 
+/**
+ * Editorial section label — uppercase tracking muted.
+ * Mesmo padrão usado no dashboard hero KPI e wizard footer.
+ */
+function SectionLabel({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
+  return (
+    <div
+      className={cn(
+        'text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground',
+        className
+      )}
+    >
+      {children}
+    </div>
+  )
+}
+
 export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
   const document = getTRDocument(trId)
   const isApproved = document.status === 'approved'
+  const formattedDate = new Intl.DateTimeFormat('pt-BR').format(
+    new Date(document.updatedAt)
+  )
+
+  // Último slot do grid muda conforme estado:
+  // - approved: "Aprovado em" usando updatedAt como proxy (sem campo dedicado)
+  // - rascunho: "Etapa atual" do wizard
+  const lastSlot = isApproved
+    ? { label: 'Aprovado em', value: formattedDate }
+    : { label: 'Etapa atual', value: document.currentStep }
 
   return (
     <>
@@ -30,111 +64,103 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
       </Header>
 
       <Main className='space-y-6 pb-8'>
-        {mode === 'view' ? (
-          <Alert role='status'>
-            <ScanSearch aria-hidden='true' className='size-4' />
-            <AlertTitle>Modo de leitura</AlertTitle>
-            <AlertDescription>
-              Este TR está sendo exibido para consulta. Para alterar o
-              conteúdo, abra o documento em edição usando o botão{' '}
-              <strong>Editar</strong> à direita.
-            </AlertDescription>
-          </Alert>
-        ) : (
+        {mode === 'edit' && (
           <Alert
             role='status'
             className='border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-100 [&>svg]:text-amber-700 dark:[&>svg]:text-amber-300'
           >
             <FilePenLine aria-hidden='true' className='size-4' />
-            <AlertTitle>Modo de edição</AlertTitle>
             <AlertDescription>
-              Alterações ficam salvas como rascunho até a aprovação final.
+              Modo de edição — alterações salvas automaticamente como rascunho.
             </AlertDescription>
           </Alert>
         )}
 
-        <section className='flex flex-wrap items-start justify-between gap-4'>
-          <div className='space-y-2'>
-            <Button asChild variant='ghost' className='-ml-3 rounded-xl'>
-              <Link to='/trs'>
-                <ArrowLeft aria-hidden='true' className='size-4' />
-                Voltar para TRs
-              </Link>
-            </Button>
-            <div className='flex flex-wrap items-center gap-3'>
-              <h1 className='font-mono text-3xl font-semibold tracking-tight text-balance'>
-                {document.id}
-              </h1>
-              <Badge
-                variant='outline'
-                className={trStatusBadgeClass[document.status] ?? ''}
-              >
-                {trStatusLabels[document.status] ?? document.status}
-              </Badge>
-            </div>
-            <p className='max-w-3xl text-pretty text-muted-foreground'>
-              {document.title}
-            </p>
-          </div>
-
-          <div className='flex flex-wrap gap-2'>
-            <Button asChild variant='outline' className='rounded-xl'>
-              <Link to='/novo-tr'>
-                <FilePenLine aria-hidden='true' className='size-4' />
-                {mode === 'edit' ? 'Continuar edição' : 'Editar'}
-              </Link>
-            </Button>
-            {!isApproved && (
-              <Button
-                className='rounded-xl'
-                onClick={() => toast.success(`${document.id} aprovado`)}
-              >
-                <CheckCircle2 aria-hidden='true' className='size-4' />
-                Aprovar TR
+        {/* Hero header card — consolida back link + ID + título + actions + metadados inline. */}
+        <Card className='rounded-2xl border-0 shadow-border'>
+          <CardContent className='space-y-5 p-6'>
+            <div className='flex flex-wrap items-center justify-between gap-3'>
+              <Button asChild variant='ghost' size='sm' className='-ml-3 rounded-xl'>
+                <Link to='/trs'>
+                  <ArrowLeft aria-hidden='true' className='size-4' />
+                  Voltar para TRs
+                </Link>
               </Button>
-            )}
-          </div>
-        </section>
+              <div className='flex flex-wrap gap-2'>
+                <Button asChild variant='outline' className='rounded-xl'>
+                  <Link to='/novo-tr'>
+                    <FilePenLine aria-hidden='true' className='size-4' />
+                    {mode === 'edit' ? 'Continuar edição' : 'Editar'}
+                  </Link>
+                </Button>
+                {!isApproved && (
+                  <Button
+                    className='rounded-xl'
+                    onClick={() => toast.success(`${document.id} aprovado`)}
+                  >
+                    <CheckCircle2 aria-hidden='true' className='size-4' />
+                    Aprovar TR
+                  </Button>
+                )}
+              </div>
+            </div>
 
-        <div className='space-y-6'>
-          <Card className='rounded-2xl border-0 shadow-border'>
-            <CardHeader>
-              <CardTitle>Metadados</CardTitle>
-            </CardHeader>
-            <CardContent className='space-y-4 text-sm'>
-              <TRMetaList
-                items={[
-                  { label: 'Unidade', value: document.responsibleUnit },
-                  { label: 'Responsável', value: document.owner },
-                  { label: 'Modelo', value: document.model },
-                  {
-                    label: 'Atualização',
-                    value: new Intl.DateTimeFormat('pt-BR').format(
-                      new Date(document.updatedAt)
-                    ),
-                  },
-                  { label: 'Etapa atual', value: document.currentStep },
-                ]}
-              />
-            </CardContent>
-          </Card>
+            <div className='space-y-2'>
+              <div className='flex flex-wrap items-center gap-3'>
+                <h1 className='font-mono text-3xl font-semibold tracking-tight text-balance'>
+                  {document.id}
+                </h1>
+                <Badge
+                  variant='outline'
+                  className={trStatusBadgeClass[document.status] ?? ''}
+                >
+                  {trStatusLabels[document.status] ?? document.status}
+                </Badge>
+              </div>
+              <p className='max-w-3xl text-pretty text-muted-foreground'>
+                {document.title}
+              </p>
+            </div>
 
+            <Separator />
+
+            <div className='grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4'>
+              <div className='space-y-1'>
+                <SectionLabel>Unidade</SectionLabel>
+                <div className='text-sm font-medium'>
+                  {document.responsibleUnit}
+                </div>
+              </div>
+              <div className='space-y-1'>
+                <SectionLabel>Responsável</SectionLabel>
+                <div className='text-sm font-medium'>{document.owner}</div>
+              </div>
+              <div className='space-y-1'>
+                <SectionLabel>Modelo</SectionLabel>
+                <div className='text-sm font-medium'>{document.model}</div>
+              </div>
+              <div className='space-y-1'>
+                <SectionLabel>{lastSlot.label}</SectionLabel>
+                <div className='text-sm font-medium tabular-nums'>
+                  {lastSlot.value}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Documento + TOC rail sticky (lg+); stacked + sheet flutuante no mobile. */}
+        <div className='grid gap-6 lg:grid-cols-[1fr_240px] lg:items-start'>
           <TRDocumentView
             title={document.title}
             sections={document.sections}
-            status={{
-              label:
-                mode === 'edit'
-                  ? 'Documento aberto para ajustes'
-                  : 'Documento consolidado para consulta',
-              tone: mode === 'edit' ? 'warning' : 'neutral',
-            }}
+            hideHeader
           />
-
-          <TRDocumentToc sections={document.sections} />
+          <aside className='lg:sticky lg:top-20'>
+            <TRDocumentToc sections={document.sections} />
+          </aside>
         </div>
       </Main>
     </>
   )
 }
-

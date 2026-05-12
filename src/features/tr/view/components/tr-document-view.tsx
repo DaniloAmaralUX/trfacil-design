@@ -21,6 +21,12 @@ type TRDocumentViewProps = {
   title: string
   sections: TRDocumentSection[]
   status?: TRDocumentStatus
+  /**
+   * Quando true, suprime o CardHeader interno (title + badge de status).
+   * Usado quando a página consumidora já mostra o título em um hero card,
+   * evitando duplicação visual.
+   */
+  hideHeader?: boolean
 }
 
 const statusClasses: Record<NonNullable<TRDocumentStatus['tone']>, string> = {
@@ -36,6 +42,7 @@ export function TRDocumentView({
   title,
   sections,
   status,
+  hideHeader = false,
 }: TRDocumentViewProps) {
   const validSections = sections.filter((section) => {
     if (section.kind === 'prose') return section.content.trim().length > 0
@@ -45,21 +52,23 @@ export function TRDocumentView({
 
   return (
     <Card className='rounded-3xl border-0 shadow-border'>
-      <CardHeader className='border-b border-border/60 pb-5'>
-        <div className='flex flex-wrap items-start justify-between gap-3'>
-          <CardTitle as={2} className='text-2xl font-semibold'>
-            {title}
-          </CardTitle>
-          {status ? (
-            <Badge
-              variant='outline'
-              className={statusClasses[status.tone ?? 'neutral']}
-            >
-              {status.label}
-            </Badge>
-          ) : null}
-        </div>
-      </CardHeader>
+      {!hideHeader && (
+        <CardHeader className='border-b border-border/60 pb-5'>
+          <div className='flex flex-wrap items-start justify-between gap-3'>
+            <CardTitle as={2} className='text-2xl font-semibold'>
+              {title}
+            </CardTitle>
+            {status ? (
+              <Badge
+                variant='outline'
+                className={statusClasses[status.tone ?? 'neutral']}
+              >
+                {status.label}
+              </Badge>
+            ) : null}
+          </div>
+        </CardHeader>
+      )}
       <CardContent className='space-y-6 pt-6'>
         {validSections.length ? (
           validSections.map((section) => (
