@@ -79,6 +79,7 @@ import {
   getTemplateDefinition,
   getTemplateOptions,
 } from '@/features/tr/data/templates'
+import { TRMetaList } from '@/shared/components/tr-meta-list'
 import { TRDocumentView } from '@/features/tr/view/components/tr-document-view'
 import { TRAIAssistant } from './components/tr-ai-assistant'
 import { TRStepper } from './components/tr-stepper'
@@ -529,29 +530,36 @@ export function TRWizardPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className='space-y-4 text-sm'>
-                <div className='min-w-0 space-y-1'>
-                  <div className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
-                    Modelo institucional
-                  </div>
-                  <div className='font-medium break-words'>
-                    <span translate='no'>{context.institution}</span>
-                    <span className='mx-1 text-muted-foreground' aria-hidden='true'>
-                      ·
-                    </span>
-                    {template.label}
-                  </div>
-                </div>
-                <SummaryLine
-                  label='Referência'
-                  value={context.referenceCode || 'Não informada'}
-                />
-                <SummaryLine
-                  label='Título'
-                  value={context.title || 'Sem título'}
-                />
-                <SummaryLine
-                  label='Unidade responsável'
-                  value={context.responsibleUnit || 'Não informada'}
+                <TRMetaList
+                  items={[
+                    {
+                      label: 'Modelo institucional',
+                      valueNode: (
+                        <>
+                          <span translate='no'>{context.institution}</span>
+                          <span
+                            className='mx-1 text-muted-foreground'
+                            aria-hidden='true'
+                          >
+                            ·
+                          </span>
+                          {template.label}
+                        </>
+                      ),
+                    },
+                    {
+                      label: 'Referência',
+                      value: context.referenceCode || 'Não informada',
+                    },
+                    {
+                      label: 'Título',
+                      value: context.title || 'Sem título',
+                    },
+                    {
+                      label: 'Unidade responsável',
+                      value: context.responsibleUnit || 'Não informada',
+                    },
+                  ]}
                 />
                 <Separator />
                 <div className='rounded-2xl bg-muted/30 p-4'>
@@ -1602,17 +1610,6 @@ function FieldBlock({
           {error}
         </p>
       ) : null}
-    </div>
-  )
-}
-
-function SummaryLine({ label, value }: { label: string; value: string }) {
-  return (
-    <div className='min-w-0 space-y-1'>
-      <div className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
-        {label}
-      </div>
-      <div className='font-medium break-words'>{value}</div>
     </div>
   )
 }

@@ -8,6 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert'
 import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
+import { TRMetaList } from '@/shared/components/tr-meta-list'
 import { trStatusBadgeClass, trStatusLabels } from '@/features/tr/data/data'
 import { getTRDocument } from '@/features/tr/data/tr-document'
 import { TRReviewActions } from '@/features/tr/review/components/tr-review-actions'
@@ -104,16 +105,20 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
               <CardTitle>Metadados</CardTitle>
             </CardHeader>
             <CardContent className='space-y-4 text-sm'>
-              <MetaRow label='Unidade' value={document.responsibleUnit} />
-              <MetaRow label='Responsável' value={document.owner} />
-              <MetaRow label='Modelo' value={document.model} />
-              <MetaRow
-                label='Atualização'
-                value={new Intl.DateTimeFormat('pt-BR').format(
-                  new Date(document.updatedAt)
-                )}
+              <TRMetaList
+                items={[
+                  { label: 'Unidade', value: document.responsibleUnit },
+                  { label: 'Responsável', value: document.owner },
+                  { label: 'Modelo', value: document.model },
+                  {
+                    label: 'Atualização',
+                    value: new Intl.DateTimeFormat('pt-BR').format(
+                      new Date(document.updatedAt)
+                    ),
+                  },
+                  { label: 'Etapa atual', value: document.currentStep },
+                ]}
               />
-              <MetaRow label='Etapa atual' value={document.currentStep} />
             </CardContent>
           </Card>
 
@@ -148,13 +153,3 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
   )
 }
 
-function MetaRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className='space-y-1'>
-      <div className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
-        {label}
-      </div>
-      <div className='font-medium'>{value}</div>
-    </div>
-  )
-}
