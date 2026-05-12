@@ -9,6 +9,7 @@ import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 import { TRMetaList } from '@/shared/components/tr-meta-list'
+import { TRDocumentToc } from './components/tr-document-toc'
 import { trStatusBadgeClass, trStatusLabels } from '@/features/tr/data/data'
 import { getTRDocument } from '@/features/tr/data/tr-document'
 import { TRReviewActions } from '@/features/tr/review/components/tr-review-actions'
@@ -99,8 +100,8 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
           </div>
         </section>
 
-        <div className='grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]'>
-          <Card className='rounded-2xl border-black/5 dark:border-white/10'>
+        <div className='grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)_240px] xl:items-start'>
+          <Card className='rounded-2xl border-black/5 xl:sticky xl:top-20 dark:border-white/10'>
             <CardHeader>
               <CardTitle>Metadados</CardTitle>
             </CardHeader>
@@ -133,6 +134,8 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
               tone: mode === 'edit' ? 'warning' : 'neutral',
             }}
           />
+
+          <TRDocumentToc sections={document.sections} />
         </div>
 
         {isReviewState && (

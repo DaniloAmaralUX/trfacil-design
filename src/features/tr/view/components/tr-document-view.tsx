@@ -10,6 +10,7 @@ import {
   TableRow,
 } from '@/shared/ui/table'
 import { type TRDocumentSection } from '@/features/tr/data/templates'
+import { slugifySection } from './tr-document-toc'
 
 type TRDocumentStatus = {
   label: string
@@ -60,7 +61,11 @@ export function TRDocumentView({
       <CardContent className='space-y-6 pt-6'>
         {validSections.length ? (
           validSections.map((section) => (
-            <section key={section.title} className='space-y-3'>
+            <section
+              key={section.title}
+              id={slugifySection(section.title)}
+              className='scroll-mt-24 space-y-3'
+            >
               <h2 className='text-lg font-semibold text-balance'>
                 {section.title}
               </h2>
