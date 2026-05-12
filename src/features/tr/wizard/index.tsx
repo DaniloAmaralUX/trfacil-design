@@ -9,6 +9,7 @@ import {
   FileText,
   HelpCircle,
   Loader2,
+  PanelRight,
   Plus,
   Save,
   ShieldCheck,
@@ -48,6 +49,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui/select'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/shared/ui/sheet'
 import { Separator } from '@/shared/ui/separator'
 import {
   Table,
@@ -378,6 +387,114 @@ export function TRWizardPage() {
     setPendingTemplateChange(null)
   }
 
+  const renderSummaryPanel = ({
+    includeAssistant = false,
+  }: { includeAssistant?: boolean } = {}) => (
+    <>
+      {includeAssistant ? <TRAIAssistant /> : null}
+      <Card className='rounded-3xl border-0 shadow-border'>
+        <CardHeader>
+          <CardTitle>Resumo operacional</CardTitle>
+          <CardDescription>
+            Leitura rápida do documento em preparação e do próximo passo.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className='space-y-4 text-sm'>
+          <TRMetaList
+            items={[
+              {
+                label: 'Modelo institucional',
+                valueNode: (
+                  <>
+                    <span translate='no'>{context.institution}</span>
+                    <span
+                      className='mx-1 text-muted-foreground'
+                      aria-hidden='true'
+                    >
+                      ·
+                    </span>
+                    {template.label}
+                  </>
+                ),
+              },
+              {
+                label: 'Referência',
+                value: context.referenceCode || 'Não informada',
+              },
+              {
+                label: 'Título',
+                value: context.title || 'Sem título',
+              },
+              {
+                label: 'Unidade responsável',
+                value: context.responsibleUnit || 'Não informada',
+              },
+            ]}
+          />
+          <Separator />
+          <div className='rounded-2xl bg-muted/30 p-4'>
+            <div className='flex items-center gap-2 font-medium'>
+              <FileText aria-hidden='true' className='size-4 text-primary' />
+              O que vem agora
+            </div>
+            <p className='mt-2 text-muted-foreground'>
+              {wizardSteps[currentStep + 1]?.description ??
+                'Revise o documento consolidado e envie para revisão.'}
+            </p>
+          </div>
+          {!reviewState.isReady ? (
+            <Alert>
+              <AlertCircle aria-hidden='true' className='size-4' />
+              <AlertTitle>Pendências do modelo</AlertTitle>
+              <AlertDescription>
+                Ainda há {reviewState.pendingLabels.length} requisito(s)
+                obrigatório(s) em aberto.
+              </AlertDescription>
+            </Alert>
+          ) : null}
+        </CardContent>
+      </Card>
+
+      <Card className='rounded-3xl border-0 shadow-border'>
+        <CardHeader>
+          <CardTitle>Checklist de prontidão</CardTitle>
+          <CardDescription>
+            O documento só fica pronto quando o modelo oficial estiver
+            consistente.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className='h-[320px] pr-4'>
+            <div aria-live='polite' className='space-y-2 text-sm'>
+              {reviewState.pendingLabels.length ? (
+                reviewState.pendingLabels.map((label) => (
+                  <div
+                    key={label}
+                    className='flex items-start gap-2 rounded-xl bg-muted/30 px-3 py-2'
+                  >
+                    <AlertCircle
+                      aria-hidden='true'
+                      className='mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-300'
+                    />
+                    <span className='text-muted-foreground'>{label}</span>
+                  </div>
+                ))
+              ) : (
+                <div className='flex items-start gap-2 rounded-xl bg-emerald-50 px-3 py-2 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-200'>
+                  <CheckCircle2
+                    aria-hidden='true'
+                    className='mt-0.5 size-4 shrink-0'
+                  />
+                  Todos os requisitos obrigatórios do modelo estão preenchidos.
+                </div>
+              )}
+            </div>
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </>
+  )
+
   return (
     <>
       <Header fixed>
@@ -428,26 +545,15 @@ export function TRWizardPage() {
           </div>
         </section>
 
-        <div className='lg:hidden'>
-          <TRStepper
-            currentStep={currentStep}
-            steps={wizardSteps}
-            onStepClick={goToStep}
-            pendingLabels={reviewState.pendingLabels}
-            pendingByStep={pendingByStep}
-          />
-        </div>
+        <TRStepper
+          currentStep={currentStep}
+          steps={wizardSteps}
+          onStepClick={goToStep}
+          pendingLabels={reviewState.pendingLabels}
+          pendingByStep={pendingByStep}
+        />
 
-        <div className='space-y-6 lg:grid lg:items-start lg:gap-6 lg:space-y-0 lg:grid-cols-[200px_minmax(0,1fr)] xl:grid-cols-[220px_minmax(0,1fr)_320px]'>
-          <div className='hidden lg:block'>
-            <TRStepper
-              currentStep={currentStep}
-              steps={wizardSteps}
-              onStepClick={goToStep}
-              pendingLabels={reviewState.pendingLabels}
-              pendingByStep={pendingByStep}
-            />
-          </div>
+        <div className='space-y-6'>
           <Card className='rounded-3xl border-0 shadow-border'>
             <CardHeader>
               <div className='flex flex-wrap items-start justify-between gap-3'>
@@ -466,12 +572,52 @@ export function TRWizardPage() {
                   ) : null}
                 </div>
 
-                {currentSection.kind === 'review' ? (
-                  <div className='inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-200'>
-                    <ShieldCheck aria-hidden='true' className='size-3.5' />
-                    Prévia oficial consolidada
-                  </div>
-                ) : null}
+                <div className='flex items-center gap-2'>
+                  {currentSection.kind === 'review' ? (
+                    <div className='inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-200'>
+                      <ShieldCheck aria-hidden='true' className='size-3.5' />
+                      Prévia oficial consolidada
+                    </div>
+                  ) : (
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button
+                          type='button'
+                          variant='outline'
+                          size='sm'
+                          className='rounded-xl'
+                        >
+                          <PanelRight data-icon='inline-start' />
+                          Resumo
+                          {reviewState.pendingLabels.length ? (
+                            <Badge
+                              variant='outline'
+                              className='ms-1 border-amber-300 px-1.5 text-[10px] text-amber-700 dark:border-amber-800 dark:text-amber-200'
+                            >
+                              {reviewState.pendingLabels.length}
+                            </Badge>
+                          ) : null}
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent
+                        side='right'
+                        className='w-full overflow-y-auto sm:max-w-md'
+                      >
+                        <SheetHeader>
+                          <SheetTitle>Resumo do documento</SheetTitle>
+                          <SheetDescription>
+                            Status atual, próximo passo e checklist de prontidão.
+                          </SheetDescription>
+                        </SheetHeader>
+                        <div className='space-y-6 px-4 pb-6'>
+                          {renderSummaryPanel({
+                            includeAssistant: currentSection.kind === 'fields',
+                          })}
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+                  )}
+                </div>
               </div>
             </CardHeader>
             <CardContent className='space-y-6'>
@@ -530,115 +676,18 @@ export function TRWizardPage() {
             </CardContent>
           </Card>
 
-          <div className='space-y-6 lg:col-span-2 xl:col-span-1'>
-            {currentStep > 0 && currentSection.kind === 'fields' ? (
-              <TRAIAssistant />
-            ) : null}
-            <Card className='rounded-3xl border-0 shadow-border'>
-              <CardHeader>
-                <CardTitle>Resumo operacional</CardTitle>
-                <CardDescription>
-                  Leitura rápida do documento em preparação e do próximo passo.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className='space-y-4 text-sm'>
-                <TRMetaList
-                  items={[
-                    {
-                      label: 'Modelo institucional',
-                      valueNode: (
-                        <>
-                          <span translate='no'>{context.institution}</span>
-                          <span
-                            className='mx-1 text-muted-foreground'
-                            aria-hidden='true'
-                          >
-                            ·
-                          </span>
-                          {template.label}
-                        </>
-                      ),
-                    },
-                    {
-                      label: 'Referência',
-                      value: context.referenceCode || 'Não informada',
-                    },
-                    {
-                      label: 'Título',
-                      value: context.title || 'Sem título',
-                    },
-                    {
-                      label: 'Unidade responsável',
-                      value: context.responsibleUnit || 'Não informada',
-                    },
-                  ]}
-                />
-                <Separator />
-                <div className='rounded-2xl bg-muted/30 p-4'>
-                  <div className='flex items-center gap-2 font-medium'>
-                    <FileText
-                      aria-hidden='true'
-                      className='size-4 text-primary'
-                    />
-                    O que vem agora
-                  </div>
-                  <p className='mt-2 text-muted-foreground'>
-                    {wizardSteps[currentStep + 1]?.description ??
-                      'Revise o documento consolidado e envie para revisão.'}
-                  </p>
-                </div>
-                {!reviewState.isReady ? (
-                  <Alert>
-                    <AlertCircle aria-hidden='true' className='size-4' />
-                    <AlertTitle>Pendências do modelo</AlertTitle>
-                    <AlertDescription>
-                      Ainda há {reviewState.pendingLabels.length} requisito(s)
-                      obrigatório(s) em aberto.
-                    </AlertDescription>
-                  </Alert>
-                ) : null}
-              </CardContent>
-            </Card>
+          {currentSection.kind === 'fields' && currentStep > 0 ? (
+            <TRAIAssistant />
+          ) : null}
 
-            <Card className='rounded-3xl border-0 shadow-border'>
-              <CardHeader>
-                <CardTitle>Checklist de prontidão</CardTitle>
-                <CardDescription>
-                  O documento só fica pronto quando o modelo oficial estiver
-                  consistente.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ScrollArea className='h-[320px] pr-4'>
-                  <div aria-live='polite' className='space-y-2 text-sm'>
-                    {reviewState.pendingLabels.length ? (
-                      reviewState.pendingLabels.map((label) => (
-                        <div
-                          key={label}
-                          className='flex items-start gap-2 rounded-xl bg-muted/30 px-3 py-2'
-                        >
-                          <AlertCircle
-                            aria-hidden='true'
-                            className='mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-300'
-                          />
-                          <span className='text-muted-foreground'>{label}</span>
-                        </div>
-                      ))
-                    ) : (
-                      <div className='flex items-start gap-2 rounded-xl bg-emerald-50 px-3 py-2 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-200'>
-                        <CheckCircle2
-                          aria-hidden='true'
-                          className='mt-0.5 size-4 shrink-0'
-                        />
-                        Todos os requisitos obrigatórios do modelo estão
-                        preenchidos.
-                      </div>
-                    )}
-                  </div>
-                </ScrollArea>
-              </CardContent>
-            </Card>
-          </div>
+          {currentSection.kind === 'review' ? (
+            <aside
+              aria-label='Resumo do documento'
+              className='grid gap-6 md:grid-cols-2'
+            >
+              {renderSummaryPanel()}
+            </aside>
+          ) : null}
         </div>
 
         <div className='sticky bottom-4 z-30'>

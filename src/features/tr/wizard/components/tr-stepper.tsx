@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Check,
   ChevronDown,
@@ -107,24 +107,75 @@ export function TRStepper({
         </CollapsibleContent>
       </Collapsible>
 
-      {/* Vertical rail (>= lg) */}
-      <nav
-        aria-label='Etapas do wizard'
-        className='hidden lg:sticky lg:top-20 lg:flex lg:flex-col lg:gap-3 lg:self-start'
+      {/* Horizontal sticky stepper (>= lg) */}
+      <HorizontalStepper
+        steps={steps}
+        currentStep={currentStep}
+        pendingLabels={pendingLabels}
+        pendingByStep={pendingByStep}
+        percent={percent}
+        totalSteps={totalSteps}
+        onStepClick={onStepClick}
+      />
+    </>
+  )
+}
+
+type HorizontalStepperProps = {
+  steps: TRSectionDefinition[]
+  currentStep: number
+  pendingLabels: string[]
+  pendingByStep: number[]
+  percent: number
+  totalSteps: number
+  onStepClick?: (step: number) => void
+}
+
+function HorizontalStepper({
+  steps,
+  currentStep,
+  pendingLabels,
+  pendingByStep,
+  percent,
+  totalSteps,
+  onStepClick,
+}: HorizontalStepperProps) {
+  const listRef = useRef<HTMLOListElement>(null)
+  const activeRef = useRef<HTMLLIElement>(null)
+
+  useEffect(() => {
+    const node = activeRef.current
+    if (!node) return
+    node.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  }, [currentStep])
+
+  return (
+    <nav
+      aria-label='Etapas do wizard'
+      className='sticky top-16 z-10 -mx-4 hidden bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80 lg:block'
+    >
+      <div className='flex items-center justify-between gap-4 pb-2 text-xs text-muted-foreground'>
+        <span className='font-medium uppercase tracking-[0.14em]'>
+          Etapas
+        </span>
+        <span className='tabular-nums'>
+          {currentStep + 1} de {totalSteps}
+        </span>
+      </div>
+      <Progress value={percent} aria-label='Progresso do wizard' className='mb-3 h-1' />
+      <ol
+        ref={listRef}
+        className='flex min-w-0 items-stretch gap-1 overflow-x-auto pb-1'
       >
-        <div className='space-y-2 rounded-2xl border bg-card px-3 py-3'>
-          <div className='flex items-center justify-between px-1 text-xs text-muted-foreground'>
-            <span>Progresso</span>
-            <span className='tabular-nums'>
-              {currentStep + 1}/{totalSteps}
-            </span>
-          </div>
-          <Progress value={percent} aria-label='Progresso do wizard' />
-        </div>
-        <ol className='space-y-0.5 rounded-2xl border bg-card p-2'>
-          {steps.map((step, index) => (
-            <li key={step.id}>
-              <StepRailItem
+        {steps.map((step, index) => {
+          const isActive = index === currentStep
+          return (
+            <li
+              key={step.id}
+              ref={isActive ? activeRef : undefined}
+              className='flex min-w-0 items-center'
+            >
+              <HorizontalStepItem
                 step={step}
                 index={index}
                 currentStep={currentStep}
@@ -132,11 +183,20 @@ export function TRStepper({
                 pendingCount={pendingByStep[index] ?? 0}
                 onStepClick={onStepClick}
               />
+              {index < steps.length - 1 ? (
+                <span
+                  aria-hidden='true'
+                  className={cn(
+                    'mx-1 h-px w-6 shrink-0 bg-border transition-colors',
+                    index < currentStep && 'bg-emerald-400 dark:bg-emerald-700'
+                  )}
+                />
+              ) : null}
             </li>
-          ))}
-        </ol>
-      </nav>
-    </>
+          )
+        })}
+      </ol>
+    </nav>
   )
 }
 
@@ -147,6 +207,136 @@ type StepRailItemProps = {
   pendingLabels: string[]
   pendingCount: number
   onStepClick?: (step: number) => void
+}
+
+function StepIcon({
+  index,
+  isActive,
+  isCompleted,
+  hasAttention,
+}: {
+  index: number
+  isActive: boolean
+  isCompleted: boolean
+  hasAttention: boolean
+}) {
+  return (
+    <div
+      className={cn(
+        'relative flex size-6 shrink-0 items-center justify-center rounded-full border text-[11px] font-semibold',
+        isActive && 'border-primary/40 bg-primary text-primary-foreground',
+        isCompleted &&
+          'border-emerald-300 bg-emerald-500 text-white dark:border-emerald-800',
+        hasAttention &&
+          'border-amber-300 bg-amber-100 text-amber-700 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200',
+        !isActive &&
+          !isCompleted &&
+          !hasAttention &&
+          'border-border bg-background text-muted-foreground'
+      )}
+    >
+      <span
+        aria-hidden='true'
+        className={cn(
+          'absolute transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+          !isCompleted && !hasAttention && !isActive
+            ? 'scale-100 opacity-100 blur-0'
+            : 'scale-[0.25] opacity-0 blur-[4px]'
+        )}
+      >
+        {index + 1}
+      </span>
+      <Check
+        aria-hidden='true'
+        className={cn(
+          'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+          isCompleted
+            ? 'scale-100 opacity-100 blur-0'
+            : 'scale-[0.25] opacity-0 blur-[4px]'
+        )}
+      />
+      <CircleDot
+        aria-hidden='true'
+        className={cn(
+          'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+          isActive
+            ? 'scale-100 opacity-100 blur-0'
+            : 'scale-[0.25] opacity-0 blur-[4px]'
+        )}
+      />
+      <CircleAlert
+        aria-hidden='true'
+        className={cn(
+          'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+          hasAttention
+            ? 'scale-100 opacity-100 blur-0'
+            : 'scale-[0.25] opacity-0 blur-[4px]'
+        )}
+      />
+    </div>
+  )
+}
+
+function HorizontalStepItem({
+  step,
+  index,
+  currentStep,
+  pendingLabels,
+  pendingCount,
+  onStepClick,
+}: StepRailItemProps) {
+  const isActive = index === currentStep
+  const isCompleted = index < currentStep
+  const hasAttention =
+    !isCompleted &&
+    !isActive &&
+    step.kind === 'review' &&
+    pendingLabels.length > 0
+
+  return (
+    <Button
+      type='button'
+      variant='ghost'
+      size='sm'
+      onClick={() => onStepClick?.(index)}
+      aria-current={isActive ? 'step' : undefined}
+      title={step.title}
+      className={cn(
+        'group h-auto shrink-0 gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 text-left transition-colors',
+        'hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring',
+        isActive
+          ? 'border-primary/40 bg-primary/5 text-primary hover:bg-primary/10'
+          : 'border-border bg-card',
+        isCompleted &&
+          !isActive &&
+          'border-emerald-200/70 text-foreground dark:border-emerald-800/60',
+        hasAttention &&
+          'border-amber-300/80 text-amber-800 dark:border-amber-700/70 dark:text-amber-200'
+      )}
+    >
+      <StepIcon
+        index={index}
+        isActive={isActive}
+        isCompleted={isCompleted}
+        hasAttention={hasAttention}
+      />
+      <span
+        className={cn(
+          'max-w-[14ch] truncate text-sm leading-tight',
+          isActive ? 'font-semibold' : 'font-medium',
+          isCompleted && !isActive && 'text-muted-foreground'
+        )}
+      >
+        {step.title}
+      </span>
+      {pendingCount > 0 ? (
+        <span
+          aria-label={`${pendingCount} pendência(s) nesta etapa`}
+          className='inline-flex size-1.5 shrink-0 rounded-full bg-amber-500'
+        />
+      ) : null}
+    </Button>
+  )
 }
 
 function StepRailItem({
@@ -182,59 +372,12 @@ function StepRailItem({
           'border-l-amber-400 bg-amber-50/50 hover:bg-amber-50 dark:border-l-amber-700 dark:bg-amber-950/15'
       )}
     >
-      <div
-        className={cn(
-          'flex size-6 shrink-0 items-center justify-center rounded-full border text-[11px] font-semibold',
-          isActive && 'border-primary/40 bg-primary text-primary-foreground',
-          isCompleted &&
-            'border-emerald-300 bg-emerald-500 text-white dark:border-emerald-800',
-          hasAttention &&
-            'border-amber-300 bg-amber-100 text-amber-700 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200',
-          !isActive &&
-            !isCompleted &&
-            !hasAttention &&
-            'border-border bg-background text-muted-foreground'
-        )}
-      >
-        <span
-          aria-hidden='true'
-          className={cn(
-            'absolute transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
-            !isCompleted && !hasAttention && !isActive
-              ? 'scale-100 opacity-100 blur-0'
-              : 'scale-[0.25] opacity-0 blur-[4px]'
-          )}
-        >
-          {index + 1}
-        </span>
-        <Check
-          aria-hidden='true'
-          className={cn(
-            'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
-            isCompleted
-              ? 'scale-100 opacity-100 blur-0'
-              : 'scale-[0.25] opacity-0 blur-[4px]'
-          )}
-        />
-        <CircleDot
-          aria-hidden='true'
-          className={cn(
-            'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
-            isActive
-              ? 'scale-100 opacity-100 blur-0'
-              : 'scale-[0.25] opacity-0 blur-[4px]'
-          )}
-        />
-        <CircleAlert
-          aria-hidden='true'
-          className={cn(
-            'absolute size-3.5 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
-            hasAttention
-              ? 'scale-100 opacity-100 blur-0'
-              : 'scale-[0.25] opacity-0 blur-[4px]'
-          )}
-        />
-      </div>
+      <StepIcon
+        index={index}
+        isActive={isActive}
+        isCompleted={isCompleted}
+        hasAttention={hasAttention}
+      />
       <span
         className={cn(
           'min-w-0 flex-1 truncate text-sm leading-tight',
