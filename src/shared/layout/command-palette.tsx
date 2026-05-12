@@ -88,7 +88,7 @@ export function CommandPaletteTrigger() {
                 value={`${item.label} ${item.hint ?? ''}`}
                 onSelect={() => go(item.to)}
               >
-                <item.icon className='size-4' />
+                <item.icon aria-hidden='true' className='size-4' />
                 <span>{item.label}</span>
                 {item.to === '/dashboard' ? (
                   <CommandShortcut>G H</CommandShortcut>
@@ -104,7 +104,7 @@ export function CommandPaletteTrigger() {
                 value={`${tr.id} ${tr.title}`}
                 onSelect={() => goToTR(tr.id)}
               >
-                <Files className='size-4' />
+                <Files aria-hidden='true' className='size-4' />
                 <div className='flex min-w-0 flex-col'>
                   <span className='truncate text-sm'>{tr.title}</span>
                   <span className='truncate text-xs text-muted-foreground'>

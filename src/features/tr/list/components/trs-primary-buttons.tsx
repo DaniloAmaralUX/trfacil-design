@@ -8,7 +8,7 @@ export function TRsPrimaryButtons() {
     <div className='flex flex-wrap gap-2'>
       <Button asChild className='rounded-xl'>
         <Link to='/novo-tr'>
-          <FilePlus2 className='size-4' />
+          <FilePlus2 aria-hidden='true' className='size-4' />
           Novo TR
         </Link>
       </Button>
@@ -17,7 +17,7 @@ export function TRsPrimaryButtons() {
         className='rounded-xl'
         onClick={() => toast.success('Exportando listagem…')}
       >
-        <Download className='size-4' />
+        <Download aria-hidden='true' className='size-4' />
         Exportar lista
       </Button>
     </div>

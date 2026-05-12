@@ -38,13 +38,13 @@ export function TRDashboard() {
           <div className='flex flex-wrap gap-2'>
             <Button asChild>
               <Link to='/novo-tr'>
-                <FilePlus2 className='size-4' />
+                <FilePlus2 aria-hidden='true' className='size-4' />
                 Novo TR
               </Link>
             </Button>
             <Button asChild variant='outline'>
               <Link to='/trs'>
-                <FolderOpen className='size-4' />
+                <FolderOpen aria-hidden='true' className='size-4' />
                 Ver TRs
               </Link>
             </Button>

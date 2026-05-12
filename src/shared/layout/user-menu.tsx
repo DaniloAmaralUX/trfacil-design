@@ -101,18 +101,24 @@ export function UserMenu({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <UserCircle />
+                <UserCircle aria-hidden='true' />
                 Perfil
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Settings />
+                <Settings aria-hidden='true' />
                 Configurações
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
-                {theme === 'dark' ? <Moon /> : theme === 'light' ? <Sun /> : <Monitor />}
+                {theme === 'dark' ? (
+                  <Moon aria-hidden='true' />
+                ) : theme === 'light' ? (
+                  <Sun aria-hidden='true' />
+                ) : (
+                  <Monitor aria-hidden='true' />
+                )}
                 Tema
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
@@ -123,15 +129,15 @@ export function UserMenu({
                   }
                 >
                   <DropdownMenuRadioItem value='light'>
-                    <Sun className='me-2 size-4' />
+                    <Sun aria-hidden='true' className='me-2 size-4' />
                     Claro
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value='dark'>
-                    <Moon className='me-2 size-4' />
+                    <Moon aria-hidden='true' className='me-2 size-4' />
                     Escuro
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value='system'>
-                    <Monitor className='me-2 size-4' />
+                    <Monitor aria-hidden='true' className='me-2 size-4' />
                     Sistema
                   </DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
@@ -141,7 +147,7 @@ export function UserMenu({
             <DropdownMenuItem
               onClick={() => toast.info('Sessão encerrada (mock).')}
             >
-              <LogOut />
+              <LogOut aria-hidden='true' />
               Sair
             </DropdownMenuItem>
           </DropdownMenuContent>

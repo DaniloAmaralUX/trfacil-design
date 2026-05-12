@@ -28,14 +28,13 @@ export function TRsRowActions<TData>({ row }: TRsRowActionsProps<TData>) {
           className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
           aria-label={`Abrir ações do ${tr.id}`}
         >
-          <DotsHorizontalIcon className='h-4 w-4' />
-          <span className='sr-only'>Abrir menu</span>
+          <DotsHorizontalIcon aria-hidden='true' className='h-4 w-4' />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[190px]'>
         <DropdownMenuItem asChild>
           <Link to='/tr/$trId' params={{ trId: tr.id }}>
-            <FileSearch className='size-4' />
+            <FileSearch aria-hidden='true' className='size-4' />
             Abrir
           </Link>
         </DropdownMenuItem>
@@ -49,16 +48,16 @@ export function TRsRowActions<TData>({ row }: TRsRowActionsProps<TData>) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => toast.success(`Duplicando ${tr.id}...`)}
+          onClick={() => toast.success(`Duplicando ${tr.id}…`)}
         >
-          <Copy className='size-4' />
+          <Copy aria-hidden='true' className='size-4' />
           Duplicar
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => toast.success(`${tr.id} enviado para revisão`)}
         >
-          <Send className='size-4' />
+          <Send aria-hidden='true' className='size-4' />
           Enviar para revisão
         </DropdownMenuItem>
       </DropdownMenuContent>

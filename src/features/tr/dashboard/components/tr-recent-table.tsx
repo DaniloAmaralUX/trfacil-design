@@ -60,7 +60,7 @@ export function TRRecentTable({ items }: TRRecentTableProps) {
         <EmptyContent>
           <Button asChild className='rounded-xl'>
             <Link to='/novo-tr'>
-              <Plus className='size-4' />
+              <Plus aria-hidden='true' className='size-4' />
               Criar novo TR
             </Link>
           </Button>
@@ -124,7 +124,7 @@ export function TRRecentTable({ items }: TRRecentTableProps) {
                 >
                   <Link to='/tr/$trId' params={{ trId: item.id }}>
                     Abrir
-                    <ArrowRight className='size-4' />
+                    <ArrowRight aria-hidden='true' className='size-4' />
                   </Link>
                 </Button>
               </TableCell>

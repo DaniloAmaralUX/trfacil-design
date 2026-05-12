@@ -61,7 +61,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
           <div className='space-y-2'>
             <Button asChild variant='ghost' className='-ml-3 rounded-xl'>
               <Link to='/trs'>
-                <ArrowLeft className='size-4' />
+                <ArrowLeft aria-hidden='true' className='size-4' />
                 Voltar para TRs
               </Link>
             </Button>
@@ -84,8 +84,8 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
           <div className='flex flex-wrap gap-2'>
             <Button asChild variant='outline' className='rounded-xl'>
               <Link to='/novo-tr'>
-                <FilePenLine className='size-4' />
-                {mode === 'edit' ? 'Continuar edicao' : 'Editar'}
+                <FilePenLine aria-hidden='true' className='size-4' />
+                {mode === 'edit' ? 'Continuar edição' : 'Editar'}
               </Link>
             </Button>
             <Button
@@ -94,7 +94,7 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
                 toast.success(`${document.id} enviado para revisão`)
               }
             >
-              <Send className='size-4' />
+              <Send aria-hidden='true' className='size-4' />
               Enviar para revisão
             </Button>
           </div>

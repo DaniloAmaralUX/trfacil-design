@@ -9,7 +9,7 @@ export function TRReviewActions() {
         className='rounded-xl'
         onClick={() => toast.success('TR aprovado com sucesso')}
       >
-        <CheckCircle2 className='size-4' />
+        <CheckCircle2 aria-hidden='true' className='size-4' />
         Aprovar
       </Button>
       <Button
@@ -17,7 +17,7 @@ export function TRReviewActions() {
         className='rounded-xl'
         onClick={() => toast.success('Solicitação de ajustes registrada')}
       >
-        <RotateCcw className='size-4' />
+        <RotateCcw aria-hidden='true' className='size-4' />
         Solicitar ajustes
       </Button>
     </div>
