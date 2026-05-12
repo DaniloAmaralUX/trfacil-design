@@ -219,6 +219,20 @@ export function TRWizardPage() {
     toast.success('TR enviada para revisão.')
   }
 
+  const handleFieldBlur = (field: TRFieldDefinition, value: string) => {
+    const fieldError = validateSingleField(field, value)
+    setStepErrorState((prev) => {
+      const baseValues = prev.scope === errorScope ? prev.values : {}
+      const nextValues = { ...baseValues }
+      if (fieldError) {
+        nextValues[field.id] = fieldError
+      } else {
+        delete nextValues[field.id]
+      }
+      return { scope: errorScope, values: nextValues }
+    })
+  }
+
   const handleAdvance = () => {
     const nextErrors = validateCurrentStep(
       currentSection,
@@ -390,6 +404,7 @@ export function TRWizardPage() {
                   values={documentData}
                   errors={errors}
                   onChange={setFieldValue}
+                  onFieldBlur={handleFieldBlur}
                 />
               ) : currentSection.kind === 'lots' ? (
                 <LotsSection
@@ -679,6 +694,7 @@ function SetupStep({
               label='Instituição'
               htmlFor='institution'
               error={errors.institution}
+              required
             >
               <Select
                 value={context.institution}
@@ -706,6 +722,7 @@ function SetupStep({
               label='Modelo oficial'
               htmlFor='templateType'
               error={errors.templateType}
+              required
             >
               <Select
                 value={context.templateType}
@@ -743,6 +760,8 @@ function SetupStep({
               label='Título da TR'
               htmlFor='title'
               error={errors.title}
+              required
+              description='Aparece no documento final e na fila de revisão. Use o objeto + público-alvo (ex.: "Consultoria para internacionalização industrial").'
             >
               <Input
                 id='title'
@@ -762,6 +781,8 @@ function SetupStep({
               label='Unidade responsável'
               htmlFor='responsibleUnit'
               error={errors.responsibleUnit}
+              required
+              description='Área que conduz a contratação e responde pelo TR.'
             >
               <Select
                 value={context.responsibleUnit}
@@ -814,12 +835,14 @@ function FieldSection({
   values,
   errors,
   onChange,
+  onFieldBlur,
 }: {
   title: string
   fields: TRFieldDefinition[]
   values: Record<string, unknown>
   errors: StepErrors
   onChange: (fieldId: string, value: string) => void
+  onFieldBlur?: (field: TRFieldDefinition, value: string) => void
 }) {
   return (
     <div className='space-y-5'>
@@ -837,6 +860,7 @@ function FieldSection({
             error={errors[field.id]}
             className={field.input === 'textarea' ? 'md:col-span-2' : undefined}
             onChange={(value) => onChange(field.id, value)}
+            onBlur={(value) => onFieldBlur?.(field, value)}
           />
         ))}
       </div>
@@ -1312,13 +1336,28 @@ function FieldRenderer({
   error,
   className,
   onChange,
+  onBlur,
 }: {
   field: TRFieldDefinition
   value: string
   error?: string
   className?: string
   onChange: (value: string) => void
+  onBlur?: (value: string) => void
 }) {
+  const describedBy = [
+    field.description ? `${field.id}-desc` : null,
+    error ? `${field.id}-error` : null,
+  ]
+    .filter(Boolean)
+    .join(' ') || undefined
+
+  const ariaProps = {
+    'aria-required': field.required || undefined,
+    'aria-invalid': Boolean(error) || undefined,
+    'aria-describedby': describedBy,
+  } as const
+
   return (
     <FieldBlock
       label={field.label}
@@ -1326,14 +1365,22 @@ function FieldRenderer({
       error={error}
       className={className}
       description={field.description}
+      required={field.required}
     >
       {field.input === 'select' ? (
-        <Select value={value} onValueChange={onChange}>
+        <Select
+          value={value}
+          onValueChange={(next) => {
+            onChange(next)
+            onBlur?.(next)
+          }}
+        >
           <SelectTrigger
             id={field.id}
             name={field.id}
             data-field-id={field.id}
             className='rounded-xl'
+            {...ariaProps}
           >
             <SelectValue
               placeholder={field.placeholder ?? 'Selecione uma opção'}
@@ -1357,7 +1404,9 @@ function FieldRenderer({
           placeholder={field.placeholder}
           value={value}
           onChange={(event) => onChange(event.target.value)}
+          onBlur={(event) => onBlur?.(event.target.value)}
           className='min-h-32 rounded-2xl'
+          {...ariaProps}
         />
       ) : (
         <Input
@@ -1370,7 +1419,9 @@ function FieldRenderer({
           placeholder={field.placeholder}
           value={value}
           onChange={(event) => onChange(event.target.value)}
+          onBlur={(event) => onBlur?.(event.target.value)}
           className='rounded-xl'
+          {...ariaProps}
         />
       )}
     </FieldBlock>
@@ -1384,6 +1435,7 @@ function FieldBlock({
   className,
   description,
   children,
+  required,
 }: {
   label: string
   htmlFor?: string
@@ -1391,17 +1443,38 @@ function FieldBlock({
   className?: string
   description?: string
   children: React.ReactNode
+  required?: boolean
 }) {
   return (
     <div className={['grid gap-2', className].filter(Boolean).join(' ')}>
       <Label htmlFor={htmlFor} className='text-sm font-medium'>
         {label}
+        {required ? (
+          <span aria-hidden='true' className='ms-0.5 text-destructive'>
+            *
+          </span>
+        ) : null}
+        {required ? <span className='sr-only'> (obrigatório)</span> : null}
       </Label>
       {children}
       {description ? (
-        <p className='text-xs text-muted-foreground'>{description}</p>
+        <p
+          id={htmlFor ? `${htmlFor}-desc` : undefined}
+          className='text-xs text-muted-foreground'
+        >
+          {description}
+        </p>
       ) : null}
-      {error ? <p className='text-sm text-destructive'>{error}</p> : null}
+      {error ? (
+        <p
+          id={htmlFor ? `${htmlFor}-error` : undefined}
+          role='alert'
+          aria-live='polite'
+          className='text-sm text-destructive'
+        >
+          {error}
+        </p>
+      ) : null}
     </div>
   )
 }
@@ -1522,6 +1595,22 @@ function validateCurrentStep(
   }
 
   return nextErrors
+}
+
+function validateSingleField(
+  field: TRFieldDefinition,
+  value: string
+): string | undefined {
+  if (!field.required) return undefined
+  const trimmed = String(value ?? '').trim()
+  if (!trimmed) return `Preencha o campo "${field.label}".`
+  if (
+    field.input === 'email' &&
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)
+  ) {
+    return 'Informe um e-mail válido.'
+  }
+  return undefined
 }
 
 function focusField(fieldId: string) {
