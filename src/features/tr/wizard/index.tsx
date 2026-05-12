@@ -421,15 +421,26 @@ export function TRWizardPage() {
           </div>
         </section>
 
-        <TRStepper
-          currentStep={currentStep}
-          steps={wizardSteps}
-          onStepClick={goToStep}
-          pendingLabels={reviewState.pendingLabels}
-          pendingByStep={pendingByStep}
-        />
+        <div className='lg:hidden'>
+          <TRStepper
+            currentStep={currentStep}
+            steps={wizardSteps}
+            onStepClick={goToStep}
+            pendingLabels={reviewState.pendingLabels}
+            pendingByStep={pendingByStep}
+          />
+        </div>
 
-        <div className='grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]'>
+        <div className='space-y-6 lg:grid lg:items-start lg:gap-6 lg:space-y-0 lg:grid-cols-[200px_minmax(0,1fr)] xl:grid-cols-[220px_minmax(0,1fr)_320px]'>
+          <div className='hidden lg:block'>
+            <TRStepper
+              currentStep={currentStep}
+              steps={wizardSteps}
+              onStepClick={goToStep}
+              pendingLabels={reviewState.pendingLabels}
+              pendingByStep={pendingByStep}
+            />
+          </div>
           <Card className='rounded-3xl border-black/5 dark:border-white/10'>
             <CardHeader>
               <div className='flex flex-wrap items-start justify-between gap-3'>
@@ -518,7 +529,7 @@ export function TRWizardPage() {
             </CardContent>
           </Card>
 
-          <div className='space-y-6'>
+          <div className='space-y-6 lg:col-span-2 xl:col-span-1'>
             {currentStep > 0 && currentSection.kind === 'fields' ? (
               <TRAIAssistant />
             ) : null}
