@@ -784,6 +784,23 @@ function SetupStep({
     }>
   ) => void
 }) {
+  const ariaFor = (
+    id: string,
+    options: { description?: boolean; required?: boolean } = {}
+  ) => {
+    const describedBy = [
+      options.description ? `${id}-desc` : null,
+      errors[id] ? `${id}-error` : null,
+    ]
+      .filter(Boolean)
+      .join(' ') || undefined
+    return {
+      'aria-required': options.required || undefined,
+      'aria-invalid': Boolean(errors[id]) || undefined,
+      'aria-describedby': describedBy,
+    } as const
+  }
+
   return (
     <div className='space-y-6'>
       <Alert>
@@ -817,6 +834,7 @@ function SetupStep({
                   name='institution'
                   data-field-id='institution'
                   className='rounded-xl'
+                  {...ariaFor('institution', { required: true })}
                 >
                   <SelectValue placeholder='Selecione a instituição' />
                 </SelectTrigger>
@@ -846,6 +864,7 @@ function SetupStep({
                   name='templateType'
                   data-field-id='templateType'
                   className='rounded-xl'
+                  {...ariaFor('templateType', { required: true })}
                 >
                   <SelectValue placeholder='Selecione o modelo' />
                 </SelectTrigger>
@@ -887,6 +906,7 @@ function SetupStep({
                   onContextChange({ title: event.target.value })
                 }
                 className='rounded-xl'
+                {...ariaFor('title', { required: true, description: true })}
               />
             </FieldBlock>
 
@@ -908,6 +928,10 @@ function SetupStep({
                   name='responsibleUnit'
                   data-field-id='responsibleUnit'
                   className='rounded-xl'
+                  {...ariaFor('responsibleUnit', {
+                    required: true,
+                    description: true,
+                  })}
                 >
                   <SelectValue placeholder='Selecione a unidade' />
                 </SelectTrigger>
@@ -937,6 +961,7 @@ function SetupStep({
                   onContextChange({ referenceCode: event.target.value })
                 }
                 className='rounded-xl'
+                {...ariaFor('referenceCode')}
               />
             </FieldBlock>
           </CardContent>
