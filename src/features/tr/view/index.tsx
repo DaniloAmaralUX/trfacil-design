@@ -100,8 +100,8 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
           </div>
         </section>
 
-        <div className='grid grid-cols-12 gap-6 xl:items-start'>
-          <Card className='col-span-12 rounded-2xl border-0 shadow-border xl:col-span-3 xl:sticky xl:top-20'>
+        <div className='space-y-6'>
+          <Card className='rounded-2xl border-0 shadow-border'>
             <CardHeader>
               <CardTitle>Metadados</CardTitle>
             </CardHeader>
@@ -123,31 +123,25 @@ export function TRViewPage({ trId, mode = 'view' }: TRViewPageProps) {
             </CardContent>
           </Card>
 
-          <div className='col-span-12 xl:col-span-7'>
-            <TRDocumentView
-              title={document.title}
-              sections={document.sections}
-              status={{
-                label:
-                  mode === 'edit'
-                    ? 'Documento aberto para ajustes'
-                    : 'Documento consolidado para consulta',
-                tone: mode === 'edit' ? 'warning' : 'neutral',
-              }}
-            />
-          </div>
+          <TRDocumentView
+            title={document.title}
+            sections={document.sections}
+            status={{
+              label:
+                mode === 'edit'
+                  ? 'Documento aberto para ajustes'
+                  : 'Documento consolidado para consulta',
+              tone: mode === 'edit' ? 'warning' : 'neutral',
+            }}
+          />
 
-          <div className='col-span-12 xl:col-span-2'>
-            <TRDocumentToc sections={document.sections} />
-          </div>
+          <TRDocumentToc sections={document.sections} />
         </div>
 
         {isReviewState && (
-          <div className='grid grid-cols-12 gap-6'>
-            <div className='col-span-12 xl:col-span-8'>
-              <TRReviewComments comments={document.comments} />
-            </div>
-            <Card className='col-span-12 rounded-2xl border-0 shadow-border xl:col-span-4'>
+          <div className='space-y-6'>
+            <TRReviewComments comments={document.comments} />
+            <Card className='rounded-2xl border-0 shadow-border'>
               <CardHeader>
                 <CardTitle>Ações de revisão</CardTitle>
               </CardHeader>
