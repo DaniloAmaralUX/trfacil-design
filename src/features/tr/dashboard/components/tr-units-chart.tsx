@@ -1,11 +1,10 @@
+import { Bar, BarChart, XAxis, YAxis } from 'recharts'
 import {
-  Bar,
-  BarChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/shared/ui/chart'
 
 type UnitsChartItem = {
   unit: string
@@ -14,6 +13,13 @@ type UnitsChartItem = {
 
 type TRUnitsChartProps = {
   data: UnitsChartItem[]
+}
+
+const chartConfig: ChartConfig = {
+  records: {
+    label: 'TRs',
+    color: 'var(--primary)',
+  },
 }
 
 export function TRUnitsChart({ data }: TRUnitsChartProps) {
@@ -27,7 +33,7 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
       role='img'
       aria-label={`Distribuição de TRs por unidade. Total: ${total}. ${summary}.`}
     >
-      <ResponsiveContainer width='100%' height={320}>
+      <ChartContainer config={chartConfig} className='h-[320px] w-full'>
         <BarChart
           data={data}
           layout='vertical'
@@ -49,23 +55,18 @@ export function TRUnitsChart({ data }: TRUnitsChartProps) {
             axisLine={false}
             tickLine={false}
           />
-          <Tooltip
+          <ChartTooltip
             cursor={{ fill: 'var(--muted)' }}
-            contentStyle={{
-              backgroundColor: 'var(--popover)',
-              border: '1px solid var(--border)',
-              borderRadius: '0.5rem',
-              fontSize: '0.75rem',
-            }}
-            formatter={(value) => [`${value ?? 0} TRs`, 'Total']}
+            content={
+              <ChartTooltipContent
+                hideLabel
+                formatter={(value) => `${value ?? 0} TRs`}
+              />
+            }
           />
-          <Bar
-            dataKey='records'
-            radius={[0, 8, 8, 0]}
-            fill='var(--primary)'
-          />
+          <Bar dataKey='records' radius={[0, 8, 8, 0]} fill='var(--primary)' />
         </BarChart>
-      </ResponsiveContainer>
+      </ChartContainer>
       <div className='sr-only'>
         <table>
           <caption>Distribuição de TRs por unidade</caption>

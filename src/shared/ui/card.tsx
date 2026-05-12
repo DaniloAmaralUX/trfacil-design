@@ -27,14 +27,35 @@ function CardHeader({ className, ...props }: React.ComponentProps<'div'>) {
   )
 }
 
-function CardTitle({ className, ...props }: React.ComponentProps<'div'>) {
-  return (
-    <div
-      data-slot='card-title'
-      className={cn('leading-none font-semibold', className)}
-      {...props}
-    />
-  )
+type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6
+
+type CardTitleProps = React.ComponentProps<'div'> & {
+  /** Renderiza como heading semântico (h1..h6) em vez de div. */
+  as?: HeadingLevel
+}
+
+function CardTitle({ className, as, ...props }: CardTitleProps) {
+  const sharedProps = {
+    'data-slot': 'card-title',
+    className: cn('leading-none font-semibold', className),
+    ...props,
+  }
+  switch (as) {
+    case 1:
+      return <h1 {...sharedProps} />
+    case 2:
+      return <h2 {...sharedProps} />
+    case 3:
+      return <h3 {...sharedProps} />
+    case 4:
+      return <h4 {...sharedProps} />
+    case 5:
+      return <h5 {...sharedProps} />
+    case 6:
+      return <h6 {...sharedProps} />
+    default:
+      return <div {...sharedProps} />
+  }
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<'div'>) {

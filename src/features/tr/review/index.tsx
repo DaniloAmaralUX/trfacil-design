@@ -52,9 +52,12 @@ export function TRReviewPage() {
 
       <Main className='space-y-6 pb-8'>
         <section className='space-y-2'>
-          <div className='inline-flex items-center gap-2 rounded-full border border-black/5 bg-muted/40 px-3 py-1 text-xs font-semibold tracking-[0.14em] text-primary uppercase dark:border-white/10'>
+          <Badge
+            variant='outline'
+            className='w-fit gap-2 rounded-full border-transparent bg-muted/40 px-3 py-1 font-semibold tracking-[0.14em] text-primary uppercase'
+          >
             Fila de aprovação
-          </div>
+          </Badge>
           <h1 className='text-3xl font-semibold tracking-tight text-balance'>
             Documentos aguardando decisão
           </h1>

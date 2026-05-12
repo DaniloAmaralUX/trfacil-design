@@ -41,6 +41,7 @@ import {
 } from '@/shared/ui/card'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
+import { Progress } from '@/shared/ui/progress'
 import { ScrollArea } from '@/shared/ui/scroll-area'
 import {
   Select,
@@ -572,12 +573,11 @@ export function TRWizardPage() {
                   {reviewState.completedRequired}/{reviewState.totalRequired}
                 </span>
               </div>
-              <div className='mt-1 h-1.5 overflow-hidden rounded-full bg-muted'>
-                <div
-                  className='h-full rounded-full bg-primary transition-[width]'
-                  style={{ width: `${completionPercent}%` }}
-                />
-              </div>
+              <Progress
+                value={completionPercent}
+                aria-label='Campos obrigatórios preenchidos'
+                className='mt-1 h-1.5'
+              />
             </div>
             <Badge
               variant={reviewState.isReady ? 'default' : 'outline'}
@@ -621,10 +621,13 @@ export function TRWizardPage() {
 
                 <div className='flex items-center gap-2'>
                   {currentSection.kind === 'review' ? (
-                    <div className='inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-200'>
+                    <Badge
+                      variant='outline'
+                      className='gap-1.5 rounded-full border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-200'
+                    >
                       <ShieldCheck aria-hidden='true' className='size-3.5' />
                       Prévia oficial consolidada
-                    </div>
+                    </Badge>
                   ) : (
                     <Sheet>
                       <SheetTrigger asChild>
@@ -1893,13 +1896,15 @@ function FieldBlock({
           <TooltipProvider delayDuration={150}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <button
+                <Button
                   type='button'
+                  variant='ghost'
+                  size='icon'
                   aria-label={`Ajuda sobre ${label}`}
-                  className='inline-flex size-4 items-center justify-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded'
+                  className='relative size-6 rounded-full text-muted-foreground after:absolute after:inset-[-6px] after:content-[""] hover:text-foreground'
                 >
                   <HelpCircle className='size-3.5' aria-hidden='true' />
-                </button>
+                </Button>
               </TooltipTrigger>
               <TooltipContent side='top' className='max-w-xs'>
                 {tip}
