@@ -146,7 +146,14 @@ function HorizontalStepper({
   useEffect(() => {
     const node = activeRef.current
     if (!node) return
-    node.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    node.scrollIntoView({
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+      inline: 'center',
+      block: 'nearest',
+    })
   }, [currentStep])
 
   return (
