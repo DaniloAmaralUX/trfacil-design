@@ -1267,7 +1267,7 @@ function LotsSection({
                           }
                         />
                         {errors[`lot-${lot.id}-item-${item.id}-location`] ? (
-                          <p className='mt-2 text-sm text-destructive'>
+                          <p className='field-error mt-2 text-sm text-destructive'>
                             {errors[`lot-${lot.id}-item-${item.id}-location`]}
                           </p>
                         ) : null}
@@ -1288,7 +1288,7 @@ function LotsSection({
                           }
                         />
                         {errors[`lot-${lot.id}-item-${item.id}-itemCode`] ? (
-                          <p className='mt-2 text-sm text-destructive'>
+                          <p className='field-error mt-2 text-sm text-destructive'>
                             {errors[`lot-${lot.id}-item-${item.id}-itemCode`]}
                           </p>
                         ) : null}
@@ -1310,7 +1310,7 @@ function LotsSection({
                           className='min-h-24 rounded-2xl'
                         />
                         {errors[`lot-${lot.id}-item-${item.id}-summary`] ? (
-                          <p className='mt-2 text-sm text-destructive'>
+                          <p className='field-error mt-2 text-sm text-destructive'>
                             {errors[`lot-${lot.id}-item-${item.id}-summary`]}
                           </p>
                         ) : null}
@@ -1331,7 +1331,7 @@ function LotsSection({
                           }
                         />
                         {errors[`lot-${lot.id}-item-${item.id}-unitMeasure`] ? (
-                          <p className='mt-2 text-sm text-destructive'>
+                          <p className='field-error mt-2 text-sm text-destructive'>
                             {
                               errors[
                                 `lot-${lot.id}-item-${item.id}-unitMeasure`
@@ -1357,7 +1357,7 @@ function LotsSection({
                           }
                         />
                         {errors[`lot-${lot.id}-item-${item.id}-quantity`] ? (
-                          <p className='mt-2 text-sm text-destructive'>
+                          <p className='field-error mt-2 text-sm text-destructive'>
                             {errors[`lot-${lot.id}-item-${item.id}-quantity`]}
                           </p>
                         ) : null}
@@ -1378,7 +1378,7 @@ function LotsSection({
                           }
                         />
                         {errors[`lot-${lot.id}-item-${item.id}-delivery`] ? (
-                          <p className='mt-2 text-sm text-destructive'>
+                          <p className='field-error mt-2 text-sm text-destructive'>
                             {errors[`lot-${lot.id}-item-${item.id}-delivery`]}
                           </p>
                         ) : null}
@@ -1924,7 +1924,7 @@ function FieldBlock({
         <p
           id={htmlFor ? `${htmlFor}-error` : undefined}
           role='status'
-          className='text-sm text-destructive'
+          className='field-error text-sm text-destructive'
         >
           {error}
         </p>
