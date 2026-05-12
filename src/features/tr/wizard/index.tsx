@@ -868,16 +868,19 @@ function SetupStep({
         <AlertDescription>{templateIntro}</AlertDescription>
       </Alert>
 
-      <div className='grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]'>
-        <Card className='rounded-2xl border-black/5 shadow-none dark:border-white/10'>
-          <CardHeader>
+      <div className='grid gap-6 md:grid-cols-2'>
+        <Card className='rounded-2xl border-0 shadow-border'>
+          <CardHeader className='space-y-1.5'>
+            <p className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
+              Modelo
+            </p>
             <CardTitle className='text-base'>Estrutura do documento</CardTitle>
             <CardDescription>
               Defina a família institucional e a forma oficial do TR antes do
               preenchimento.
             </CardDescription>
           </CardHeader>
-          <CardContent className='grid gap-5 md:grid-cols-2'>
+          <CardContent className='grid gap-6 md:grid-cols-2'>
             <FieldBlock
               label='Instituição'
               htmlFor='institution'
@@ -939,14 +942,17 @@ function SetupStep({
           </CardContent>
         </Card>
 
-        <Card className='rounded-2xl border-black/5 shadow-none dark:border-white/10'>
-          <CardHeader>
+        <Card className='rounded-2xl border-0 shadow-border'>
+          <CardHeader className='space-y-1.5'>
+            <p className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
+              Identificação
+            </p>
             <CardTitle className='text-base'>Identificação básica</CardTitle>
             <CardDescription>
               Esses dados acompanham toda a jornada e aparecem na revisão final.
             </CardDescription>
           </CardHeader>
-          <CardContent className='grid gap-5'>
+          <CardContent className='grid gap-6'>
             <FieldBlock
               label='Título da TR'
               htmlFor='title'
