@@ -46,7 +46,16 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Emil Kowalski-style easings: stronger than CSS defaults */
+  --ease-emil-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-emil-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-emil-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
+
+/* Hover-only variant — só dispara em devices com cursor preciso (mouse/trackpad),
+   evita estados hover persistentes em touch devices apos tap. */
+@custom-variant hover-only (@media (hover: hover) and (pointer: fine));
 
 @layer base {
   * {
@@ -189,6 +198,55 @@
     opacity: 1;
     transform: translateY(0);
     filter: blur(0);
+  }
+}
+
+/* Entrada do conteúdo do step do wizard (~Emil step-content-enter).
+   Aplica fade + slight rise + blur quando o elemento monta no DOM.
+   Cohesion: 180ms emil-out alinha com a personalidade serious/fast do app. */
+@utility step-content-enter {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  transition:
+    opacity 180ms var(--ease-emil-out),
+    transform 180ms var(--ease-emil-out),
+    filter 180ms var(--ease-emil-out);
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+    filter: blur(2px);
+  }
+}
+
+/* Field error message entrance — slide-down 4px + fade ao montar. */
+@utility field-error {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 180ms var(--ease-emil-out),
+    transform 180ms var(--ease-emil-out);
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* Spinner mais rapido (600ms vs 1s padrao). Emil: 'fast-spinning spinner
+   makes loading feel faster' — perceived performance > actual. */
+@utility animate-spin-fast {
+  animation: spin 600ms linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-content-enter,
+  .field-error {
+    transition: none !important;
+  }
+  .animate-spin-fast {
+    animation: spin 1.5s linear infinite;
   }
 }
 
