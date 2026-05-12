@@ -704,9 +704,19 @@ export function TRWizardPage() {
                     disabled={
                       !reviewState.isReady || submission.status === 'submitting'
                     }
+                    aria-busy={submission.status === 'submitting' || undefined}
                   >
-                    <CheckCircle2 data-icon='inline-start' />
-                    Enviar para revisão
+                    {submission.status === 'submitting' ? (
+                      <Loader2
+                        data-icon='inline-start'
+                        className='animate-spin'
+                      />
+                    ) : (
+                      <CheckCircle2 data-icon='inline-start' />
+                    )}
+                    {submission.status === 'submitting'
+                      ? 'Enviando…'
+                      : 'Enviar para revisão'}
                   </Button>
                 ) : (
                   <Button
