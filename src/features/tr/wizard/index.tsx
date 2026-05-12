@@ -747,7 +747,7 @@ export function TRWizardPage() {
                     <>
                       <Loader2
                         aria-hidden='true'
-                        className='size-3.5 animate-spin'
+                        className='size-3.5 animate-spin-fast'
                       />
                       <span>Salvando rascunho…</span>
                     </>
@@ -806,7 +806,7 @@ export function TRWizardPage() {
                     {submission.status === 'submitting' ? (
                       <Loader2
                         data-icon='inline-start'
-                        className='animate-spin'
+                        className='animate-spin-fast'
                       />
                     ) : (
                       <CheckCircle2 data-icon='inline-start' />
