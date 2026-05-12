@@ -740,7 +740,7 @@ export function TRWizardPage() {
           ) : null}
         </div>
 
-        <div className='sticky bottom-4 z-30'>
+        <div className='sticky bottom-4 z-30 [touch-action:manipulation]'>
           <Card className='rounded-2xl border-black/5 bg-background/95 shadow-lg backdrop-blur dark:border-white/10'>
             <CardContent className='flex flex-wrap items-center justify-between gap-3 px-5 py-4'>
               <div className='flex flex-col gap-1'>
