@@ -6,8 +6,10 @@ import {
   CheckCircle2,
   Copy,
   Download,
+  FilePenLine,
   FileSearch,
   FileText,
+  FileType,
   Trash2,
 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -25,7 +27,9 @@ import { Button } from '@/shared/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
@@ -55,60 +59,71 @@ export function TRsRowActions<TData>({ row }: TRsRowActionsProps<TData>) {
             <DotsHorizontalIcon aria-hidden='true' className='h-4 w-4' />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align='end' className='w-[200px]'>
-          <DropdownMenuItem asChild>
-            <Link to='/tr/$trId' params={{ trId: tr.id }}>
-              <FileSearch aria-hidden='true' className='size-4' />
-              Abrir
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link
-              to='/tr/$trId'
-              params={{ trId: tr.id }}
-              search={{ mode: 'edit' }}
+        <DropdownMenuContent align='end' className='w-[220px]'>
+          <DropdownMenuLabel className='text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
+            Ações
+          </DropdownMenuLabel>
+
+          <DropdownMenuGroup>
+            <DropdownMenuItem asChild>
+              <Link to='/tr/$trId' params={{ trId: tr.id }}>
+                <FileSearch aria-hidden='true' className='size-4' />
+                Abrir
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link
+                to='/tr/$trId'
+                params={{ trId: tr.id }}
+                search={{ mode: 'edit' }}
+              >
+                <FilePenLine aria-hidden='true' className='size-4' />
+                Editar
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => toast.success(`Duplicando ${tr.id}…`)}
             >
-              Editar
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => toast.success(`Duplicando ${tr.id}…`)}
-          >
-            <Copy aria-hidden='true' className='size-4' />
-            Duplicar
-          </DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <Download aria-hidden='true' className='size-4' />
-              Baixar documento
-            </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              <DropdownMenuItem
-                onClick={() => toast.success(`${tr.id}.pdf baixado`)}
-              >
-                <FileText aria-hidden='true' className='size-4' />
-                PDF
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => toast.success(`${tr.id}.docx baixado`)}
-              >
-                <FileText aria-hidden='true' className='size-4' />
-                Word (.docx)
-              </DropdownMenuItem>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
-          {!isApproved && (
-            <>
-              <DropdownMenuSeparator />
+              <Copy aria-hidden='true' className='size-4' />
+              Duplicar
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuGroup>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <Download aria-hidden='true' className='size-4' />
+                Baixar documento
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className='w-[180px]'>
+                <DropdownMenuItem
+                  onClick={() => toast.success(`${tr.id}.pdf baixado`)}
+                >
+                  <FileText aria-hidden='true' className='size-4' />
+                  PDF
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => toast.success(`${tr.id}.docx baixado`)}
+                >
+                  <FileType aria-hidden='true' className='size-4' />
+                  Word (.docx)
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            {!isApproved && (
               <DropdownMenuItem
                 onClick={() => toast.success(`${tr.id} aprovado`)}
               >
                 <CheckCircle2 aria-hidden='true' className='size-4' />
                 Aprovar TR
               </DropdownMenuItem>
-            </>
-          )}
+            )}
+          </DropdownMenuGroup>
+
           <DropdownMenuSeparator />
+
           <DropdownMenuItem
             variant='destructive'
             onSelect={(event) => {
