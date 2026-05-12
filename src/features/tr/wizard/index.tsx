@@ -665,6 +665,9 @@ export function TRWizardPage() {
               </div>
             </CardHeader>
             <CardContent className='space-y-6'>
+              {/* key={currentStep} dispara @starting-style do step-content-enter
+                  no remount, garantindo fade+slide+blur sutil ao trocar etapa. */}
+              <div key={currentStep} className='step-content-enter space-y-6'>
               {currentStep === 0 ? (
                 <SetupStep
                   context={context}
@@ -717,6 +720,7 @@ export function TRWizardPage() {
                   sections={documentSections}
                 />
               )}
+              </div>
             </CardContent>
           </Card>
 
