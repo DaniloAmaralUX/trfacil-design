@@ -229,7 +229,7 @@ export function TRAIAssistant() {
                   type='button'
                   size='sm'
                   variant='ghost'
-                  className='shrink-0 rounded-lg'
+                  className='relative shrink-0 rounded-lg after:absolute after:inset-[-4px] after:content-[""]'
                   onClick={handleCopy}
                   aria-label='Copiar sugestão'
                 >

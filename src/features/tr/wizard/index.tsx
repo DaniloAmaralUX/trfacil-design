@@ -387,7 +387,7 @@ export function TRWizardPage() {
       <Main className='space-y-6 pb-8'>
         <section className='flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-2xl border border-black/5 bg-background/60 px-4 py-3 dark:border-white/10'>
           <div className='flex min-w-0 items-center gap-3'>
-            <div className='flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary'>
+            <div className='flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary'>
               <ClipboardList aria-hidden='true' className='size-4' />
             </div>
             <div className='min-w-0'>
@@ -1256,7 +1256,7 @@ function LotsSection({
             <ol className='space-y-3 lg:hidden' aria-label={`Itens do lote ${index + 1}`}>
               {lot.items.map((item, itemIndex) => (
                 <li key={item.id}>
-                  <Card className='rounded-xl border-border/70'>
+                  <Card className='rounded-2xl border-border/70'>
                     <CardHeader className='flex-row items-center justify-between space-y-0 pb-3'>
                       <CardTitle className='text-sm font-semibold'>
                         Item {itemIndex + 1}
@@ -1267,6 +1267,7 @@ function LotsSection({
                         size='sm'
                         onClick={() => onRemoveLotItem(lot.id, item.id)}
                         aria-label={`Remover item ${itemIndex + 1} do lote ${index + 1}`}
+                        className='relative after:absolute after:inset-[-4px] after:content-[""]'
                       >
                         <Trash2 data-icon='inline-start' />
                         Remover
