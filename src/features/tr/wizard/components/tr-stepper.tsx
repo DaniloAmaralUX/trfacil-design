@@ -300,10 +300,10 @@ function HorizontalStepItem({
       aria-current={isActive ? 'step' : undefined}
       title={step.title}
       className={cn(
-        'group h-auto shrink-0 gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 text-left transition-colors',
-        'hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring',
+        'group h-auto shrink-0 gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 text-left transition-[background-color,border-color,color] duration-200 ease-[var(--ease-emil-out)]',
+        'hover-only:hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring',
         isActive
-          ? 'border-primary/40 bg-primary/5 text-primary hover:bg-primary/10'
+          ? 'border-primary/40 bg-primary/5 text-primary hover-only:hover:bg-primary/10'
           : 'border-border bg-card',
         isCompleted &&
           !isActive &&
@@ -363,13 +363,13 @@ function StepRailItem({
       onClick={() => onStepClick?.(index)}
       aria-current={isActive ? 'step' : undefined}
       className={cn(
-        'group h-auto w-full justify-start gap-3 whitespace-normal rounded-xl border-l-2 border-transparent px-3 py-2 text-left transition-colors',
-        'hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring',
-        isActive && 'border-l-primary bg-primary/5 hover:bg-primary/10',
+        'group h-auto w-full justify-start gap-3 whitespace-normal rounded-xl border-l-2 border-transparent px-3 py-2 text-left transition-[background-color,border-color,color] duration-200 ease-[var(--ease-emil-out)]',
+        'hover-only:hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring',
+        isActive && 'border-l-primary bg-primary/5 hover-only:hover:bg-primary/10',
         isCompleted &&
-          'border-l-emerald-300 bg-emerald-50/40 hover:bg-emerald-50 dark:border-l-emerald-800 dark:bg-emerald-950/10',
+          'border-l-emerald-300 bg-emerald-50/40 hover-only:hover:bg-emerald-50 dark:border-l-emerald-800 dark:bg-emerald-950/10',
         hasAttention &&
-          'border-l-amber-400 bg-amber-50/50 hover:bg-amber-50 dark:border-l-amber-700 dark:bg-amber-950/15'
+          'border-l-amber-400 bg-amber-50/50 hover-only:hover:bg-amber-50 dark:border-l-amber-700 dark:bg-amber-950/15'
       )}
     >
       <StepIcon
