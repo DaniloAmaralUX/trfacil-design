@@ -3,7 +3,11 @@ import { type ColumnDef } from '@tanstack/react-table'
 import { DataTableColumnHeader } from '@/shared/data-table'
 import { Badge } from '@/shared/ui/badge'
 import { Checkbox } from '@/shared/ui/checkbox'
-import { trStatusBadgeClass, trStatusLabels } from '@/features/tr/data/data'
+import {
+  trNatureLabels,
+  trStatusBadgeClass,
+  trStatusLabels,
+} from '@/features/tr/data/data'
 import { type TRItem } from '@/features/tr/data/schema'
 import { TRsRowActions } from './trs-row-actions'
 
@@ -55,6 +59,7 @@ export const trsColumns: ColumnDef<TRItem>[] = [
       <DataTableColumnHeader column={column} title='Título' />
     ),
     meta: {
+      title: 'Título',
       className: 'ps-1 max-w-0 w-[34%]',
       tdClassName: 'ps-4',
     },
@@ -72,7 +77,7 @@ export const trsColumns: ColumnDef<TRItem>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Unidade' />
     ),
-    meta: { className: 'ps-1', tdClassName: 'ps-4' },
+    meta: { title: 'Unidade', className: 'ps-1', tdClassName: 'ps-4' },
     filterFn: (row, id, value) => value.includes(row.getValue(id)),
   },
   {
@@ -80,14 +85,24 @@ export const trsColumns: ColumnDef<TRItem>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Responsável' />
     ),
-    meta: { className: 'ps-1', tdClassName: 'ps-4' },
+    meta: { title: 'Responsável', className: 'ps-1', tdClassName: 'ps-4' },
+  },
+  {
+    accessorKey: 'nature',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Natureza' />
+    ),
+    meta: { title: 'Natureza', className: 'ps-1', tdClassName: 'ps-4' },
+    cell: ({ row }) =>
+      trNatureLabels[row.original.nature] ?? row.original.nature,
+    filterFn: (row, id, value) => value.includes(row.getValue(id)),
   },
   {
     accessorKey: 'status',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
-    meta: { className: 'ps-1', tdClassName: 'ps-4' },
+    meta: { title: 'Status', className: 'ps-1', tdClassName: 'ps-4' },
     cell: ({ row }) => (
       <Badge
         variant='outline'
@@ -103,14 +118,18 @@ export const trsColumns: ColumnDef<TRItem>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Etapa atual' />
     ),
-    meta: { className: 'ps-1', tdClassName: 'ps-4' },
+    meta: { title: 'Etapa atual', className: 'ps-1', tdClassName: 'ps-4' },
   },
   {
     accessorKey: 'updatedAt',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Atualização' />
     ),
-    meta: { className: 'ps-1', tdClassName: 'ps-4 tabular-nums' },
+    meta: {
+      title: 'Atualização',
+      className: 'ps-1',
+      tdClassName: 'ps-4 tabular-nums',
+    },
     cell: ({ row }) => (
       <span className='tabular-nums'>
         {new Intl.DateTimeFormat('pt-BR').format(

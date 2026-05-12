@@ -7,6 +7,7 @@ export const trs: TRItem[] = [
     unit: 'SENAI',
     owner: 'Maykon Alves',
     status: 'in_review',
+    nature: 'capacitacao',
     updatedAt: '2026-04-07',
     currentStep: 'Revisão final',
     summary:
@@ -18,6 +19,7 @@ export const trs: TRItem[] = [
     unit: 'SESI',
     owner: 'Ana Costa',
     status: 'changes_requested',
+    nature: 'servico',
     updatedAt: '2026-04-06',
     currentStep: 'Especificações',
     summary:
@@ -29,6 +31,7 @@ export const trs: TRItem[] = [
     unit: 'IEL',
     owner: 'Juliana Ferraz',
     status: 'draft',
+    nature: 'aquisicao',
     updatedAt: '2026-04-05',
     currentStep: 'Objeto',
     summary:
@@ -40,6 +43,7 @@ export const trs: TRItem[] = [
     unit: 'FIEPE',
     owner: 'Carlos Henrique',
     status: 'approved',
+    nature: 'consultoria',
     updatedAt: '2026-04-03',
     currentStep: 'Concluído',
     summary:
@@ -51,6 +55,7 @@ export const trs: TRItem[] = [
     unit: 'CIEPE',
     owner: 'Renata Vieira',
     status: 'rejected',
+    nature: 'locacao',
     updatedAt: '2026-04-02',
     currentStep: 'Aprovação',
     summary:
@@ -62,6 +67,7 @@ export const trs: TRItem[] = [
     unit: 'SENAI',
     owner: 'Pedro Lima',
     status: 'draft',
+    nature: 'servico',
     updatedAt: '2026-04-01',
     currentStep: 'Justificativa',
     summary:

@@ -23,7 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/ui/table'
-import { trStatuses, trUnits } from '@/features/tr/data/data'
+import { trNatures, trStatuses, trUnits } from '@/features/tr/data/data'
 import { type TRItem } from '@/features/tr/data/schema'
 import { trsColumns as columns } from './trs-columns'
 import { TRsEmptyState } from './trs-empty-state'
@@ -37,7 +37,11 @@ type TRsTableProps = {
 export function TRsTable({ data }: TRsTableProps) {
   const [rowSelection, setRowSelection] = useState({})
   const [sorting, setSorting] = useState<SortingState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  // Natureza é filtrável "à parte" mas a coluna fica escondida por default
+  // para não poluir a tabela. O usuário ativa via "Colunas" se quiser ver.
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    nature: false,
+  })
 
   const {
     globalFilter,
@@ -55,6 +59,7 @@ export function TRsTable({ data }: TRsTableProps) {
     columnFilters: [
       { columnId: 'status', searchKey: 'status', type: 'array' },
       { columnId: 'unit', searchKey: 'unit', type: 'array' },
+      { columnId: 'nature', searchKey: 'nature', type: 'array' },
     ],
   })
 
@@ -119,6 +124,11 @@ export function TRsTable({ data }: TRsTableProps) {
             columnId: 'unit',
             title: 'Unidade',
             options: [...trUnits],
+          },
+          {
+            columnId: 'nature',
+            title: 'Natureza da Contratação',
+            options: [...trNatures],
           },
         ]}
       />

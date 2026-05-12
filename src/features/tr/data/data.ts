@@ -115,3 +115,17 @@ export const trUnits = [
   { label: 'FIEPE', value: 'FIEPE' as const, icon: ArrowRight },
   { label: 'CIEPE', value: 'CIEPE' as const, icon: ArrowRight },
 ] as const
+
+export const trNatures = [
+  { label: 'Aquisição', value: 'aquisicao' as const },
+  { label: 'Serviço', value: 'servico' as const },
+  { label: 'Consultoria', value: 'consultoria' as const },
+  { label: 'Locação', value: 'locacao' as const },
+  { label: 'Capacitação', value: 'capacitacao' as const },
+] as const
+
+export type TRNature = (typeof trNatures)[number]['value']
+
+export const trNatureLabels: Record<TRNature, string> = Object.fromEntries(
+  trNatures.map((n) => [n.value, n.label])
+) as Record<TRNature, string>
