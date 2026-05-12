@@ -1253,7 +1253,10 @@ function LotsSection({
               </Table>
             </div>
 
-            <ol className='space-y-3 lg:hidden' aria-label={`Itens do lote ${index + 1}`}>
+            <ol
+              className='stagger-fade-in space-y-3 lg:hidden'
+              aria-label={`Itens do lote ${index + 1}`}
+            >
               {lot.items.map((item, itemIndex) => (
                 <li key={item.id}>
                   <Card className='rounded-2xl border-border/70'>
@@ -1446,6 +1449,7 @@ function DeliveriesSection({
         </AlertDescription>
       </Alert>
 
+      <div className='stagger-fade-in space-y-5'>
       {deliveries.map((delivery, index) => (
         <Card
           key={delivery.id}
@@ -1540,6 +1544,7 @@ function DeliveriesSection({
           </CardContent>
         </Card>
       ))}
+      </div>
 
       <Button type='button' variant='outline' onClick={onAddDelivery}>
         <Plus data-icon='inline-start' />
