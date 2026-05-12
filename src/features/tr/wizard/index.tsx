@@ -7,6 +7,7 @@ import {
   ChevronLeft,
   ClipboardList,
   FileText,
+  HelpCircle,
   Loader2,
   Plus,
   Save,
@@ -57,6 +58,12 @@ import {
   TableRow,
 } from '@/shared/ui/table'
 import { Textarea } from '@/shared/ui/textarea'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/shared/ui/tooltip'
 import {
   type TRDeliveryLocation,
   type TRFieldDefinition,
@@ -723,6 +730,7 @@ function SetupStep({
               htmlFor='templateType'
               error={errors.templateType}
               required
+              tip='Cada modelo (consultoria, capacitações, locação, etc.) abre uma estrutura diferente de etapas e campos obrigatórios. Você pode trocar depois, mas dados específicos podem ser perdidos.'
             >
               <Select
                 value={context.templateType}
@@ -808,7 +816,11 @@ function SetupStep({
               </Select>
             </FieldBlock>
 
-            <FieldBlock label='Código de referência' htmlFor='referenceCode'>
+            <FieldBlock
+              label='Código de referência'
+              htmlFor='referenceCode'
+              tip='Opcional. Use o código interno usado pela sua unidade (ex.: TR-2026-021) para facilitar o rastreamento.'
+            >
               <Input
                 id='referenceCode'
                 name='referenceCode'
@@ -1436,6 +1448,7 @@ function FieldBlock({
   description,
   children,
   required,
+  tip,
 }: {
   label: string
   htmlFor?: string
@@ -1444,18 +1457,39 @@ function FieldBlock({
   description?: string
   children: React.ReactNode
   required?: boolean
+  tip?: string
 }) {
   return (
     <div className={['grid gap-2', className].filter(Boolean).join(' ')}>
-      <Label htmlFor={htmlFor} className='text-sm font-medium'>
-        {label}
-        {required ? (
-          <span aria-hidden='true' className='ms-0.5 text-destructive'>
-            *
-          </span>
+      <div className='flex items-center gap-1.5'>
+        <Label htmlFor={htmlFor} className='text-sm font-medium'>
+          {label}
+          {required ? (
+            <span aria-hidden='true' className='ms-0.5 text-destructive'>
+              *
+            </span>
+          ) : null}
+          {required ? <span className='sr-only'> (obrigatório)</span> : null}
+        </Label>
+        {tip ? (
+          <TooltipProvider delayDuration={150}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type='button'
+                  aria-label={`Ajuda sobre ${label}`}
+                  className='inline-flex size-4 items-center justify-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded'
+                >
+                  <HelpCircle className='size-3.5' aria-hidden='true' />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side='top' className='max-w-xs'>
+                {tip}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         ) : null}
-        {required ? <span className='sr-only'> (obrigatório)</span> : null}
-      </Label>
+      </div>
       {children}
       {description ? (
         <p
