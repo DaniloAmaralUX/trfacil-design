@@ -124,7 +124,7 @@ export function TRsTable({ data }: TRsTableProps) {
       />
       {hasRows ? (
         <>
-          <div className='overflow-hidden rounded-md border'>
+          <div className='overflow-x-auto rounded-md border'>
             <Table className='min-w-[1100px]'>
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (

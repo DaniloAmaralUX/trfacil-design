@@ -1036,8 +1036,8 @@ function LotsSection({
               </FieldBlock>
             </div>
 
-            <div className='rounded-2xl border border-border/70'>
-              <Table>
+            <div className='overflow-x-auto rounded-2xl border border-border/70'>
+              <Table className='min-w-[1100px]'>
                 <TableHeader>
                   <TableRow>
                     <TableHead className='min-w-[200px]'>
