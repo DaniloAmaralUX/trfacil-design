@@ -172,7 +172,7 @@ function HorizontalStepper({
       <Progress value={percent} aria-label='Progresso do wizard' className='mb-3 h-1' />
       <ol
         ref={listRef}
-        className='flex min-w-0 items-stretch gap-2 overflow-x-auto pb-1'
+        className='flex min-w-0 items-stretch gap-4 overflow-x-auto pb-1'
       >
         {steps.map((step, index) => {
           const isActive = index === currentStep
@@ -180,7 +180,7 @@ function HorizontalStepper({
             <li
               key={step.id}
               ref={isActive ? activeRef : undefined}
-              className='flex min-w-0 items-center gap-2'
+              className='flex min-w-0 items-center gap-4'
             >
               <HorizontalStepItem
                 step={step}
@@ -194,7 +194,7 @@ function HorizontalStepper({
                 <span
                   aria-hidden='true'
                   className={cn(
-                    'h-px w-8 shrink-0 bg-border transition-colors',
+                    'h-0.5 w-10 shrink-0 rounded-full bg-border transition-colors',
                     index < currentStep && 'bg-emerald-400 dark:bg-emerald-700'
                   )}
                 />
