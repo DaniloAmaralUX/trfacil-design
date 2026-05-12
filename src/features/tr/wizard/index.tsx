@@ -159,6 +159,60 @@ export function TRWizardPage() {
     [context, template, documentData]
   )
 
+  const pendingByStep = useMemo<number[]>(
+    () =>
+      wizardSteps.map((section, index) => {
+        if (index === 0) {
+          let count = 0
+          if (!context.institution) count += 1
+          if (!context.templateType) count += 1
+          if (!context.title.trim()) count += 1
+          if (!context.responsibleUnit.trim()) count += 1
+          return count
+        }
+        if (section.kind === 'fields') {
+          return (section.fieldIds ?? []).reduce((sum, fieldId) => {
+            const field = template.fields[fieldId]
+            if (!field?.required) return sum
+            const value = String(documentData[fieldId] ?? '').trim()
+            return value ? sum : sum + 1
+          }, 0)
+        }
+        if (section.kind === 'lots') {
+          const lots = (documentData.lots as TRLot[] | undefined) ?? []
+          if (lots.length === 0) return 1
+          let count = 0
+          lots.forEach((lot) => {
+            if (!lot.number.trim()) count += 1
+            if (!lot.name.trim()) count += 1
+            lot.items.forEach((item) => {
+              if (!item.location.trim()) count += 1
+              if (!item.itemCode.trim()) count += 1
+              if (!item.summary.trim()) count += 1
+              if (!item.unitMeasure.trim()) count += 1
+              if (!item.quantity.trim()) count += 1
+              if (!item.delivery.trim()) count += 1
+            })
+          })
+          return count
+        }
+        if (section.kind === 'deliveries') {
+          const deliveries =
+            (documentData.deliveries as TRDeliveryLocation[] | undefined) ?? []
+          if (deliveries.length === 0) return 1
+          let count = 0
+          deliveries.forEach((delivery) => {
+            if (!delivery.institutionUnit.trim()) count += 1
+            if (!delivery.cnpj.trim()) count += 1
+            if (!delivery.address.trim()) count += 1
+          })
+          return count
+        }
+        return 0
+      }),
+    [wizardSteps, context, documentData, template]
+  )
+
   const completionPercent = Math.round(
     (reviewState.completedRequired / Math.max(reviewState.totalRequired, 1)) *
       100
@@ -356,6 +410,7 @@ export function TRWizardPage() {
           steps={wizardSteps}
           onStepClick={goToStep}
           pendingLabels={reviewState.pendingLabels}
+          pendingByStep={pendingByStep}
         />
 
         <div className='grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]'>
