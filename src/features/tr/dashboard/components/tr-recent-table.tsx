@@ -25,29 +25,23 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/shared/ui/tooltip'
+import {
+  type TRStatus,
+  trStatusBadgeClass,
+  trStatusLabels,
+} from '@/features/tr/data/data'
 
 type RecentTR = {
   id: string
   title: string
   unit: string
   owner: string
-  status: string
+  status: TRStatus
   updatedAt: string
 }
 
 type TRRecentTableProps = {
   items: RecentTR[]
-}
-
-const statusClasses: Record<string, string> = {
-  Rascunho:
-    'border-slate-300/70 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-200',
-  'Em revisão':
-    'border-amber-300/70 bg-amber-100 text-amber-800 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200',
-  'Ajustes solicitados':
-    'border-rose-300/70 bg-rose-100 text-rose-800 dark:border-rose-700 dark:bg-rose-950/40 dark:text-rose-200',
-  Aprovado:
-    'border-emerald-300/70 bg-emerald-100 text-emerald-800 dark:border-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-200',
 }
 
 export function TRRecentTable({ items }: TRRecentTableProps) {
@@ -115,9 +109,9 @@ export function TRRecentTable({ items }: TRRecentTableProps) {
               <TableCell>
                 <Badge
                   variant='outline'
-                  className={statusClasses[item.status] ?? ''}
+                  className={trStatusBadgeClass[item.status] ?? ''}
                 >
-                  {item.status}
+                  {trStatusLabels[item.status] ?? item.status}
                 </Badge>
               </TableCell>
               <TableCell className='tabular-nums'>{item.updatedAt}</TableCell>

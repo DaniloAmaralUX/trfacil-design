@@ -38,16 +38,37 @@ export const trKpis = [
   },
 ] as const
 
+import { trStatusTokens } from './data'
+
 export const trStatusData = [
-  { label: 'Rascunho', value: 14, percentage: 29, color: '#94a3b8' },
-  { label: 'Em revisão', value: 9, percentage: 19, color: '#f59e0b' },
   {
-    label: 'Ajustes solicitados',
+    status: 'draft' as const,
+    label: trStatusTokens.draft.label,
+    value: 14,
+    percentage: 29,
+    color: trStatusTokens.draft.chartColor,
+  },
+  {
+    status: 'in_review' as const,
+    label: trStatusTokens.in_review.label,
+    value: 9,
+    percentage: 19,
+    color: trStatusTokens.in_review.chartColor,
+  },
+  {
+    status: 'changes_requested' as const,
+    label: trStatusTokens.changes_requested.label,
     value: 4,
     percentage: 8,
-    color: '#fb7185',
+    color: trStatusTokens.changes_requested.chartColor,
   },
-  { label: 'Aprovado', value: 21, percentage: 44, color: '#10b981' },
+  {
+    status: 'approved' as const,
+    label: trStatusTokens.approved.label,
+    value: 21,
+    percentage: 44,
+    color: trStatusTokens.approved.chartColor,
+  },
 ] as const
 
 export const trUnitData = [
@@ -64,7 +85,7 @@ export const recentTrs = [
     title: 'Contratação de instrutor para NR-10',
     unit: 'SENAI',
     owner: 'Maykon Alves',
-    status: 'Em revisão',
+    status: 'in_review' as const,
     updatedAt: '07/04/2026',
   },
   {
@@ -72,7 +93,7 @@ export const recentTrs = [
     title: 'Serviço de manutenção preventiva em elevadores',
     unit: 'SESI',
     owner: 'Ana Costa',
-    status: 'Ajustes solicitados',
+    status: 'changes_requested' as const,
     updatedAt: '06/04/2026',
   },
   {
@@ -80,7 +101,7 @@ export const recentTrs = [
     title: 'Aquisição de kits didáticos para laboratório móvel',
     unit: 'IEL',
     owner: 'Juliana Ferraz',
-    status: 'Rascunho',
+    status: 'draft' as const,
     updatedAt: '05/04/2026',
   },
   {
@@ -88,7 +109,7 @@ export const recentTrs = [
     title: 'Contratação de consultoria para inovação industrial',
     unit: 'FIEPE',
     owner: 'Carlos Henrique',
-    status: 'Aprovado',
+    status: 'approved' as const,
     updatedAt: '03/04/2026',
   },
 ] as const
