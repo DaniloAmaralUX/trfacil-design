@@ -579,16 +579,6 @@ export function TRWizardPage() {
                 className='mt-1 h-1.5'
               />
             </div>
-            <Badge
-              variant={reviewState.isReady ? 'default' : 'outline'}
-              className={
-                reviewState.isReady
-                  ? ''
-                  : 'border-amber-300 text-amber-700 dark:border-amber-800 dark:text-amber-200'
-              }
-            >
-              {reviewState.isReady ? 'Pronto para envio' : 'Pendências em aberto'}
-            </Badge>
           </div>
         </section>
 
