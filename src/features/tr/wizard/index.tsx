@@ -381,15 +381,9 @@ export function TRWizardPage() {
               <h1 className='truncate text-base font-semibold tracking-tight'>
                 Criação de TR com modelos oficiais
               </h1>
-              <div className='flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground'>
-                <span>{context.institution}</span>
-                <span aria-hidden='true'>·</span>
-                <span>{template.label}</span>
-                <span aria-hidden='true'>·</span>
-                <span>
-                  Etapa {currentStep + 1} de {wizardSteps.length}
-                </span>
-              </div>
+              <p className='truncate text-xs text-muted-foreground'>
+                {currentSection.description}
+              </p>
             </div>
           </div>
 
@@ -445,24 +439,18 @@ export function TRWizardPage() {
             <CardHeader>
               <div className='flex flex-wrap items-start justify-between gap-3'>
                 <div className='space-y-2'>
-                  <div className='flex flex-wrap items-center gap-2'>
-                    <Badge variant='outline'>{template.badge}</Badge>
-                    <Badge variant='secondary'>
-                      Etapa {currentStep + 1} de {wizardSteps.length}
-                    </Badge>
-                    {reviewState.pendingLabels.length ? (
-                      <Badge
-                        variant='outline'
-                        className='border-amber-300 text-amber-700 dark:border-amber-800 dark:text-amber-200'
-                      >
-                        {reviewState.pendingLabels.length} pendência(s)
-                      </Badge>
-                    ) : null}
-                  </div>
                   <CardTitle>{currentSection.title}</CardTitle>
                   <CardDescription>
                     {currentSection.description}
                   </CardDescription>
+                  {reviewState.pendingLabels.length ? (
+                    <Badge
+                      variant='outline'
+                      className='w-fit border-amber-300 text-amber-700 dark:border-amber-800 dark:text-amber-200'
+                    >
+                      {reviewState.pendingLabels.length} pendência(s)
+                    </Badge>
+                  ) : null}
                 </div>
 
                 {currentSection.kind === 'review' ? (
@@ -541,6 +529,18 @@ export function TRWizardPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className='space-y-4 text-sm'>
+                <div className='min-w-0 space-y-1'>
+                  <div className='text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase'>
+                    Modelo institucional
+                  </div>
+                  <div className='font-medium break-words'>
+                    <span translate='no'>{context.institution}</span>
+                    <span className='mx-1 text-muted-foreground' aria-hidden='true'>
+                      ·
+                    </span>
+                    {template.label}
+                  </div>
+                </div>
                 <SummaryLine
                   label='Referência'
                   value={context.referenceCode || 'Não informada'}
@@ -553,7 +553,6 @@ export function TRWizardPage() {
                   label='Unidade responsável'
                   value={context.responsibleUnit || 'Não informada'}
                 />
-                <SummaryLine label='Modelo oficial' value={template.label} />
                 <Separator />
                 <div className='rounded-2xl bg-muted/30 p-4'>
                   <div className='flex items-center gap-2 font-medium'>
