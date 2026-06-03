@@ -36,6 +36,10 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu'
+import {
+  downloadTRWord,
+  printTRToPdf,
+} from '@/features/tr/data/document-export'
 import { type TRItem } from '@/features/tr/data/schema'
 
 type TRsRowActionsProps<TData> = {
@@ -102,16 +106,26 @@ export function TRsRowActions<TData>({ row }: TRsRowActionsProps<TData>) {
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent className='w-[180px]'>
                 <DropdownMenuItem
-                  onClick={() => toast.success(`${tr.id}.pdf baixado`)}
+                  onClick={() => {
+                    const opened = printTRToPdf(tr.id)
+                    if (!opened) {
+                      toast.error(
+                        'Não foi possível abrir a janela de impressão. Libere os pop-ups e tente novamente.'
+                      )
+                    }
+                  }}
                 >
                   <FileText aria-hidden='true' className='size-4' />
                   PDF
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => toast.success(`${tr.id}.docx baixado`)}
+                  onClick={() => {
+                    downloadTRWord(tr.id)
+                    toast.success(`${tr.id}.doc gerado`)
+                  }}
                 >
                   <FileType aria-hidden='true' className='size-4' />
-                  Word (.docx)
+                  Word (.doc)
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuSub>
