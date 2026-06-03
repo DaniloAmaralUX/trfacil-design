@@ -91,6 +91,7 @@ import {
 } from '@/features/tr/data/templates'
 import { TRMetaList } from '@/shared/components/tr-meta-list'
 import { TRDocumentView } from '@/features/tr/view/components/tr-document-view'
+import { trs } from '@/features/tr/data/trs'
 import { TRAIAssistant } from './components/tr-ai-assistant'
 import { TRStepper } from './components/tr-stepper'
 import { useTRWizard } from './store/use-tr-wizard'
@@ -107,7 +108,11 @@ type StepErrorState = {
   values: StepErrors
 }
 
-export function TRWizardPage() {
+type TRWizardPageProps = {
+  duplicateFrom?: string
+}
+
+export function TRWizardPage({ duplicateFrom }: TRWizardPageProps = {}) {
   const {
     currentStep,
     submission,
@@ -134,7 +139,24 @@ export function TRWizardPage() {
     startSubmission,
     completeSubmission,
     setAssistantTarget,
+    seedFromDuplicate,
   } = useTRWizard()
+
+  // Semeia o wizard a partir de uma TR fonte quando vem de "Duplicar".
+  // Guard via ref garante que dispara só uma vez por navegação.
+  const seededRef = useRef(false)
+  useEffect(() => {
+    if (!duplicateFrom || seededRef.current) return
+    const source = trs.find((item) => item.id === duplicateFrom)
+    if (!source) return
+    seededRef.current = true
+    seedFromDuplicate({
+      id: source.id,
+      title: source.title,
+      unit: source.unit,
+    })
+    toast.success(`Editando uma cópia de ${source.id}`)
+  }, [duplicateFrom, seedFromDuplicate])
 
   const template = getTemplateDefinition(
     context.institution,

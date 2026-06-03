@@ -67,6 +67,11 @@ type TRWizardState = TRWizardData & {
   saveDraft: () => void
   startSubmission: () => void
   completeSubmission: () => void
+  seedFromDuplicate: (source: {
+    id: string
+    title: string
+    unit: string
+  }) => void
   reset: () => void
   hasCustomData: () => boolean
 }
@@ -442,6 +447,28 @@ export const useTRWizard = create<TRWizardState>()((set, get) => ({
       },
       isDirty: false,
     })),
+  seedFromDuplicate: (source) =>
+    set((state) => {
+      // Protótipo: as TRs da lista são registros-resumo (não guardam o
+      // documentData completo). Carregamos os metadados disponíveis (título
+      // como "Cópia de…", unidade) e mantemos o documentData/template atual
+      // como base editável populada. Cópia campo-a-campo fiel exige backend.
+      const context = {
+        ...state.context,
+        title: `Cópia de ${source.title}`,
+        responsibleUnit: source.unit,
+      }
+      return {
+        ...syncState(context, state.documentData),
+        currentStep: 0,
+        submission: {
+          status: 'editing' as const,
+          savedAt: '',
+          completedAt: '',
+        },
+        isDirty: false,
+      }
+    }),
   reset: () =>
     set({
       ...createInitialTRWizardData(),

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { type Row } from '@tanstack/react-table'
 import {
   CheckCircle2,
@@ -44,6 +44,7 @@ type TRsRowActionsProps<TData> = {
 
 export function TRsRowActions<TData>({ row }: TRsRowActionsProps<TData>) {
   const tr = row.original as TRItem
+  const navigate = useNavigate()
   const [confirmOpen, setConfirmOpen] = useState(false)
   const isApproved = tr.status === 'approved'
 
@@ -82,7 +83,9 @@ export function TRsRowActions<TData>({ row }: TRsRowActionsProps<TData>) {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => toast.success(`Duplicando ${tr.id}…`)}
+              onClick={() =>
+                navigate({ to: '/novo-tr', search: { duplicate: tr.id } })
+              }
             >
               <Copy aria-hidden='true' className='size-4' />
               Duplicar
