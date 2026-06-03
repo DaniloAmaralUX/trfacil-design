@@ -1,3 +1,4 @@
+import { FIEPE_LOGO_DATA_URI } from '@/shared/assets/fiepe-logo'
 import { type TRDocumentSection } from './templates'
 import { getTRDocument } from './tr-document'
 
@@ -175,15 +176,6 @@ const documentStyles = `
   }
 `
 
-const FIEPE_LOGO_PATH = '/images/fiepe-logo.png'
-
-// URL absoluta: a janela de impressão usa document.write (base about:blank),
-// então caminhos relativos não resolvem — precisamos do origin do app.
-function logoSrc(): string {
-  const origin = typeof window !== 'undefined' ? window.location.origin : ''
-  return `${origin}${FIEPE_LOGO_PATH}`
-}
-
 export function buildDocumentHtml(trId: string): {
   filename: string
   html: string
@@ -220,7 +212,7 @@ export function buildDocumentHtml(trId: string): {
 <body>
   <header class="doc-header">
     <div class="doc-brand">
-      <img class="doc-logo" src="${logoSrc()}" alt="FIEPE"
+      <img class="doc-logo" src="${FIEPE_LOGO_DATA_URI}" alt="FIEPE"
         onerror="this.style.display='none';var f=this.nextElementSibling;if(f){f.style.display='inline-block'}">
       <span class="doc-logo-fallback">Sistema FIEPE</span>
     </div>
