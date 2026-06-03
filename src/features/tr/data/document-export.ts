@@ -254,26 +254,46 @@ export function downloadTRWord(trId: string): void {
 }
 
 /**
- * Abre uma janela limpa com o documento e dispara o diálogo de impressão.
- * Retorna `false` se o pop-up foi bloqueado (o chamador pode exibir um aviso).
+ * Imprime o documento via iframe oculto — sem pop-up, à prova de bloqueador.
+ * Escreve o HTML num iframe fora da tela, dispara o diálogo de impressão e
+ * remove o iframe quando o diálogo fecha. Retorna false só em falha rara de DOM.
  */
 export function printTRToPdf(trId: string): boolean {
   const { html } = buildDocumentHtml(trId)
-  const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=920,height=1000')
-  if (!printWindow) return false
 
-  printWindow.document.open()
-  printWindow.document.write(html)
-  printWindow.document.close()
+  const iframe = document.createElement('iframe')
+  iframe.setAttribute('aria-hidden', 'true')
+  iframe.style.position = 'fixed'
+  iframe.style.right = '0'
+  iframe.style.bottom = '0'
+  iframe.style.width = '0'
+  iframe.style.height = '0'
+  iframe.style.border = '0'
+  document.body.appendChild(iframe)
 
-  const triggerPrint = () => {
-    printWindow.focus()
-    printWindow.print()
+  const win = iframe.contentWindow
+  if (!win) {
+    iframe.remove()
+    return false
   }
 
-  // `onload` cobre o caso normal; o timeout é fallback se o load já ocorreu.
-  printWindow.onload = triggerPrint
-  window.setTimeout(triggerPrint, 400)
+  let printed = false
+  const triggerPrint = () => {
+    if (printed) return
+    printed = true
+    win.focus()
+    win.print()
+  }
+
+  // Remove o iframe depois que o diálogo de impressão fecha.
+  win.onafterprint = () => window.setTimeout(() => iframe.remove(), 300)
+  // onload cobre o carregamento; o timeout é fallback caso já tenha carregado.
+  iframe.onload = () => window.setTimeout(triggerPrint, 50)
+  window.setTimeout(triggerPrint, 500)
+
+  win.document.open()
+  win.document.write(html)
+  win.document.close()
 
   return true
 }

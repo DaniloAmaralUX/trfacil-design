@@ -109,9 +109,7 @@ export function TRsRowActions<TData>({ row }: TRsRowActionsProps<TData>) {
                   onClick={() => {
                     const opened = printTRToPdf(tr.id)
                     if (!opened) {
-                      toast.error(
-                        'Não foi possível abrir a janela de impressão. Libere os pop-ups e tente novamente.'
-                      )
+                      toast.error('Não foi possível gerar o PDF para impressão.')
                     }
                   }}
                 >
