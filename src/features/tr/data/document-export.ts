@@ -148,7 +148,41 @@ const documentStyles = `
     font-size: 8.5pt;
     color: #888;
   }
+  .doc-brand { margin-bottom: 14px; }
+  .doc-logo { height: 42px; width: auto; display: block; }
+  .doc-logo-fallback {
+    display: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16pt;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #1f3a8a;
+  }
+  .doc-signatures { margin-top: 64px; break-inside: avoid; }
+  .sign-place-date {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10.5pt;
+    margin: 0 0 56px;
+  }
+  .sign-block { width: 300px; margin: 0 auto; text-align: center; }
+  .sign-line { border-top: 1px solid #1a1a1a; margin-bottom: 8px; }
+  .sign-name { font-weight: 700; font-size: 11pt; }
+  .sign-role,
+  .sign-unit {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    color: #555;
+  }
 `
+
+const FIEPE_LOGO_PATH = '/images/fiepe-logo.png'
+
+// URL absoluta: a janela de impressão usa document.write (base about:blank),
+// então caminhos relativos não resolvem — precisamos do origin do app.
+function logoSrc(): string {
+  const origin = typeof window !== 'undefined' ? window.location.origin : ''
+  return `${origin}${FIEPE_LOGO_PATH}`
+}
 
 export function buildDocumentHtml(trId: string): {
   filename: string
@@ -185,11 +219,25 @@ export function buildDocumentHtml(trId: string): {
 </head>
 <body>
   <header class="doc-header">
-    <p class="doc-eyebrow">Termo de Referência · Sistema FIEPE</p>
+    <div class="doc-brand">
+      <img class="doc-logo" src="${logoSrc()}" alt="FIEPE"
+        onerror="this.style.display='none';var f=this.nextElementSibling;if(f){f.style.display='inline-block'}">
+      <span class="doc-logo-fallback">Sistema FIEPE</span>
+    </div>
+    <p class="doc-eyebrow">Termo de Referência</p>
     <h1 class="doc-title">${escapeHtml(doc.title)}</h1>
     <div class="doc-meta">${meta}</div>
   </header>
   <main>${body}</main>
+  <section class="doc-signatures">
+    <p class="sign-place-date">Recife, _____ de ________________ de 20____.</p>
+    <div class="sign-block">
+      <div class="sign-line"></div>
+      <div class="sign-name">${escapeHtml(doc.owner)}</div>
+      <div class="sign-role">Responsável pela elaboração</div>
+      <div class="sign-unit">${escapeHtml(doc.responsibleUnit)}</div>
+    </div>
+  </section>
   <footer class="doc-footer">
     Documento gerado pelo TR Fácil — protótipo de validação. Conteúdo ilustrativo.
   </footer>
